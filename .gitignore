@@ -1,0 +1,38 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Heavy design files (not needed for web)
+*.psd
+*.ai
+*.sketch
+Presentación/
+Propuestas/
+Logo/
+instagram/
+*.png
+!public/**/*.png
+!src/**/*.png
+
+# Keep dist for GitHub Pages
+!dist
