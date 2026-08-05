@@ -528,8 +528,8 @@ export const AppProvider = ({ children }) => {
     slogan: 'The Safest Way to Experience Yucatán',
     accentColor: '#FF6B4D',
     heroImage: 'branding_1.jpg',
-    logo: null,
-    backgroundImage: null
+    logo: '/Logo - Experience Safely.png',
+    backgroundImage: '/hero_yucatan.jpg'
   });
 
   // Password-lock Authentication state
