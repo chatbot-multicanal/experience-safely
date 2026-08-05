@@ -502,9 +502,29 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 20px !important;
   }
   .search-bar {
-    flex-direction: column !important;
-    padding: 16px !important;
-    gap: 10px !important;
+    padding: 14px !important;
+    gap: 8px !important;
+  }
+  .search-bar .form-group {
+    flex: 1 1 100% !important;
+    margin-bottom: 0 !important;
+  }
+  .search-bar .form-group:nth-child(2),
+  .search-bar .form-group:nth-child(3) {
+    flex: 1 1 45% !important;
+  }
+  .search-bar .form-label {
+    font-size: 0.6rem !important;
+    margin-bottom: 4px !important;
+  }
+  .search-bar .form-input,
+  .search-bar .form-select {
+    padding: 10px 10px 10px 36px !important;
+    font-size: 0.8rem !important;
+  }
+  .search-bar .btn {
+    padding: 12px !important;
+    width: 100%;
   }
   .grid-cards {
     grid-template-columns: 1fr;

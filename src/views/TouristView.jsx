@@ -182,14 +182,15 @@ export default function TouristView() {
             <div className="search-bar glass-card" style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '16px',
-              padding: '24px',
+              gap: '12px',
+              padding: '20px',
               background: 'rgba(13, 24, 42, 0.9)',
               borderRadius: '16px',
               border: '1px solid rgba(255,255,255,0.15)',
               position: 'relative',
               zIndex: 2,
-              boxShadow: '0 12px 40px rgba(0,0,0,0.5)'
+              boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
+              alignItems: 'flex-end'
             }}>
               <div className="form-group" style={{ flex: '1 1 250px', marginBottom: 0 }}>
                 <label className="form-label">{language === 'es' ? '¿Qué buscas?' : 'Search experiences'}</label>
@@ -206,26 +207,20 @@ export default function TouristView() {
                 </div>
               </div>
 
-              <div className="form-group" style={{ flex: '1 1 180px', marginBottom: 0 }}>
+              <div className="form-group" style={{ flex: '1 1 160px', marginBottom: 0 }}>
                 <label className="form-label">{language === 'es' ? 'Fecha de Visita' : 'Date of Visit'}</label>
                 <div style={{ position: 'relative' }}>
-                  <Calendar size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--color-text-muted)' }} />
-                  <select 
-                    className="form-select" 
+                  <Calendar size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--color-text-muted)', pointerEvents: 'none', zIndex: 1 }} />
+                  <input 
+                    type="date"
+                    className="form-input"
                     value={filterDate}
                     onChange={(e) => setFilterDate(e.target.value)}
-                    style={{ paddingLeft: '40px', width: '100%' }}
-                  >
-                    <option value="">{t('datePlace')}</option>
-                    {(dates || []).map(d => {
-                      try {
-                        const dayName = new Date(d + 'T00:00:00').toLocaleDateString(language === 'es' ? 'es-MX' : 'en-US', { weekday: 'short', day: 'numeric', month: 'short' });
-                        return <option key={d} value={d}>{dayName}</option>;
-                      } catch (err) {
-                        return <option key={d} value={d}>{d}</option>;
-                      }
-                    })}
-                  </select>
+                    min={dates && dates.length > 0 ? dates[0] : undefined}
+                    max={dates && dates.length > 0 ? dates[dates.length - 1] : undefined}
+                    style={{ paddingLeft: '40px', width: '100%', colorScheme: 'dark' }}
+                    placeholder={t('datePlace')}
+                  />
                 </div>
               </div>
 
