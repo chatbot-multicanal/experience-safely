@@ -148,13 +148,34 @@ export default function TouristView() {
           <div className="hero-banner glass-card" style={{
             padding: '60px 40px',
             marginBottom: '40px',
-            background: 'linear-gradient(135deg, rgba(13, 24, 42, 0.85), rgba(21, 38, 63, 0.7)), url("/hero_yucatan.jpg")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            background: 'transparent',
             borderRadius: '24px',
             position: 'relative',
             overflow: 'hidden'
           }}>
+            {/* Animated Background Image - Ken Burns Effect */}
+            <div className="hero-ken-burns" style={{
+              position: 'absolute',
+              top: '-10%',
+              left: '-10%',
+              width: '120%',
+              height: '120%',
+              backgroundImage: 'url("/hero_yucatan.jpg")',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              animation: 'kenBurns 25s ease-in-out infinite alternate',
+              zIndex: 0
+            }} />
+            {/* Dark overlay for text readability */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'linear-gradient(135deg, rgba(13, 24, 42, 0.85), rgba(21, 38, 63, 0.65))',
+              zIndex: 1
+            }} />
             <div className="hero-glow" style={{
               position: 'absolute',
               top: '-50%',
@@ -162,10 +183,11 @@ export default function TouristView() {
               width: '500px',
               height: '500px',
               background: 'radial-gradient(circle, rgba(0, 194, 179, 0.15) 0%, rgba(0,0,0,0) 70%)',
-              pointerEvents: 'none'
+              pointerEvents: 'none',
+              zIndex: 2
             }}></div>
 
-            <div style={{ maxWidth: '700px', position: 'relative', zIndex: 1 }}>
+            <div style={{ maxWidth: '700px', position: 'relative', zIndex: 2 }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 107, 77, 0.15)', color: '#FF6B4D', padding: '6px 14px', borderRadius: '30px', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '20px' }}>
                 <Award size={14} /> {language === 'es' ? 'La forma más segura de vivir Yucatán' : 'The safest way to experience Yucatan'}
               </div>
