@@ -3,6 +3,7 @@ import { AppProvider, AppContext } from './context/AppContext';
 import TouristView from './views/TouristView';
 import ProviderView from './views/ProviderView';
 import AdminView from './views/AdminView';
+import ChatBot from './components/ChatBot';
 import { ShieldCheck, Compass, Briefcase, Settings2, Lock, LogOut, ShieldAlert } from 'lucide-react';
 
 function AppContent() {
@@ -331,6 +332,9 @@ function AppContent() {
           </div>
         </div>
       </footer>
+
+      {/* ChatBot - Only visible for tourists */}
+      {currentProfile === 'tourist' && <ChatBot />}
 
     </div>
   );
