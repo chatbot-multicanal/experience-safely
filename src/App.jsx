@@ -5,6 +5,7 @@ import ProviderView from './views/ProviderView';
 import AdminView from './views/AdminView';
 import ChatBot from './components/ChatBot';
 import ProviderRegisterModal from './components/ProviderRegisterModal';
+import LegalModal from './components/LegalModal';
 import { ShieldCheck, Compass, Briefcase, Settings2, Lock, LogOut, ShieldAlert, User, Building2, CheckCircle2 } from 'lucide-react';
 
 function AppContent() {
@@ -29,6 +30,8 @@ function AppContent() {
   const [providerPass, setProviderPass] = useState('');
   const [loginError, setLoginError] = useState('');
   const [showProviderRegModal, setShowProviderRegModal] = useState(false);
+  const [showLegalModal, setShowLegalModal] = useState(false);
+  const [legalTab, setLegalTab] = useState('privacy');
   const previousProfileRef = useRef(currentProfile);
 
   // Track profile changes to remember where the user came from
@@ -440,15 +443,24 @@ function AppContent() {
             <strong>© 2026 {titleText}.</strong> {t('footerRights')}
           </div>
           <div style={{ display: 'flex', gap: '16px', fontSize: '0.75rem' }}>
-            <a href="#terminos" style={{ color: 'var(--color-text-muted)' }}>
+            <button 
+              onClick={() => { setLegalTab('terms'); setShowLegalModal(true); }}
+              style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.75rem', padding: 0 }}
+            >
               {language === 'es' ? 'Términos de Garantía' : 'Warranty Terms'}
-            </a>
-            <a href="#privacidad" style={{ color: 'var(--color-text-muted)' }}>
+            </button>
+            <button 
+              onClick={() => { setLegalTab('privacy'); setShowLegalModal(true); }}
+              style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.75rem', padding: 0 }}
+            >
               {language === 'es' ? 'Aviso de Privacidad' : 'Privacy Policy'}
-            </a>
-            <a href="#contacto" style={{ color: 'var(--color-text-muted)' }}>
-              {language === 'es' ? 'Soporte de Seguridad' : 'Security Support'}
-            </a>
+            </button>
+            <button 
+              onClick={() => { setLegalTab('restrictions'); setShowLegalModal(true); }}
+              style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.75rem', padding: 0 }}
+            >
+              {language === 'es' ? 'Soporte de Seguridad & Derechos' : 'Security Support & Rights'}
+            </button>
           </div>
         </div>
       </footer>
@@ -460,6 +472,14 @@ function AppContent() {
       <ProviderRegisterModal
         isOpen={showProviderRegModal}
         onClose={() => setShowProviderRegModal(false)}
+      />
+
+      {/* Legal Modal */}
+      <LegalModal
+        isOpen={showLegalModal}
+        onClose={() => setShowLegalModal(false)}
+        initialTab={legalTab}
+        language={language}
       />
 
     </div>
