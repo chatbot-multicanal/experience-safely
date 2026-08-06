@@ -4,6 +4,7 @@ import TouristView from './views/TouristView';
 import ProviderView from './views/ProviderView';
 import AdminView from './views/AdminView';
 import ChatBot from './components/ChatBot';
+import AuthModal from './components/AuthModal';
 import ProviderRegisterModal from './components/ProviderRegisterModal';
 import LegalModal from './components/LegalModal';
 import { ShieldCheck, Compass, Briefcase, Settings2, Lock, LogOut, ShieldAlert, User, Building2, CheckCircle2 } from 'lucide-react';
