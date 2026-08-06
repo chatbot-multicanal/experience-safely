@@ -252,7 +252,7 @@ const INITIAL_CATEGORIES = [
 const TRANSLATIONS = {
   es: {
     navTourist: 'Turista',
-    navProvider: 'Socio (Empresa)',
+    navProvider: 'Socio / Experiencia',
     navAdmin: 'Administrador',
     adminSession: '🛡️ ADMIN SESIÓN',
     providerSession: '💼 SOCIO SESIÓN',
@@ -397,7 +397,7 @@ const TRANSLATIONS = {
   },
   en: {
     navTourist: 'Tourist',
-    navProvider: 'Socio (Partner)',
+    navProvider: 'Partner / Experience',
     navAdmin: 'Administrator',
     adminSession: '🛡️ ADMIN SESSION',
     providerSession: '💼 PARTNER SESSION',
