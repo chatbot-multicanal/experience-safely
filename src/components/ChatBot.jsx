@@ -323,13 +323,16 @@ export default function ChatBot() {
               width: '40px',
               height: '40px',
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, #00C2B3, #00a89b)',
+              background: 'linear-gradient(135deg, #FF6B4D, #00C2B3)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(0, 194, 179, 0.3)'
+              boxShadow: '0 2px 10px rgba(0, 194, 179, 0.4)',
+              fontSize: '1.2rem',
+              fontWeight: '800',
+              color: '#fff'
             }}>
-              <Bot size={22} color="#fff" />
+              👩‍💼
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: '700', fontSize: '0.95rem', color: '#fff' }}>
