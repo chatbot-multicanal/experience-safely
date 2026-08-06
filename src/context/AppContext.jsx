@@ -371,6 +371,29 @@ const TRANSLATIONS = {
     chatBotRated: 'Calificación',
     chatBotTopRated: '⭐ Estas son las experiencias mejor calificadas:',
     chatBotDefault: 'Puedo ayudarte con información sobre tours, seguridad, precios y reservas. Prueba preguntarme sobre **cenotes**, **haciendas**, **precios** o **seguridad**.',
+    authTitle: 'Bienvenido a Experience Safely',
+    authSubtitle: 'Inicia sesión o regístrate para reservar experiencias seguras',
+    authTabLogin: 'Iniciar Sesión',
+    authTabRegister: 'Registrarse',
+    authGoogle: 'Continuar con Google',
+    authOrDivider: 'o continúa con email',
+    authName: 'Nombre completo',
+    authEmail: 'Correo electrónico',
+    authPhone: 'Teléfono celular',
+    authPassword: 'Contraseña',
+    authConfirmPass: 'Confirmar contraseña',
+    authBtnLogin: 'Ingresar',
+    authBtnRegister: 'Crear Cuenta',
+    authNoAccount: '¿No tienes cuenta?',
+    authHasAccount: '¿Ya tienes cuenta?',
+    authRegisterLink: 'Regístrate aquí',
+    authLoginLink: 'Inicia sesión',
+    authLogout: 'Cerrar Sesión',
+    authWelcome: 'Hola',
+    authPassMismatch: 'Las contraseñas no coinciden',
+    authFieldsRequired: 'Completa todos los campos',
+    authEmailExists: 'Este correo ya está registrado',
+    authInvalidCreds: 'Correo o contraseña incorrectos',
   },
   en: {
     navTourist: 'Tourist',
@@ -493,6 +516,29 @@ const TRANSLATIONS = {
     chatBotRated: 'Rating',
     chatBotTopRated: '⭐ These are the top-rated experiences:',
     chatBotDefault: 'I can help you with info about tours, safety, pricing, and bookings. Try asking me about **cenotes**, **haciendas**, **prices**, or **safety**.',
+    authTitle: 'Welcome to Experience Safely',
+    authSubtitle: 'Sign in or register to book safe experiences',
+    authTabLogin: 'Sign In',
+    authTabRegister: 'Register',
+    authGoogle: 'Continue with Google',
+    authOrDivider: 'or continue with email',
+    authName: 'Full name',
+    authEmail: 'Email address',
+    authPhone: 'Phone number',
+    authPassword: 'Password',
+    authConfirmPass: 'Confirm password',
+    authBtnLogin: 'Sign In',
+    authBtnRegister: 'Create Account',
+    authNoAccount: "Don't have an account?",
+    authHasAccount: 'Already have an account?',
+    authRegisterLink: 'Register here',
+    authLoginLink: 'Sign in',
+    authLogout: 'Log Out',
+    authWelcome: 'Hello',
+    authPassMismatch: 'Passwords do not match',
+    authFieldsRequired: 'Please fill all fields',
+    authEmailExists: 'This email is already registered',
+    authInvalidCreds: 'Invalid email or password',
   }
 };
 
@@ -573,6 +619,62 @@ export const AppProvider = ({ children }) => {
     isAdminLoggedIn: false,
     isProviderLoggedIn: false
   });
+
+  // Tourist User Authentication (persisted in localStorage)
+  const [touristUser, setTouristUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('es_tourist_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch { return null; }
+  });
+  const [registeredUsers, setRegisteredUsers] = useState(() => {
+    try {
+      const saved = localStorage.getItem('es_registered_users');
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
+
+  const registerTourist = (userData) => {
+    const exists = registeredUsers.find(u => u.email === userData.email);
+    if (exists) return { success: false, error: 'authEmailExists' };
+    const newUser = { ...userData, id: `tourist-${Date.now()}`, createdAt: new Date().toISOString() };
+    const updated = [...registeredUsers, newUser];
+    setRegisteredUsers(updated);
+    localStorage.setItem('es_registered_users', JSON.stringify(updated));
+    const { password, ...safeUser } = newUser;
+    setTouristUser(safeUser);
+    localStorage.setItem('es_tourist_user', JSON.stringify(safeUser));
+    addAuditLog('system', `Nuevo turista registrado: ${userData.name} (${userData.email})`);
+    return { success: true };
+  };
+
+  const loginTourist = (email, password) => {
+    const user = registeredUsers.find(u => u.email === email && u.password === password);
+    if (!user) return { success: false, error: 'authInvalidCreds' };
+    const { password: _, ...safeUser } = user;
+    setTouristUser(safeUser);
+    localStorage.setItem('es_tourist_user', JSON.stringify(safeUser));
+    return { success: true };
+  };
+
+  const loginWithGoogle = () => {
+    const googleUser = {
+      id: `google-${Date.now()}`,
+      name: 'Turista Google',
+      email: 'turista@gmail.com',
+      phone: '',
+      provider: 'google',
+      createdAt: new Date().toISOString()
+    };
+    setTouristUser(googleUser);
+    localStorage.setItem('es_tourist_user', JSON.stringify(googleUser));
+    return { success: true };
+  };
+
+  const logoutTourist = () => {
+    setTouristUser(null);
+    localStorage.removeItem('es_tourist_user');
+  };
 
   // Providers database
   const [providers, setProviders] = useState([
@@ -921,7 +1023,12 @@ export const AppProvider = ({ children }) => {
       updateSiteDesign,
       removeExperienceAdmin,
       addExpenseMovement,
-      settleProviderPayout
+      settleProviderPayout,
+      touristUser,
+      registerTourist,
+      loginTourist,
+      loginWithGoogle,
+      logoutTourist
     }}>
       {children}
     </AppContext.Provider>

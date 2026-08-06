@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
+import AuthModal from '../components/AuthModal';
 import { 
   Search, Calendar, Users, MapPin, Star, ShieldCheck, CheckCircle2, 
   ArrowLeft, CreditCard, Clock, Phone, Mail, Award, X, Sparkles
@@ -15,7 +16,8 @@ export default function TouristView() {
     language = 'es',
     t = (k) => k,
     categories = [],
-    addExperienceReview = () => {}
+    addExperienceReview = () => {},
+    touristUser = null
   } = context;
   
   // UI States
@@ -26,6 +28,8 @@ export default function TouristView() {
   const [filterGuests, setFilterGuests] = useState(1);
   
   // Booking Form States
+  const [bookingStep3Data, setBookingStep3Data] = useState(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [bookingDate, setBookingDate] = useState('');
   const [bookingGuests, setBookingGuests] = useState(1);
   const [touristName, setTouristName] = useState('');
@@ -61,6 +65,10 @@ export default function TouristView() {
   const handleStartBooking = () => {
     if (!bookingDate) {
       alert(language === 'es' ? 'Por favor selecciona una fecha disponible en el calendario.' : 'Please select an available date on the calendar.');
+      return;
+    }
+    if (!touristUser) {
+      setShowAuthModal(true);
       return;
     }
     setShowCheckout(true);
@@ -815,6 +823,17 @@ export default function TouristView() {
           </div>
         </div>
       )}
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={() => {
+          setShowAuthModal(false);
+          setShowCheckout(true);
+          setCheckoutStep(1);
+        }}
+      />
 
     </div>
   );

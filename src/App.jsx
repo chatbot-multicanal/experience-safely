@@ -4,7 +4,7 @@ import TouristView from './views/TouristView';
 import ProviderView from './views/ProviderView';
 import AdminView from './views/AdminView';
 import ChatBot from './components/ChatBot';
-import { ShieldCheck, Compass, Briefcase, Settings2, Lock, LogOut, ShieldAlert } from 'lucide-react';
+import { ShieldCheck, Compass, Briefcase, Settings2, Lock, LogOut, ShieldAlert, User } from 'lucide-react';
 
 function AppContent() {
   const context = useContext(AppContext) || {};
@@ -17,7 +17,9 @@ function AppContent() {
     logout = () => {},
     language = 'es',
     t = (k) => k,
-    toggleLanguage = () => {}
+    toggleLanguage = () => {},
+    touristUser = null,
+    logoutTourist = () => {}
   } = context;
 
   // Local login state
@@ -205,6 +207,42 @@ function AppContent() {
             >
               🌐 {language === 'es' ? 'ES | EN' : 'EN | ES'}
             </button>
+
+            {/* Tourist User Badge */}
+            {currentProfile === 'tourist' && touristUser && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  background: 'rgba(0, 194, 179, 0.1)',
+                  border: '1px solid rgba(0, 194, 179, 0.25)',
+                  padding: '5px 12px 5px 6px',
+                  borderRadius: '20px',
+                  animation: 'fade-in 0.3s ease'
+                }}>
+                  <div style={{
+                    width: '26px', height: '26px', borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #00C2B3, #00a89b)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '0.7rem', fontWeight: '700', color: '#fff'
+                  }}>
+                    {touristUser.name?.charAt(0)?.toUpperCase() || <User size={14} />}
+                  </div>
+                  <span style={{ fontSize: '0.72rem', color: '#00C2B3', fontWeight: '600', maxWidth: '90px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {touristUser.name?.split(' ')[0]}
+                  </span>
+                </div>
+                <button onClick={logoutTourist} title={t('authLogout')} style={{
+                  background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: '50%', padding: '5px', cursor: 'pointer',
+                  color: 'rgba(255,255,255,0.4)', display: 'flex', transition: 'all 0.2s'
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,77,77,0.15)'; e.currentTarget.style.color = '#ff6b6b'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'rgba(255,255,255,0.4)'; }}
+                >
+                  <LogOut size={13} />
+                </button>
+              </div>
+            )}
 
             {/* Profile Switcher */}
             <div className="profile-switcher">
