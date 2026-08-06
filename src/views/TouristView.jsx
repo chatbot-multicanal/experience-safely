@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import AuthModal from '../components/AuthModal';
+import TouristDashboard from '../components/TouristDashboard';
+import ProviderRegisterModal from '../components/ProviderRegisterModal';
 import { 
   Search, Calendar, Users, MapPin, Star, ShieldCheck, CheckCircle2, 
-  ArrowLeft, CreditCard, Clock, Phone, Mail, Award, X, Sparkles
+  ArrowLeft, CreditCard, Clock, Phone, Mail, Award, X, Sparkles, Ticket, Building2
 } from 'lucide-react';
 
 export default function TouristView() {
@@ -21,6 +23,8 @@ export default function TouristView() {
   } = context;
   
   // UI States
+  const [activeTab, setActiveTab] = useState('catalog'); // 'catalog' | 'dashboard'
+  const [showProviderRegModal, setShowProviderRegModal] = useState(false);
   const [selectedExpId, setSelectedExpId] = useState(null);
   const [filterCategory, setFilterCategory] = useState('todos');
   const [searchQuery, setSearchQuery] = useState('');
@@ -147,9 +151,48 @@ export default function TouristView() {
   });
 
   return (
-    <div className="tourist-view animate-fade-in">
-      
-      {!selectedExp ? (
+    <div className="tourist-view">
+      {/* Top Banner Navigation for Logged Tourist / Provider Request */}
+      <div style={{
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        marginBottom: '16px', flexWrap: 'wrap', gap: '12px'
+      }}>
+        {touristUser ? (
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button
+              onClick={() => setActiveTab('catalog')}
+              className={`btn ${activeTab === 'catalog' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ fontSize: '0.82rem', padding: '8px 16px' }}
+            >
+              {language === 'es' ? '🏖️ Catálogo de Tours' : '🏖️ Tours Catalog'}
+            </button>
+            <button
+              onClick={() => setActiveTab('dashboard')}
+              className={`btn ${activeTab === 'dashboard' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ fontSize: '0.82rem', padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '6px' }}
+            >
+              <Ticket size={16} /> {language === 'es' ? 'Mis Reservas & Panel' : 'My Bookings & Panel'}
+            </button>
+          </div>
+        ) : <div />}
+
+        <button
+          onClick={() => setShowProviderRegModal(true)}
+          style={{
+            background: 'rgba(255, 200, 87, 0.1)', border: '1px solid rgba(255, 200, 87, 0.3)',
+            color: '#FFC857', padding: '6px 14px', borderRadius: '20px',
+            fontSize: '0.75rem', fontWeight: '700', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: '6px', marginLeft: 'auto'
+          }}
+        >
+          <Building2 size={14} />
+          {language === 'es' ? '¿Eres Empresa de Tours? Registra tu Agencia' : 'Are you a Tour Company? Register Here'}
+        </button>
+      </div>
+
+      {activeTab === 'dashboard' ? (
+        <TouristDashboard onBackToCatalog={() => setActiveTab('catalog')} />
+      ) : !selectedExp ? (
         // CATALOG / SEARCH MODE
         <>
           {/* Hero Banner */}
@@ -835,6 +878,11 @@ export default function TouristView() {
         }}
       />
 
+      {/* Provider Registration Modal */}
+      <ProviderRegisterModal
+        isOpen={showProviderRegModal}
+        onClose={() => setShowProviderRegModal(false)}
+      />
     </div>
   );
 }
