@@ -30,6 +30,7 @@ function AppContent() {
   const [providerPass, setProviderPass] = useState('');
   const [loginError, setLoginError] = useState('');
   const [showProviderRegModal, setShowProviderRegModal] = useState(false);
+  const [showTouristAuthModal, setShowTouristAuthModal] = useState(false);
   const [showLegalModal, setShowLegalModal] = useState(false);
   const [legalTab, setLegalTab] = useState('privacy');
   const previousProfileRef = useRef(currentProfile);
@@ -214,6 +215,33 @@ function AppContent() {
             >
               🌐 {language === 'es' ? 'ES | EN' : 'EN | ES'}
             </button>
+
+            {/* Direct Tourist Login / Register Button when not logged in */}
+            {currentProfile === 'tourist' && !touristUser && (
+              <button
+                onClick={() => setShowTouristAuthModal(true)}
+                style={{
+                  background: 'linear-gradient(135deg, #00C2B3, #00a89b)',
+                  border: 'none',
+                  color: '#fff',
+                  padding: '6px 14px',
+                  borderRadius: '20px',
+                  fontSize: '0.75rem',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 2px 8px rgba(0, 194, 179, 0.3)',
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-1px)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+              >
+                <User size={14} />
+                {language === 'es' ? 'Ingresar / Registrarse' : 'Sign In / Register'}
+              </button>
+            )}
 
             {/* Tourist User Badge */}
             {currentProfile === 'tourist' && touristUser && (
@@ -472,6 +500,13 @@ function AppContent() {
       <ProviderRegisterModal
         isOpen={showProviderRegModal}
         onClose={() => setShowProviderRegModal(false)}
+      />
+
+      {/* Tourist Auth Modal for direct login from header */}
+      <AuthModal
+        isOpen={showTouristAuthModal}
+        onClose={() => setShowTouristAuthModal(false)}
+        onSuccess={() => setShowTouristAuthModal(false)}
       />
 
       {/* Legal Modal */}

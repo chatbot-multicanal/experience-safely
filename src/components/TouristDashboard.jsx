@@ -143,9 +143,11 @@ export default function TouristDashboard({ onBackToCatalog }) {
         overflowX: 'auto'
       }}>
         {[
-          { id: 'bookings', icon: Ticket, label: language === 'es' ? 'Mis Reservas' : 'My Bookings', count: userBookings.length },
+          { id: 'bookings', icon: Ticket, label: language === 'es' ? 'Mis Reservas & Pases' : 'My Bookings & Passes', count: userBookings.length },
+          { id: 'calendar', icon: Calendar, label: language === 'es' ? 'Mi Calendario' : 'My Calendar' },
+          { id: 'chat', icon: MessageSquare, label: language === 'es' ? 'Bandeja de Entrada' : 'Inbox / Messages' },
           { id: 'notifications', icon: Bell, label: language === 'es' ? 'Notificaciones' : 'Notifications', count: userBookings.length > 0 ? 2 : 0 },
-          { id: 'chat', icon: MessageSquare, label: language === 'es' ? 'Diálogo con Proveedor' : 'Provider Chat' },
+          { id: 'profile', icon: User, label: language === 'es' ? 'Mi Información' : 'My Profile' },
           { id: 'reviews', icon: Star, label: language === 'es' ? 'Mis Reseñas' : 'My Reviews' },
         ].map(tab => {
           const Icon = tab.icon;
@@ -269,6 +271,41 @@ export default function TouristDashboard({ onBackToCatalog }) {
         </div>
       )}
 
+      {/* TAB 1.5: CALENDAR */}
+      {activeTab === 'calendar' && (
+        <div className="glass-card" style={{ padding: '28px', borderRadius: '20px' }}>
+          <h3 style={{ fontSize: '1.1rem', color: '#fff', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Calendar size={20} style={{ color: '#00C2B3' }} />
+            {language === 'es' ? 'Mi Agenda de Experiencias Programadas' : 'My Scheduled Experiences Calendar'}
+          </h3>
+
+          {userBookings.length === 0 ? (
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.88rem' }}>
+              {language === 'es' ? 'No tienes actividades programadas en el calendario.' : 'No scheduled activities in your calendar.'}
+            </p>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
+              {userBookings.map(b => (
+                <div key={b.id} style={{
+                  background: 'rgba(0, 194, 179, 0.08)', border: '1px solid rgba(0, 194, 179, 0.25)',
+                  borderRadius: '16px', padding: '16px'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: '#00C2B3', fontWeight: '700', marginBottom: '4px' }}>
+                    📅 {b.date}
+                  </div>
+                  <div style={{ fontWeight: '700', color: '#fff', fontSize: '0.95rem', marginBottom: '6px' }}>
+                    {b.experienceName}
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>
+                    👤 {b.guests} {language === 'es' ? 'personas' : 'guests'} • Pase #{b.id}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* TAB 2: NOTIFICATIONS */}
       {activeTab === 'notifications' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -349,7 +386,54 @@ export default function TouristDashboard({ onBackToCatalog }) {
         </div>
       )}
 
-      {/* TAB 4: REVIEWS */}
+      {/* TAB 4.5: PROFILE INFO */}
+      {activeTab === 'profile' && (
+        <div className="glass-card" style={{ padding: '28px', borderRadius: '20px', maxWidth: '600px' }}>
+          <h3 style={{ fontSize: '1.1rem', color: '#fff', margin: '0 0 20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <User size={20} style={{ color: '#00C2B3' }} />
+            {language === 'es' ? 'Mi Información Personal & Configuración' : 'My Personal Information & Settings'}
+          </h3>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div>
+              <label className="form-label">{language === 'es' ? 'Nombre Completo' : 'Full Name'}</label>
+              <input 
+                type="text" className="form-input" 
+                value={touristUser?.name || ''} 
+                readOnly
+                style={{ width: '100%', opacity: 0.9 }}
+              />
+            </div>
+
+            <div>
+              <label className="form-label">{language === 'es' ? 'Correo Electrónico' : 'Email Address'}</label>
+              <input 
+                type="email" className="form-input" 
+                value={touristUser?.email || ''} 
+                readOnly
+                style={{ width: '100%', opacity: 0.9 }}
+              />
+            </div>
+
+            <div>
+              <label className="form-label">{language === 'es' ? 'Teléfono Móvil (WhatsApp)' : 'Mobile Phone'}</label>
+              <input 
+                type="tel" className="form-input" 
+                value={touristUser?.phone || '+52 999 123 4567'} 
+                readOnly
+                style={{ width: '100%', opacity: 0.9 }}
+              />
+            </div>
+
+            <div style={{
+              background: 'rgba(0, 194, 179, 0.08)', border: '1px solid rgba(0, 194, 179, 0.2)',
+              borderRadius: '12px', padding: '12px 16px', fontSize: '0.8rem', color: '#00C2B3', marginTop: '8px'
+            }}>
+              ✓ {language === 'es' ? 'Cuenta verificada con protocolo de seguridad Safely' : 'Verified account under Safely protocol'}
+            </div>
+          </div>
+        </div>
+      )}
       {activeTab === 'reviews' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem' }}>
