@@ -178,11 +178,11 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
                 <li>Acceso a canal directo de soporte 24/7 y mediación de la plataforma ante disputas.</li>
               </ul>
 
-              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>3. Restricciones y Derecho de Admisión</h3>
+              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>3. Cancelación por Estado Inadecuado y Seguridad del Grupo</h3>
               <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                <li>Prohibido ingresar en estado de ebriedad o bajo el efecto de sustancias tóxicas.</li>
-                <li>Prohibido extraer estalactitas, estalagmitas o alterar flora y fauna local.</li>
-                <li>Los prestadores de servicio se reservan el derecho de denegar el acceso a personas que pongan en riesgo la seguridad del grupo.</li>
+                <li><strong>Cancelación por Estado Inadecuado:</strong> Por la seguridad del propio usuario, del grupo y del personal, si una persona se presenta en estado de ebriedad, bajo la influencia de sustancias psicotrópicas o mostrando conducta hostil/inadecuada, el guía o el establecimiento cancelará su participación de inmediato sin derecho a reembolso.</li>
+                <li><strong>Prohibición de sustancias:</strong> Está estrictamente prohibido consumir bebidas alcohólicas o sustancias tóxicas durante las actividades acuáticas o de aventura en cenotes y cavernas.</li>
+                <li><strong>Cuidado del Ecosistema:</strong> Prohibido extraer estalactitas, estalagmitas o alterar flora y fauna local. Los prestadores de servicio se reservan el derecho de admisión ante el incumplimiento de estas normas.</li>
               </ul>
             </div>
           )}
