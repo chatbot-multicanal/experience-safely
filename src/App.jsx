@@ -4,7 +4,8 @@ import TouristView from './views/TouristView';
 import ProviderView from './views/ProviderView';
 import AdminView from './views/AdminView';
 import ChatBot from './components/ChatBot';
-import { ShieldCheck, Compass, Briefcase, Settings2, Lock, LogOut, ShieldAlert, User } from 'lucide-react';
+import ProviderRegisterModal from './components/ProviderRegisterModal';
+import { ShieldCheck, Compass, Briefcase, Settings2, Lock, LogOut, ShieldAlert, User, Building2, CheckCircle2 } from 'lucide-react';
 
 function AppContent() {
   const context = useContext(AppContext) || {};
@@ -24,7 +25,10 @@ function AppContent() {
 
   // Local login state
   const [password, setPassword] = useState('');
+  const [providerEmail, setProviderEmail] = useState('');
+  const [providerPass, setProviderPass] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [showProviderRegModal, setShowProviderRegModal] = useState(false);
   const previousProfileRef = useRef(currentProfile);
 
   // Track profile changes to remember where the user came from
@@ -286,61 +290,139 @@ function AppContent() {
       {/* Main Page Layout Container */}
       <main className="main-content">
         {isLocked ? (
-          // RENDER SECURITY LOGIN GATE WINDOW
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 0' }} className="animate-fade-in">
-            <div className="glass-card" style={{ width: '100%', maxWidth: '450px', padding: '36px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
-              
-              <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-                <div style={{ display: 'inline-flex', background: 'rgba(255, 107, 77, 0.15)', color: 'var(--color-coral)', padding: '16px', borderRadius: '50%', marginBottom: '16px' }}>
-                  <Lock size={32} />
-                </div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>
-                  {language === 'es' ? 'Acceso Restringido' : 'Restricted Access'}
-                </h2>
-                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginTop: '6px' }}>
-                  {language === 'es' 
-                    ? `Estás ingresando al panel de ${currentProfile === 'admin' ? 'Administrador' : 'Empresa/Socio'}. Se requiere verificación.` 
-                    : `You are entering the ${currentProfile === 'admin' ? 'Administrator' : 'Partner'} dashboard. Verification is required.`}
-                </p>
-              </div>
-
-              <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">{t('loginPrompt')}</label>
-                  <input
-                    type="password"
-                    className="form-input"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    autoFocus
-                  />
-                </div>
-
-                {loginError && (
-                  <div style={{ background: 'rgba(255, 107, 77, 0.1)', color: 'var(--color-coral)', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255, 107, 77, 0.2)', fontSize: '0.8rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <ShieldAlert size={14} /> {loginError}
+          currentProfile === 'provider' ? (
+            /* PROFESSIONAL PARTNER PORTAL GATE */
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 0' }} className="animate-fade-in">
+              <div className="glass-card" style={{ width: '100%', maxWidth: '480px', padding: '36px', border: '1px solid rgba(0, 194, 179, 0.25)', borderRadius: '24px', background: 'linear-gradient(180deg, rgba(21, 38, 63, 0.98), rgba(13, 24, 42, 0.99))' }}>
+                
+                <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                  <div style={{ display: 'inline-flex', background: 'rgba(0, 194, 179, 0.15)', color: '#00C2B3', padding: '16px', borderRadius: '50%', marginBottom: '16px' }}>
+                    <Building2 size={36} />
                   </div>
-                )}
+                  <h2 style={{ fontSize: '1.4rem', fontWeight: '800', color: '#fff', margin: '0 0 6px' }}>
+                    {language === 'es' ? 'Portal de Empresas y Socios' : 'Partner Company Portal'}
+                  </h2>
+                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem', margin: 0 }}>
+                    {language === 'es' ? 'Ingresa con tus credenciales de agencia o registra tu empresa.' : 'Sign in with agency credentials or register your company.'}
+                  </p>
+                </div>
 
-                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-                  <button type="button" className="btn btn-outline" style={{ flex: 1 }} onClick={handleCancelLogin}>
-                    {t('loginCancel')}
-                  </button>
-                  <button type="submit" className="btn btn-primary" style={{ flex: 2 }}>
-                    {language === 'es' ? 'Verificar' : 'Verify'}
+                <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label className="form-label">{language === 'es' ? 'Correo de la Empresa' : 'Company Email'}</label>
+                    <input
+                      type="email"
+                      className="form-input"
+                      placeholder="contacto@aventurasmayas.mx"
+                      value={providerEmail}
+                      onChange={(e) => setProviderEmail(e.target.value)}
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label className="form-label">{t('loginPrompt')}</label>
+                    <input
+                      type="password"
+                      className="form-input"
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      style={{ width: '100%' }}
+                    />
+                  </div>
+
+                  {loginError && (
+                    <div style={{ background: 'rgba(255, 107, 77, 0.1)', color: 'var(--color-coral)', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255, 107, 77, 0.2)', fontSize: '0.8rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <ShieldAlert size={14} /> {loginError}
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', gap: '12px', marginTop: '4px' }}>
+                    <button type="button" className="btn btn-outline" style={{ flex: 1 }} onClick={handleCancelLogin}>
+                      {t('loginCancel')}
+                    </button>
+                    <button type="submit" className="btn btn-primary" style={{ flex: 2 }}>
+                      {language === 'es' ? 'Ingresar al Panel' : 'Sign In to Dashboard'}
+                    </button>
+                  </div>
+                </form>
+
+                {/* Partner Registration Callout */}
+                <div style={{ marginTop: '24px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+                  <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.6)', margin: '0 0 12px' }}>
+                    {language === 'es' ? '¿Aún no eres socio verificado de Experience Safely?' : 'Not a verified partner of Experience Safely yet?'}
+                  </p>
+                  <button
+                    onClick={() => setShowProviderRegModal(true)}
+                    className="btn btn-secondary"
+                    style={{ width: '100%', justifyContent: 'center', background: 'rgba(255, 200, 87, 0.1)', color: '#FFC857', border: '1px solid rgba(255, 200, 87, 0.3)' }}
+                  >
+                    {language === 'es' ? 'Registrar Mi Empresa (Pendiente Aprobación ⏳)' : 'Register My Company (Pending Approval ⏳)'}
                   </button>
                 </div>
-              </form>
 
-              {/* Demo hints */}
-              <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px dashed var(--color-border)', fontSize: '0.75rem', color: 'var(--color-text-muted)', textAlign: 'center' }}>
-                🔑 {language === 'es' ? 'Contraseña demo' : 'Demo password'}: <strong style={{ color: 'var(--color-gold)' }}>nohayimposible2026</strong>
+                <div style={{ marginTop: '16px', fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>
+                  🔑 {language === 'es' ? 'Contraseña de verificación' : 'Verification password'}: <strong style={{ color: 'var(--color-gold)' }}>nohayimposible2026</strong>
+                </div>
+
               </div>
-
             </div>
-          </div>
+          ) : (
+            /* ADMIN ACCESS GATE */
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 0' }} className="animate-fade-in">
+              <div className="glass-card" style={{ width: '100%', maxWidth: '450px', padding: '36px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
+                
+                <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                  <div style={{ display: 'inline-flex', background: 'rgba(255, 107, 77, 0.15)', color: 'var(--color-coral)', padding: '16px', borderRadius: '50%', marginBottom: '16px' }}>
+                    <Lock size={32} />
+                  </div>
+                  <h2 style={{ fontSize: '1.5rem', fontWeight: '800' }}>
+                    {language === 'es' ? 'Acceso de Administrador' : 'Administrator Access'}
+                  </h2>
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginTop: '6px' }}>
+                    {language === 'es' ? 'Ingreso exclusivo para supervisión y auditoría del sistema.' : 'Exclusive access for system supervision and auditing.'}
+                  </p>
+                </div>
+
+                <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <label className="form-label">{t('loginPrompt')}</label>
+                    <input
+                      type="password"
+                      className="form-input"
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      autoFocus
+                    />
+                  </div>
+
+                  {loginError && (
+                    <div style={{ background: 'rgba(255, 107, 77, 0.1)', color: 'var(--color-coral)', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255, 107, 77, 0.2)', fontSize: '0.8rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <ShieldAlert size={14} /> {loginError}
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                    <button type="button" className="btn btn-outline" style={{ flex: 1 }} onClick={handleCancelLogin}>
+                      {t('loginCancel')}
+                    </button>
+                    <button type="submit" className="btn btn-primary" style={{ flex: 2 }}>
+                      {language === 'es' ? 'Verificar' : 'Verify'}
+                    </button>
+                  </div>
+                </form>
+
+                <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px dashed var(--color-border)', fontSize: '0.75rem', color: 'var(--color-text-muted)', textAlign: 'center' }}>
+                  🔑 {language === 'es' ? 'Contraseña demo' : 'Demo password'}: <strong style={{ color: 'var(--color-gold)' }}>nohayimposible2026</strong>
+                </div>
+
+              </div>
+            </div>
+          )
         ) : (
           // RENDER VIEWS AS USUAL
           <>
@@ -373,6 +455,12 @@ function AppContent() {
 
       {/* ChatBot - Only visible for tourists */}
       {currentProfile === 'tourist' && <ChatBot />}
+
+      {/* Provider Register Modal */}
+      <ProviderRegisterModal
+        isOpen={showProviderRegModal}
+        onClose={() => setShowProviderRegModal(false)}
+      />
 
     </div>
   );
