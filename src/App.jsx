@@ -300,10 +300,10 @@ function AppContent() {
                     <Building2 size={36} />
                   </div>
                   <h2 style={{ fontSize: '1.4rem', fontWeight: '800', color: '#fff', margin: '0 0 6px' }}>
-                    {language === 'es' ? 'Portal de Empresas y Socios' : 'Partner Company Portal'}
+                    {language === 'es' ? 'Portal de Socio / Experiencia' : 'Partner / Experience Portal'}
                   </h2>
                   <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem', margin: 0 }}>
-                    {language === 'es' ? 'Ingresa con tus credenciales de agencia o registra tu empresa.' : 'Sign in with agency credentials or register your company.'}
+                    {language === 'es' ? 'Ingresa con las credenciales de tu empresa o registra tu experiencia.' : 'Sign in with agency credentials or register your experience.'}
                   </p>
                 </div>
 
@@ -359,7 +359,7 @@ function AppContent() {
                     className="btn btn-secondary"
                     style={{ width: '100%', justifyContent: 'center', background: 'rgba(255, 200, 87, 0.1)', color: '#FFC857', border: '1px solid rgba(255, 200, 87, 0.3)' }}
                   >
-                    {language === 'es' ? 'Registrar Mi Empresa (Pendiente Aprobación ⏳)' : 'Register My Company (Pending Approval ⏳)'}
+                    {language === 'es' ? 'Registrar Mi Experiencia (Pendiente Aprobación ⏳)' : 'Register My Experience (Pending Approval ⏳)'}
                   </button>
                 </div>
 
