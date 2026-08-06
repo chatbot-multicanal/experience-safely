@@ -55,6 +55,11 @@ export default function ChatBot() {
       return { intent: 'safety' };
     }
 
+    // PDF presentation intent
+    if (['pdf', 'presentacion', 'deck', 'dossier', 'brochure', 'documento', 'informacion', 'diapositiva'].some(w => lower.includes(w))) {
+      return { intent: 'pdf' };
+    }
+
     // Chukum & Real Estate intent
     if (['chukum', 'casa', 'casas', 'bienes raices', 'propiedad', 'inmueble', 'inversion', 'arquitectura', 'construccion', 'real estate'].some(w => lower.includes(w))) {
       return { intent: 'chukum' };
@@ -126,6 +131,9 @@ export default function ChatBot() {
     const { intent, category, location } = detectIntent(text);
 
     switch (intent) {
+      case 'pdf':
+        return t('chatBotPdfInfo');
+
       case 'chukum':
         return t('chatBotChukumInfo');
 
@@ -207,11 +215,11 @@ export default function ChatBot() {
 
   const handleQuickAction = (action) => {
     const quickTexts = {
+      pdf: language === 'es' ? 'Presentación PDF' : 'PDF Presentation',
+      whatsapp: language === 'es' ? 'WhatsApp Directo' : 'Direct WhatsApp',
       cenotes: language === 'es' ? 'cenotes' : 'cenotes',
-      food: language === 'es' ? 'gastronomía' : 'food',
       safety: language === 'es' ? 'seguridad' : 'safety',
-      book: language === 'es' ? 'reservar' : 'book',
-      all: language === 'es' ? 'ver todo' : 'view all'
+      book: language === 'es' ? 'reservar' : 'book'
     };
     setInput(quickTexts[action] || '');
     // Auto-send
@@ -427,7 +435,7 @@ export default function ChatBot() {
                   )}
                 </div>
 
-                {/* Quick Actions after greeting */}
+                {/* Quick Action Buttons */}
                 {msg.showQuickActions && (
                   <div style={{
                     display: 'flex',
@@ -436,12 +444,32 @@ export default function ChatBot() {
                     marginTop: '10px',
                     marginLeft: '36px'
                   }}>
+                    <a
+                      href="/Experience_Safely_Presentacion.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        background: 'rgba(255, 107, 77, 0.15)',
+                        border: '1px solid rgba(255, 107, 77, 0.3)',
+                        color: '#FF6B4D',
+                        padding: '6px 12px',
+                        borderRadius: '20px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        textDecoration: 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                    >
+                      📄 {language === 'es' ? 'Presentación PDF' : 'PDF Deck'}
+                    </a>
                     {[
+                      { key: 'pdf', label: language === 'es' ? '📄 Info PDF' : '📄 PDF Info' },
+                      { key: 'whatsapp', label: '💬 WhatsApp' },
                       { key: 'cenotes', label: t('chatBotQuickCenotes') },
-                      { key: 'food', label: t('chatBotQuickFood') },
                       { key: 'safety', label: t('chatBotQuickSafety') },
                       { key: 'book', label: t('chatBotQuickBook') },
-                      { key: 'all', label: t('chatBotQuickAll') },
                     ].map(btn => (
                       <button
                         key={btn.key}
