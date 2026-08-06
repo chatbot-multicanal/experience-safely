@@ -55,6 +55,21 @@ export default function ChatBot() {
       return { intent: 'safety' };
     }
 
+    // Chukum & Real Estate intent
+    if (['chukum', 'casa', 'casas', 'bienes raices', 'propiedad', 'inmueble', 'inversion', 'arquitectura', 'construccion', 'real estate'].some(w => lower.includes(w))) {
+      return { intent: 'chukum' };
+    }
+
+    // Transport / Pickup intent
+    if (['transporte', 'traslado', 'taxi', 'camioneta', 'pickup', 'aeropuerto', 'llegar'].some(w => lower.includes(w))) {
+      return { intent: 'transport' };
+    }
+
+    // Human Support / WhatsApp intent
+    if (['humano', 'agente', 'persona', 'whatsapp', 'contacto', 'hablar', 'telefono', 'soporte', 'asesor'].some(w => lower.includes(w))) {
+      return { intent: 'support' };
+    }
+
     // Booking intent
     if (['reservar', 'reserva', 'booking', 'book', 'agendar', 'disponibilidad', 'availability'].some(w => lower.includes(w))) {
       return { intent: 'booking' };
@@ -111,6 +126,15 @@ export default function ChatBot() {
     const { intent, category, location } = detectIntent(text);
 
     switch (intent) {
+      case 'chukum':
+        return t('chatBotChukumInfo');
+
+      case 'transport':
+        return t('chatBotTransportInfo');
+
+      case 'support':
+        return t('chatBotSupportInfo');
+
       case 'safety':
         return t('chatBotSafetyInfo');
 
