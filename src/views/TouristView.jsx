@@ -38,6 +38,7 @@ export default function TouristView() {
   const [bookingGuests, setBookingGuests] = useState(1);
   const [touristName, setTouristName] = useState('');
   const [touristEmail, setTouristEmail] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('Tarjeta de Crédito');
   const [showCheckout, setShowCheckout] = useState(false);
   const [checkoutStep, setCheckoutStep] = useState(1); // 1 = Details, 2 = Payment, 3 = Ticket
@@ -721,8 +722,29 @@ export default function TouristView() {
                   />
                 </div>
 
-                <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'flex-end' }}>
-                  <button className="btn btn-primary" onClick={handleConfirmBooking} disabled={!touristName || !touristEmail}>
+                {/* Checkbox for Legal Terms, Environmental Rules and Sobriety Clause */}
+                <div style={{
+                  marginTop: '20px', padding: '14px', borderRadius: '12px',
+                  background: 'rgba(0, 194, 179, 0.06)', border: '1px solid rgba(0, 194, 179, 0.2)',
+                  fontSize: '0.8rem', color: 'rgba(255,255,255,0.8)'
+                }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={acceptedTerms} 
+                      onChange={(e) => setAcceptedTerms(e.target.checked)}
+                      style={{ marginTop: '3px', accentColor: '#00C2B3', width: '16px', height: '16px' }}
+                    />
+                    <span>
+                      {language === 'es' 
+                        ? 'Acepto los Términos de Garantía, el Aviso de Privacidad y confirmo que ningún integrante asistirá en estado de ebriedad o bajo efectos de sustancias (motivo de cancelación sin reembolso).' 
+                        : 'I accept Warranty Terms, Privacy Policy, and confirm no participant will attend intoxicated (cancellation without refund applies).'}
+                    </span>
+                  </label>
+                </div>
+
+                <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-end' }}>
+                  <button className="btn btn-primary" onClick={() => setCheckoutStep(2)} disabled={!touristName || !touristEmail || !acceptedTerms}>
                     {t('btnNext')}
                   </button>
                 </div>

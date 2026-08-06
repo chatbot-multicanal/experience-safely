@@ -292,6 +292,18 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
                 </div>
               )}
 
+              {/* Legal acceptance notice */}
+              <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.45)', textAlign: 'center', margin: '4px 0' }}>
+                {language === 'es' ? 'Al continuar, aceptas nuestros ' : 'By continuing, you agree to our '}
+                <strong style={{ color: '#00C2B3' }}>
+                  {language === 'es' ? 'Términos de Garantía' : 'Warranty Terms'}
+                </strong>
+                {language === 'es' ? ' y el ' : ' & '}
+                <strong style={{ color: '#00C2B3' }}>
+                  {language === 'es' ? 'Aviso de Privacidad' : 'Privacy Policy'}
+                </strong>.
+              </p>
+
               {/* Submit */}
               <button type="submit" disabled={loading} style={{
                 width: '100%',
