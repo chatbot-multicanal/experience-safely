@@ -36,6 +36,9 @@ export default function TouristView() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [bookingDate, setBookingDate] = useState('');
   const [bookingGuests, setBookingGuests] = useState(1);
+  const [selectedZoneId, setSelectedZoneId] = useState('');
+  const [selectedSchedule, setSelectedSchedule] = useState('');
+  const [selectedHours, setSelectedHours] = useState(4);
   const [touristName, setTouristName] = useState('');
   const [touristEmail, setTouristEmail] = useState('');
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -618,9 +621,83 @@ export default function TouristView() {
                   </div>
                 )}
 
-                {/* 3. Guests Selector */}
+                {/* 3. DYNAMIC MODALITY FIELDS BASED ON GIRO / BOOKINGTYPE */}
+                
+                {/* A) EVENT GIRO: ZONE / TABLE SELECTOR */}
+                {selectedExp.bookingType === 'event' && selectedExp.eventZones?.length > 0 && (
+                  <div className="form-group" style={{ margin: '16px 0' }}>
+                    <label className="form-label" style={{ color: '#00C2B3' }}>🎟️ {language === 'es' ? 'Selecciona tu Zona o Mesa:' : 'Select Zone or Table:'}</label>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {selectedExp.eventZones.map(zone => {
+                        const isZoneSelected = selectedZoneId === zone.id || (!selectedZoneId && zone.id === selectedExp.eventZones[0].id);
+                        return (
+                          <div 
+                            key={zone.id}
+                            onClick={() => setSelectedZoneId(zone.id)}
+                            style={{
+                              background: isZoneSelected ? 'rgba(0, 194, 179, 0.15)' : 'rgba(255,255,255,0.03)',
+                              border: `1px solid ${isZoneSelected ? '#00C2B3' : 'rgba(255,255,255,0.1)'}`,
+                              borderRadius: '10px', padding: '10px 14px', cursor: 'pointer',
+                              display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                            }}
+                          >
+                            <div>
+                              <div style={{ fontWeight: '700', fontSize: '0.85rem', color: '#fff' }}>{zone.name}</div>
+                              <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.5)' }}>
+                                {zone.type === 'table' ? (language === 'es' ? `Incluye mesa completa hasta ${zone.capacity} asientos` : `Includes full table up to ${zone.capacity} seats`) : (language === 'es' ? 'Acceso individual por persona' : 'Individual pass per guest')}
+                              </div>
+                            </div>
+                            <strong style={{ color: '#FF6B4D', fontSize: '0.95rem' }}>${zone.price.toLocaleString('es-MX')} MXN</strong>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* B) TOUR / CENOTE GIRO: TURN / SCHEDULE SELECTOR */}
+                {(selectedExp.bookingType === 'tour' || selectedExp.category === 'cenotes') && (
+                  <div className="form-group" style={{ margin: '16px 0' }}>
+                    <label className="form-label" style={{ color: '#00C2B3' }}>🕒 {language === 'es' ? 'Selecciona Turno / Horario de Entrada:' : 'Select Entry Schedule:'}</label>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                      {(selectedExp.schedules || ['09:00 AM', '12:00 PM', '03:00 PM']).map(sch => {
+                        const isSchSelected = selectedSchedule === sch || (!selectedSchedule && sch === (selectedExp.schedules?.[0] || '09:00 AM'));
+                        return (
+                          <button
+                            key={sch} type="button"
+                            onClick={() => setSelectedSchedule(sch)}
+                            style={{
+                              background: isSchSelected ? '#00C2B3' : 'rgba(255,255,255,0.04)',
+                              color: isSchSelected ? '#fff' : 'rgba(255,255,255,0.7)',
+                              border: isSchSelected ? 'none' : '1px solid rgba(255,255,255,0.1)',
+                              padding: '6px 14px', borderRadius: '16px', fontSize: '0.8rem', fontWeight: '700', cursor: 'pointer'
+                            }}
+                          >
+                            {sch}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* C) TRANSPORT / YACHT GIRO: UNIT SPECS */}
+                {selectedExp.bookingType === 'transport' && selectedExp.transportOptions && (
+                  <div style={{ background: 'rgba(255, 107, 77, 0.08)', border: '1px solid rgba(255, 107, 77, 0.25)', padding: '12px 14px', borderRadius: '10px', margin: '16px 0', fontSize: '0.82rem' }}>
+                    <div style={{ fontWeight: '700', color: '#FF6B4D', marginBottom: '4px' }}>
+                      🚗 {selectedExp.transportOptions.unitType}
+                    </div>
+                    <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.78rem' }}>
+                      • Capacidad máxima: <strong>{selectedExp.transportOptions.maxPassengers} pasajeros</strong><br/>
+                      • Punto de recogida: <strong>{selectedExp.transportOptions.pickupLocation}</strong><br/>
+                      • Incluye chofer/capitán certificado y hielera con bebidas.
+                    </div>
+                  </div>
+                )}
+
+                {/* 4. Guests Selector */}
                 <div className="form-group">
-                  <label className="form-label">{t('guestsLabel')}</label>
+                  <label className="form-label">{selectedExp.bookingType === 'transport' ? (language === 'es' ? 'Número de Pasajeros' : 'Number of Passengers') : t('guestsLabel')}</label>
                   <input 
                     type="number" 
                     className="form-input" 

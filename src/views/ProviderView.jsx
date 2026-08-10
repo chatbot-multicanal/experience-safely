@@ -43,6 +43,10 @@ export default function ProviderView() {
   const [newPrice, setNewPrice] = useState(1000);
   const [newPricingType, setNewPricingType] = useState('individual'); // 'individual' or 'package'
   const [newCapacity, setNewCapacity] = useState(10);
+  const [newBookingType, setNewBookingType] = useState('tour'); // 'tour' | 'event' | 'transport' | 'dining' | 'wellness'
+  const [newEventZoneVipPrice, setNewEventZoneVipPrice] = useState(1500);
+  const [newEventTablePrice, setNewEventTablePrice] = useState(4800);
+  const [newTransportMode, setNewTransportMode] = useState('per_trip'); // 'per_hour' | 'per_trip' | 'per_day'
   const [newBadges, setNewBadges] = useState('Equipo de Primeros Auxilios, Guía Local Certificado');
   const [newSafetyDesc, setNewSafetyDesc] = useState('Nuestros guías e instructores cuentan con todas las autorizaciones vigentes.');
 
@@ -130,6 +134,20 @@ export default function ProviderView() {
       location: newLocation,
       price: Number(newPrice),
       pricingType: newPricingType,
+      bookingType: newBookingType,
+      eventZones: newBookingType === 'event' ? [
+        { id: 'z-gen', name: language === 'es' ? 'Zona General' : 'General Zone', price: Number(newPrice), type: 'ticket', capacity: Number(newCapacity) },
+        { id: 'z-vip', name: language === 'es' ? 'Zona VIP Preferente' : 'VIP Preferred Zone', price: Number(newEventZoneVipPrice), type: 'ticket', capacity: Math.floor(newCapacity / 2) },
+        { id: 'z-table', name: language === 'es' ? 'Mesa Lounge VIP (4 pers)' : 'VIP Table (4 pers)', price: Number(newEventTablePrice), type: 'table', capacity: 4, seats: 4 }
+      ] : undefined,
+      transportOptions: newBookingType === 'transport' ? {
+        unitType: newName,
+        maxPassengers: Number(newCapacity),
+        pricingMode: newTransportMode,
+        includesDriver: true,
+        pickupLocation: newLocation
+      } : undefined,
+      schedules: ['09:00 AM', '12:00 PM', '03:00 PM'],
       capacity: Number(newCapacity),
       safetyBadges: badgesArray,
       safetyDescription: newSafetyDesc,
@@ -345,10 +363,73 @@ export default function ProviderView() {
                     </div>
 
                     <div className="form-group">
+                      <label className="form-label">{language === 'es' ? 'Giro / Modalidad de Reserva *' : 'Experience Modality *'}</label>
+                      <select className="form-select" value={newBookingType} onChange={e => setNewBookingType(e.target.value)}>
+                        <option value="tour">🏊 Tour / Cenote / Aventura (Por Persona / Turnos)</option>
+                        <option value="event">🎟️ Evento / Concierto / Festival (Zonas / Mesas)</option>
+                        <option value="transport">🚗 Transporte / Yate / Marina (Renta por Hora/Día/Unidad)</option>
+                        <option value="dining">🍽️ Gastronomía / Hacienda (Reserva de Mesa / Menú)</option>
+                        <option value="wellness">💆 Spa / Wellness / Holística (Sesiones / Tratamientos)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                    <div className="form-group">
                       <label className="form-label">{t('labelLocation')}</label>
                       <input type="text" className="form-input" value={newLocation} onChange={e => setNewLocation(e.target.value)} />
                     </div>
+
+                    <div className="form-group">
+                      <label className="form-label">{t('labelPriceType')}</label>
+                      <select className="form-select" value={newPricingType} onChange={e => setNewPricingType(e.target.value)}>
+                        <option value="individual">{t('priceTypeInd')}</option>
+                        <option value="package">{t('priceTypePkg')}</option>
+                      </select>
+                    </div>
                   </div>
+
+                  {/* DYNAMIC FIELDS FOR EVENT GIRO */}
+                  {newBookingType === 'event' && (
+                    <div style={{ background: 'rgba(0, 194, 179, 0.08)', border: '1px solid rgba(0, 194, 179, 0.25)', padding: '16px', borderRadius: '12px', marginBottom: '16px' }}>
+                      <h4 style={{ color: '#00C2B3', margin: '0 0 12px', fontSize: '0.9rem' }}>🎟️ Configuración de Zonas y Mesas de Evento</h4>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
+                        <div>
+                          <label className="form-label">Precio Zona General</label>
+                          <input type="number" className="form-input" value={newPrice} onChange={e => setNewPrice(e.target.value)} />
+                        </div>
+                        <div>
+                          <label className="form-label">Precio Zona VIP</label>
+                          <input type="number" className="form-input" value={newEventZoneVipPrice} onChange={e => setNewEventZoneVipPrice(e.target.value)} />
+                        </div>
+                        <div>
+                          <label className="form-label">Precio Mesa Lounge VIP</label>
+                          <input type="number" className="form-input" value={newEventTablePrice} onChange={e => setNewEventTablePrice(e.target.value)} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* DYNAMIC FIELDS FOR TRANSPORT GIRO */}
+                  {newBookingType === 'transport' && (
+                    <div style={{ background: 'rgba(255, 107, 77, 0.08)', border: '1px solid rgba(255, 107, 77, 0.25)', padding: '16px', borderRadius: '12px', marginBottom: '16px' }}>
+                      <h4 style={{ color: '#FF6B4D', margin: '0 0 12px', fontSize: '0.9rem' }}>🚗 Modalidad de Cobro de Transporte / Embarcación</h4>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                        <div>
+                          <label className="form-label">Cobrar por:</label>
+                          <select className="form-select" value={newTransportMode} onChange={e => setNewTransportMode(e.target.value)}>
+                            <option value="per_trip">Por Recorrido / Viaje Completo</option>
+                            <option value="per_hour">Por Hora de Renta</option>
+                            <option value="per_day">Por Día Completo</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="form-label">Capacidad de Unidad (Pasajeros)</label>
+                          <input type="number" className="form-input" value={newCapacity} onChange={e => setNewCapacity(e.target.value)} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                     <div className="form-group">

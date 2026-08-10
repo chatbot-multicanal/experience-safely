@@ -30,6 +30,8 @@ const INITIAL_EXPERIENCES = [
     rating: 4.9,
     reviewsCount: 2,
     pricingType: 'individual',
+    bookingType: 'tour',
+    schedules: ['09:00 AM', '12:00 PM', '03:00 PM'],
     reviews: [
       { id: 'rev-1', author: 'Carlos R.', rating: 5, comment: 'Excelente tour. Los guías sabían mucho sobre la geología de las cavernas y los chalecos estaban impecables.', date: '2026-07-28', source: 'Facebook' },
       { id: 'rev-2', author: 'Emily S.', rating: 4, comment: 'Beautiful water, very secure and well-organized. High quality life jackets.', date: '2026-07-15', source: 'TripAdvisor' }
@@ -73,6 +75,14 @@ const INITIAL_EXPERIENCES = [
     rating: 5.0,
     reviewsCount: 1,
     pricingType: 'package',
+    bookingType: 'transport',
+    transportOptions: {
+      unitType: 'Catamarán Privado de Lujo (42ft)',
+      maxPassengers: 10,
+      pricingMode: 'per_trip', // 'per_hour' | 'per_trip' | 'per_day'
+      includesDriver: true,
+      pickupLocation: 'Marina de Progreso'
+    },
     reviews: [
       { id: 'rev-4', author: 'Diego L.', rating: 5, comment: 'Rentamos el catamarán para mi familia de 8 personas. Fue genial pagar un precio fijo. El capitán de primera y todo el equipo de seguridad al día.', date: '2026-07-25', source: 'TripAdvisor' }
     ],
@@ -144,6 +154,57 @@ const INITIAL_EXPERIENCES = [
     providerId: 'provider-4',
     providerName: 'Rosas & Xocolate Boutique',
     syncedFromWix: false,
+  },
+  {
+    id: 'exp-7',
+    name: 'Festival Nocturno Noche Blanca & Concierto Maya',
+    description: 'Acceso exclusivo al concierto estelar al aire libre en la plaza principal. Elige entre zonas de boletos individuales o reserva una Mesa Lounge para tu grupo con servicio de champagne.',
+    category: 'eventos',
+    location: 'Mérida',
+    price: 850,
+    capacity: 200,
+    image: '/images/gastronomia.jpg',
+    rating: 4.9,
+    reviewsCount: 3,
+    pricingType: 'individual',
+    bookingType: 'event',
+    eventZones: [
+      { id: 'z-gen', name: 'Zona General (Boleto Individual)', price: 850, type: 'ticket', capacity: 100 },
+      { id: 'z-vip', name: 'Zona VIP Preferente (Boleto Individual)', price: 1500, type: 'ticket', capacity: 50 },
+      { id: 'z-table4', name: 'Mesa Lounge VIP (Hasta 4 personas)', price: 4800, type: 'table', capacity: 4, seats: 4 },
+      { id: 'z-table8', name: 'Mesa Premium VIP (Hasta 8 personas)', price: 8900, type: 'table', capacity: 8, seats: 8 }
+    ],
+    safetyBadges: ['Filtro de Seguridad', 'Asientos Distanciados', 'Paramédicos en Sitio'],
+    safetyDescription: 'Acceso controlado con detector de metales, personal de seguridad privada y unidad médica de primera respuesta en sitio.',
+    providerId: 'provider-2',
+    providerName: 'Haciendas de Yucatán Club',
+    syncedFromWix: false
+  },
+  {
+    id: 'exp-8',
+    name: 'Servicio de Traslado Privado en Van VIP (Chichén Itzá / Ruta Puuc)',
+    description: 'Renta de Van ejecutiva Mercedes-Benz / Chevrolet con chofer privado bilingüe para recorridos personalizados de hasta 12 pasajeros con kilometraje libre y hielera con bebidas.',
+    category: 'marinas',
+    location: 'Yucatán',
+    price: 3200,
+    capacity: 12,
+    image: '/hero_yucatan.jpg',
+    rating: 5.0,
+    reviewsCount: 2,
+    pricingType: 'package',
+    bookingType: 'transport',
+    transportOptions: {
+      unitType: 'Van Ejecutiva VIP (Hasta 12 pasajeros)',
+      maxPassengers: 12,
+      pricingMode: 'per_day',
+      includesDriver: true,
+      pickupLocation: 'Hotel / Aeropuerto de Mérida'
+    },
+    safetyBadges: ['Chofer Certificado', 'Seguro de Viajero AXXA', 'Unidad Sanitizada'],
+    safetyDescription: 'Choferes certificados con pruebas toxicológicas vigentes, GPS de rastreo en tiempo real y póliza de seguro de viajero de amplia cobertura.',
+    providerId: 'provider-1',
+    providerName: 'Aventuras Mayas S.A.',
+    syncedFromWix: false
   }
 ];
 
