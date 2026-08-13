@@ -4,7 +4,7 @@ import { X, Mail, Lock, User, Phone, Eye, EyeOff, ShieldCheck } from 'lucide-rea
 
 export default function AuthModal({ isOpen, onClose, onSuccess }) {
   const context = useContext(AppContext) || {};
-  const { t = (k) => k, registerTourist, loginTourist, loginWithGoogle, siteDesign } = context;
+  const { t = (k) => k, registerTourist, loginTourist, loginWithGoogle, siteDesign, language = 'es' } = context;
 
   const [activeTab, setActiveTab] = useState('login');
   const [showPassword, setShowPassword] = useState(false);
