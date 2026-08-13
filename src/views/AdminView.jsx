@@ -3,7 +3,7 @@ import { AppContext } from '../context/AppContext';
 import { 
   ShieldCheck, ShieldAlert, Award, Calculator, TrendingUp, DollarSign, Users, CheckCircle2,
   Trash2, ArrowUpRight, ArrowDownRight, Activity, PlusCircle, Globe, Settings, Palette,
-  Plus, Edit, Eye, Star, Upload, FolderPlus, MessageSquarePlus
+  Plus, Edit, Eye, Star, Upload, FolderPlus, MessageSquarePlus, XCircle
 } from 'lucide-react';
 
 export default function AdminView() {
