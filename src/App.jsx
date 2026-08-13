@@ -46,9 +46,14 @@ class ErrorBoundary extends React.Component {
             maxWidth: '500px'
           }}>
             <h2 style={{ color: '#FF6B4D', marginBottom: '16px', fontSize: '1.6rem' }}>Experience Safely</h2>
-            <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '24px', lineHeight: '1.5' }}>
+            <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '16px', lineHeight: '1.5' }}>
               Iniciando la plataforma en modo seguro...
             </p>
+            {this.state.error && (
+              <pre style={{ background: 'rgba(0,0,0,0.4)', padding: '12px', borderRadius: '8px', color: '#ff6b6b', fontSize: '0.75rem', textAlign: 'left', overflowX: 'auto', marginBottom: '20px' }}>
+                {this.state.error.toString()}
+              </pre>
+            )}
             <button
               onClick={() => { localStorage.clear(); window.location.reload(); }}
               style={{
