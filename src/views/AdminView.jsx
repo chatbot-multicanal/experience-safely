@@ -168,6 +168,23 @@ export default function AdminView() {
     }
   };
 
+  // Hero Rectangle Media File Change
+  const handleHeroImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setTempHeroImage(url);
+    }
+  };
+
+  const handleHeroVideoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setTempHeroVideo(url);
+    }
+  };
+
   // Add category handler
   const handleAddCategorySubmit = (e) => {
     e.preventDefault();
@@ -905,7 +922,35 @@ export default function AdminView() {
 
                   {tempHeroMediaType === 'video' ? (
                     <div className="form-group">
-                      <label className="form-label">{language === 'es' ? 'URL del Video MP4 en Bucle' : 'Loop Video MP4 URL'}</label>
+                      <label className="form-label">{language === 'es' ? 'Video MP4 del Rectángulo Principal' : 'Hero Rectangle MP4 Video'}</label>
+                      
+                      {/* Uploader Box for Video */}
+                      <div style={{
+                        border: '2px dashed var(--color-border)',
+                        padding: '16px',
+                        borderRadius: '8px',
+                        textAlign: 'center',
+                        background: 'rgba(255,255,255,0.02)',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        marginBottom: '12px'
+                      }}>
+                        <input 
+                          type="file" 
+                          accept="video/mp4,video/webm,video/*" 
+                          onChange={handleHeroVideoChange}
+                          style={{
+                            position: 'absolute',
+                            top: 0, left: 0, width: '100%', height: '100%',
+                            opacity: 0, cursor: 'pointer'
+                          }}
+                        />
+                        <span>📁 {language === 'es' ? 'Seleccionar / Subir Video MP4 desde tu Equipo' : 'Upload MP4 Video File'}</span>
+                      </div>
+
+                      <label className="form-label" style={{ fontSize: '0.75rem', marginTop: '8px' }}>
+                        {language === 'es' ? 'O ingresa enlace / URL externa:' : 'Or enter external video URL:'}
+                      </label>
                       <input 
                         type="text" 
                         className="form-input" 
@@ -913,13 +958,38 @@ export default function AdminView() {
                         onChange={e => setTempHeroVideo(e.target.value)} 
                         placeholder="https://ejemplo.com/cenote-video.mp4" 
                       />
-                      <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', display: 'block', marginTop: '4px' }}>
-                        Pega cualquier enlace directo a un archivo MP4/WebM para reproducirlo en bucle continuo de alta calidad.
-                      </span>
                     </div>
                   ) : (
                     <div className="form-group">
                       <label className="form-label">{language === 'es' ? 'Foto del Rectángulo Principal' : 'Hero Rectangle Image'}</label>
+                      
+                      {/* Uploader Box for Image */}
+                      <div style={{
+                        border: '2px dashed var(--color-border)',
+                        padding: '16px',
+                        borderRadius: '8px',
+                        textAlign: 'center',
+                        background: 'rgba(255,255,255,0.02)',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        marginBottom: '12px'
+                      }}>
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          onChange={handleHeroImageChange}
+                          style={{
+                            position: 'absolute',
+                            top: 0, left: 0, width: '100%', height: '100%',
+                            opacity: 0, cursor: 'pointer'
+                          }}
+                        />
+                        <span>📁 {language === 'es' ? 'Seleccionar / Subir Imagen desde tu Equipo' : 'Upload Hero Image File'}</span>
+                      </div>
+
+                      <label className="form-label" style={{ fontSize: '0.75rem', marginTop: '8px' }}>
+                        {language === 'es' ? 'O ingresa enlace / URL de imagen:' : 'Or enter image URL:'}
+                      </label>
                       <input 
                         type="text" 
                         className="form-input" 
