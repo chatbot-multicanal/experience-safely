@@ -673,16 +673,26 @@ export const AppProvider = ({ children }) => {
   const [currentProfile, setCurrentProfile] = useState('tourist');
   const [activeProviderId, setActiveProviderId] = useState('provider-1');
   
-  // Graphical Customizer Design State
-  const [siteDesign, setSiteDesign] = useState({
-    title: 'Experience Safely',
-    slogan: 'The Safest Way to Experience Yucatán',
-    accentColor: '#FF6B4D',
-    heroImage: '/hero_yucatan.jpg',
-    heroMediaType: 'video', // 'image' | 'video'
-    heroVideo: 'https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4',
-    logo: '/Logo - Experience Safely.png',
-    backgroundImage: '/hero_yucatan.jpg'
+  // Graphical Customizer Design State (persisted in localStorage)
+  const [siteDesign, setSiteDesign] = useState(() => {
+    const defaultDesign = {
+      title: 'Experience Safely',
+      slogan: 'The Safest Way to Experience Yucatán',
+      accentColor: '#FF6B4D',
+      heroImage: '/hero_yucatan.jpg',
+      heroMediaType: 'video', // 'image' | 'video'
+      heroVideo: 'https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4',
+      logo: '/Logo - Experience Safely.png',
+      backgroundImage: '/hero_yucatan.jpg'
+    };
+    try {
+      const saved = localStorage.getItem('es_site_design');
+      if (saved && saved !== 'undefined' && saved !== 'null') {
+        const parsed = JSON.parse(saved);
+        return { ...defaultDesign, ...parsed };
+      }
+    } catch(e) {}
+    return defaultDesign;
   });
 
 
@@ -822,7 +832,13 @@ export const AppProvider = ({ children }) => {
 
   // Graphical customization updater
   const updateSiteDesign = (newDesign) => {
-    setSiteDesign(prev => ({ ...prev, ...newDesign }));
+    setSiteDesign(prev => {
+      const updated = { ...prev, ...newDesign };
+      try {
+        localStorage.setItem('es_site_design', JSON.stringify(updated));
+      } catch(e) {}
+      return updated;
+    });
   };
 
   // Experience removal by Admin (Curation)

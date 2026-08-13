@@ -136,17 +136,26 @@ export default function AdminView() {
   };
 
   const handleResetDesign = () => {
+    try {
+      localStorage.removeItem('es_site_design');
+    } catch(e) {}
     setTempTitle('Experience Safely');
     setTempSlogan('The Safest Way to Experience Yucatán');
     setSelectedColor('#FF6B4D');
-    setLogoPreview(null);
-    setBgPreview(null);
+    setLogoPreview('/Logo - Experience Safely.png');
+    setBgPreview('/hero_yucatan.jpg');
+    setTempHeroImage('/hero_yucatan.jpg');
+    setTempHeroMediaType('video');
+    setTempHeroVideo('https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4');
     updateSiteDesign({
       title: 'Experience Safely',
       slogan: 'The Safest Way to Experience Yucatán',
       accentColor: '#FF6B4D',
-      logo: null,
-      backgroundImage: null
+      heroImage: '/hero_yucatan.jpg',
+      heroMediaType: 'video',
+      heroVideo: 'https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4',
+      logo: '/Logo - Experience Safely.png',
+      backgroundImage: '/hero_yucatan.jpg'
     });
   };
 
