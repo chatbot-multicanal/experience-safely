@@ -685,6 +685,8 @@ export const AppProvider = ({ children }) => {
     backgroundImage: '/hero_yucatan.jpg'
   });
 
+
+
   // Password-lock Authentication state
   const [auth, setAuth] = useState({
     isAdminLoggedIn: false,
