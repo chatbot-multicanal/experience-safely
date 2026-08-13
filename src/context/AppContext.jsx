@@ -678,7 +678,9 @@ export const AppProvider = ({ children }) => {
     title: 'Experience Safely',
     slogan: 'The Safest Way to Experience Yucatán',
     accentColor: '#FF6B4D',
-    heroImage: 'branding_1.jpg',
+    heroImage: '/hero_yucatan.jpg',
+    heroMediaType: 'video', // 'image' | 'video'
+    heroVideo: 'https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4',
     logo: '/Logo - Experience Safely.png',
     backgroundImage: '/hero_yucatan.jpg'
   });

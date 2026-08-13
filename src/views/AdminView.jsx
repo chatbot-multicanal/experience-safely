@@ -48,6 +48,9 @@ export default function AdminView() {
   const [selectedColor, setSelectedColor] = useState(siteDesign.accentColor || '#FF6B4D');
   const [logoPreview, setLogoPreview] = useState(siteDesign.logo || null);
   const [bgPreview, setBgPreview] = useState(siteDesign.backgroundImage || null);
+  const [tempHeroImage, setTempHeroImage] = useState(siteDesign.heroImage || '/hero_yucatan.jpg');
+  const [tempHeroMediaType, setTempHeroMediaType] = useState(siteDesign.heroMediaType || 'video');
+  const [tempHeroVideo, setTempHeroVideo] = useState(siteDesign.heroVideo || 'https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4');
 
   // New Group/Category Form State
   const [newGroupName, setNewGroupName] = useState('');
@@ -124,7 +127,10 @@ export default function AdminView() {
       slogan: tempSlogan,
       accentColor: selectedColor,
       logo: logoPreview,
-      backgroundImage: bgPreview
+      backgroundImage: bgPreview,
+      heroImage: tempHeroImage,
+      heroMediaType: tempHeroMediaType,
+      heroVideo: tempHeroVideo
     });
     alert(language === 'es' ? 'Identidad visual de marca aplicada correctamente.' : 'Visual brand identity applied successfully.');
   };
@@ -881,13 +887,48 @@ export default function AdminView() {
                         cursor: 'pointer'
                       }}
                     />
-                    <span>{bgPreview ? (language === 'es' ? '✓ Fondo cargado' : '✓ Background loaded') : (language === 'es' ? 'Subir Imagen de Fondo' : 'Upload Background Image')}</span>
-                    {bgPreview && (
-                      <div 
-                        style={{ width: '120px', height: '50px', backgroundImage: `url(${bgPreview})`, backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '4px', display: 'block', margin: '8px auto 0 auto' }} 
-                      />
-                    )}
+                    <span>{bgPreview ? (language === 'es' ? '✓ Fondo del sitio cargado' : '✓ Site Background loaded') : (language === 'es' ? 'Subir Fondo del Sitio Completo' : 'Upload Full Site Background')}</span>
                   </div>
+                </div>
+
+                {/* HERO RECTANGLE MEDIA CUSTOMIZER (PHOTO VS VIDEO MP4) */}
+                <div style={{ background: 'rgba(0, 194, 179, 0.08)', border: '1px solid rgba(0, 194, 179, 0.25)', padding: '20px', borderRadius: '12px', marginTop: '20px', marginBottom: '20px' }}>
+                  <h4 style={{ color: '#00C2B3', margin: '0 0 12px', fontSize: '0.95rem' }}>🎬 Fondo del Rectángulo Principal (Hero Banner)</h4>
+                  
+                  <div className="form-group">
+                    <label className="form-label">{language === 'es' ? 'Tipo de Contenido Multimedia' : 'Media Type'}</label>
+                    <select className="form-select" value={tempHeroMediaType} onChange={e => setTempHeroMediaType(e.target.value)}>
+                      <option value="video">🎬 Video en Bucle MP4 (Recomendado Ultra HD)</option>
+                      <option value="image">🖼️ Foto con Animación Ken Burns</option>
+                    </select>
+                  </div>
+
+                  {tempHeroMediaType === 'video' ? (
+                    <div className="form-group">
+                      <label className="form-label">{language === 'es' ? 'URL del Video MP4 en Bucle' : 'Loop Video MP4 URL'}</label>
+                      <input 
+                        type="text" 
+                        className="form-input" 
+                        value={tempHeroVideo} 
+                        onChange={e => setTempHeroVideo(e.target.value)} 
+                        placeholder="https://ejemplo.com/cenote-video.mp4" 
+                      />
+                      <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', display: 'block', marginTop: '4px' }}>
+                        Pega cualquier enlace directo a un archivo MP4/WebM para reproducirlo en bucle continuo de alta calidad.
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="form-group">
+                      <label className="form-label">{language === 'es' ? 'Foto del Rectángulo Principal' : 'Hero Rectangle Image'}</label>
+                      <input 
+                        type="text" 
+                        className="form-input" 
+                        value={tempHeroImage} 
+                        onChange={e => setTempHeroImage(e.target.value)} 
+                        placeholder="/hero_yucatan.jpg" 
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-group">

@@ -19,7 +19,8 @@ export default function TouristView() {
     t = (k) => k,
     categories = [],
     addExperienceReview = () => {},
-    touristUser = null
+    touristUser = null,
+    siteDesign = {}
   } = context;
   
   // UI States
@@ -208,19 +209,38 @@ export default function TouristView() {
             position: 'relative',
             overflow: 'hidden'
           }}>
-            {/* Animated Background Image - Ken Burns Effect */}
-            <div className="hero-ken-burns" style={{
-              position: 'absolute',
-              top: '-10%',
-              left: '-10%',
-              width: '120%',
-              height: '120%',
-              backgroundImage: 'url("/hero_yucatan.jpg")',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              animation: 'kenBurns 25s ease-in-out infinite alternate',
-              zIndex: 0
-            }} />
+            {/* Background Media: Video Loop MP4 vs Ken Burns Animated Image */}
+            {siteDesign?.heroMediaType === 'video' && siteDesign?.heroVideo ? (
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  zIndex: 0
+                }}
+                src={siteDesign.heroVideo}
+              />
+            ) : (
+              <div className="hero-ken-burns" style={{
+                position: 'absolute',
+                top: '-10%',
+                left: '-10%',
+                width: '120%',
+                height: '120%',
+                backgroundImage: `url("${siteDesign?.heroImage || '/hero_yucatan.jpg'}")`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                animation: 'kenBurns 25s ease-in-out infinite alternate',
+                zIndex: 0
+              }} />
+            )}
             {/* Dark overlay for text readability */}
             <div style={{
               position: 'absolute',
