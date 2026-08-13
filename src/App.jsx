@@ -192,15 +192,13 @@ function AppContent() {
             {/* Custom Logo Image or Default SVG Icon */}
             {siteDesign?.logo ? (
               <img 
-                src={siteDesign.logo} 
+                src={siteDesign?.logo || '/Logo - Experience Safely.png'} 
                 alt="Logo" 
                 style={{ 
-                  width: '42px', 
-                  height: '42px', 
-                  borderRadius: '50%', 
-                  objectFit: 'cover',
-                  boxShadow: '0 2px 8px rgba(0, 194, 179, 0.4)',
-                  border: '2px solid var(--color-coral)'
+                  width: '46px', 
+                  height: '46px', 
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 2px 8px rgba(0, 194, 179, 0.35))'
                 }} 
               />
             ) : (
