@@ -362,8 +362,9 @@ export default function TouristView() {
                 return (
                   <div key={exp.id} className="glass-card animate-fade-in" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                     {/* Image / Category */}
-                    <div style={{ height: '200px', width: '100%', background: `linear-gradient(to bottom, transparent, rgba(13,24,42,0.9)), url(${exp.image || '/branding_2.jpg'})`, backgroundSize: 'cover', backgroundPosition: 'center', borderTopLeftRadius: '15px', borderTopRightRadius: '15px', position: 'relative' }}>
-                      <span className="badge badge-teal" style={{ position: 'absolute', top: '12px', left: '12px' }}>
+                    <div className="card-img-wrapper" style={{ height: '200px', width: '100%' }}>
+                      <div className="card-img-animated" style={{ background: `linear-gradient(to bottom, transparent, rgba(13,24,42,0.9)), url(${exp.image || '/branding_2.jpg'})` }} />
+                      <span className="badge badge-teal" style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 2 }}>
                         {exp.category}
                       </span>
                     </div>

@@ -291,8 +291,9 @@ export default function ProviderView() {
                 <div key={exp.id} className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   
                   {/* Local image render */}
-                  <div style={{ height: '140px', background: `linear-gradient(to bottom, transparent, rgba(13,24,42,0.85)), url(${exp.image || '/branding_2.jpg'})`, backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '10px', position: 'relative' }}>
-                    <span className="badge badge-teal" style={{ position: 'absolute', top: '10px', left: '10px' }}>{exp.category}</span>
+                  <div className="card-img-wrapper" style={{ height: '140px', width: '100%', borderRadius: '10px' }}>
+                    <div className="card-img-animated" style={{ background: `linear-gradient(to bottom, transparent, rgba(13,24,42,0.85)), url(${exp.image || '/branding_2.jpg'})` }} />
+                    <span className="badge badge-teal" style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 2 }}>{exp.category}</span>
                   </div>
 
                   <div>
