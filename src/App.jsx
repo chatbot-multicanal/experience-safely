@@ -9,6 +9,69 @@ import ProviderRegisterModal from './components/ProviderRegisterModal';
 import LegalModal from './components/LegalModal';
 import { ShieldCheck, Compass, Briefcase, Settings2, Lock, LogOut, ShieldAlert, User, Building2, CheckCircle2 } from 'lucide-react';
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          minHeight: '100vh',
+          background: '#0d182a',
+          color: '#fff',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '24px',
+          textAlign: 'center',
+          fontFamily: 'system-ui, -apple-system, sans-serif'
+        }}>
+          <div style={{
+            background: 'rgba(255, 107, 77, 0.1)',
+            border: '1px solid rgba(255, 107, 77, 0.3)',
+            borderRadius: '20px',
+            padding: '40px',
+            maxWidth: '500px'
+          }}>
+            <h2 style={{ color: '#FF6B4D', marginBottom: '16px', fontSize: '1.6rem' }}>Experience Safely</h2>
+            <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '24px', lineHeight: '1.5' }}>
+              Iniciando la plataforma en modo seguro...
+            </p>
+            <button
+              onClick={() => { localStorage.clear(); window.location.reload(); }}
+              style={{
+                background: 'linear-gradient(135deg, #00C2B3, #00a89b)',
+                color: '#fff',
+                border: 'none',
+                padding: '12px 28px',
+                borderRadius: '30px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                fontSize: '0.9rem'
+              }}
+            >
+              🔄 Recargar Aplicación
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 function AppContent() {
   const context = useContext(AppContext) || {};
   const { 
@@ -524,8 +587,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <AppProvider>
-      <AppContent />
-    </AppProvider>
+    <ErrorBoundary>
+      <AppProvider>
+        <AppContent />
+      </AppProvider>
+    </ErrorBoundary>
   );
 }

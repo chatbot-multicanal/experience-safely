@@ -697,13 +697,13 @@ export const AppProvider = ({ children }) => {
   const [touristUser, setTouristUser] = useState(() => {
     try {
       const saved = localStorage.getItem('es_tourist_user');
-      return saved ? JSON.parse(saved) : null;
+      return (saved && saved !== 'undefined' && saved !== 'null') ? JSON.parse(saved) : null;
     } catch { return null; }
   });
   const [registeredUsers, setRegisteredUsers] = useState(() => {
     try {
       const saved = localStorage.getItem('es_registered_users');
-      return saved ? JSON.parse(saved) : [];
+      return (saved && saved !== 'undefined' && saved !== 'null') ? JSON.parse(saved) : [];
     } catch { return []; }
   });
 
