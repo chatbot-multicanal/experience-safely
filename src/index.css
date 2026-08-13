@@ -114,12 +114,15 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-premium);
-  transition: var(--transition-smooth);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, background 0.4s ease;
+  will-change: transform;
 }
 
 .glass-card:hover {
   background: var(--color-bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 194, 179, 0.25);
+  border-color: rgba(0, 194, 179, 0.4);
 }
 
 /* Interactive Elements & Buttons */
