@@ -159,39 +159,37 @@ export default function AdminView() {
     });
   };
 
-  // Logo file change
+  // Helper to convert uploaded files to permanent Base64 Data URLs
+  const fileToBase64 = (file, callback) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      callback(event.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Logo file change (permanent Base64)
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setLogoPreview(url);
-    }
+    fileToBase64(file, (base64) => setLogoPreview(base64));
   };
 
-  // Background file change
+  // Background file change (permanent Base64)
   const handleBgChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setBgPreview(url);
-    }
+    fileToBase64(file, (base64) => setBgPreview(base64));
   };
 
-  // Hero Rectangle Media File Change
+  // Hero Rectangle Media File Change (permanent Base64)
   const handleHeroImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setTempHeroImage(url);
-    }
+    fileToBase64(file, (base64) => setTempHeroImage(base64));
   };
 
   const handleHeroVideoChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setTempHeroVideo(url);
-    }
+    fileToBase64(file, (base64) => setTempHeroVideo(base64));
   };
 
   // Add category handler
