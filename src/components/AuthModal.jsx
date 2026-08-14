@@ -1,7 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
 import { X, Mail, Lock, User, Phone, Eye, EyeOff, ShieldCheck } from 'lucide-react';
-import GoogleAccountPickerModal from './GoogleAccountPickerModal';
 
 export default function AuthModal({ isOpen, onClose, onSuccess }) {
   const context = useContext(AppContext) || {};
@@ -18,33 +17,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
-
-  const [showGooglePicker, setShowGooglePicker] = useState(false);
-
-  // Load Google Identity Services SDK script dynamically if not present
-  React.useEffect(() => {
-    if (!document.getElementById('google-gsi-script')) {
-      const script = document.createElement('script');
-      script.id = 'google-gsi-script';
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.async = true;
-      script.defer = true;
-      document.body.appendChild(script);
-    }
-  }, []);
-
-  if (!isOpen && !showGooglePicker) return null;
-
-  const resetForm = () => {
-    setName(''); setEmail(''); setPhone('');
-    setPassword(''); setConfirmPass('');
-    setError(''); setShowPassword(false);
-  };
-
-  const switchTab = (tab) => {
-    setActiveTab(tab);
-    setError('');
-  };
 
   // Helper to decode Google OAuth JWT Credential
   const parseGoogleJwt = (token) => {
@@ -63,47 +35,61 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
     }
   };
 
-  // Google Sign-In Handler (Official Real Pop-up or Account Picker)
-  const handleOpenGooglePicker = () => {
-    const clientId = siteDesign?.googleClientId;
+  // Initialize & Render Official Native Google Sign-In Button (gsi/client)
+  useEffect(() => {
+    if (!isOpen) return;
 
-    if (clientId && window.google?.accounts?.id) {
-      setLoading(true);
-      window.google.accounts.id.initialize({
-        client_id: clientId,
-        callback: (response) => {
-          const payload = parseGoogleJwt(response.credential);
-          if (payload) {
-            loginWithGoogle({
-              id: payload.sub,
-              name: payload.name || payload.given_name,
-              email: payload.email,
-              avatar: payload.picture
-            });
-            onSuccess?.();
-            onClose();
+    const clientId = siteDesign?.googleClientId || '717762328687-90059b02i5m4pld4srli5k1ic49681ob.apps.googleusercontent.com';
+
+    const initGoogle = () => {
+      if (window.google?.accounts?.id) {
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          callback: (response) => {
+            const payload = parseGoogleJwt(response.credential);
+            if (payload) {
+              loginWithGoogle({
+                id: payload.sub,
+                name: payload.name || payload.given_name,
+                email: payload.email,
+                avatar: payload.picture
+              });
+              onSuccess?.();
+              onClose();
+            }
           }
-          setLoading(false);
+        });
+
+        const targetDiv = document.getElementById('googleBtnDiv');
+        if (targetDiv) {
+          targetDiv.innerHTML = '';
+          window.google.accounts.id.renderButton(targetDiv, {
+            theme: 'filled_blue',
+            size: 'large',
+            width: '320',
+            text: 'continue_with',
+            shape: 'pill',
+            logo_alignment: 'left'
+          });
         }
-      });
-      window.google.accounts.id.prompt((notification) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          setShowGooglePicker(true);
-          setLoading(false);
-        }
-      });
-    } else {
-      setShowGooglePicker(true);
-    }
+      }
+    };
+
+    const timer = setTimeout(initGoogle, 250);
+    return () => clearTimeout(timer);
+  }, [isOpen, siteDesign?.googleClientId]);
+
+  if (!isOpen) return null;
+
+  const resetForm = () => {
+    setName(''); setEmail(''); setPhone('');
+    setPassword(''); setConfirmPass('');
+    setError(''); setShowPassword(false);
   };
 
-  const handleGoogleAccountSelected = (account) => {
-    setLoading(true);
-    loginWithGoogle(account);
-    setLoading(false);
-    setShowGooglePicker(false);
-    onSuccess?.();
-    onClose();
+  const switchTab = (tab) => {
+    setActiveTab(tab);
+    setError('');
   };
 
   const handleLogin = (e) => {
@@ -124,6 +110,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
     setError('');
     if (!name || !email || !password || !confirmPass) { setError(t('authFieldsRequired')); return; }
     if (password !== confirmPass) { setError(t('authPassMismatch')); return; }
+    if (password.length < 6) { setError(t('authPassLength')); return; }
+
     setLoading(true);
     setTimeout(() => {
       const result = registerTourist({ name, email, phone, password });
@@ -133,40 +121,18 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
     }, 500);
   };
 
-  const inputStyle = {
-    width: '100%',
-    padding: '14px 14px 14px 44px',
-    background: 'rgba(255, 255, 255, 0.06)',
-    border: '1px solid rgba(255, 255, 255, 0.12)',
-    borderRadius: '12px',
-    color: '#fff',
-    fontSize: '0.9rem',
-    fontFamily: 'inherit',
-    outline: 'none',
-    transition: 'border-color 0.2s, box-shadow 0.2s'
-  };
-
-  const iconStyle = {
-    position: 'absolute',
-    left: '14px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    color: 'rgba(255,255,255,0.35)',
-    pointerEvents: 'none'
-  };
-
   return (
     <div style={{
       position: 'fixed',
       inset: 0,
-      background: 'rgba(0, 0, 0, 0.7)',
+      background: 'rgba(0, 0, 0, 0.75)',
       backdropFilter: 'blur(8px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       zIndex: 10000,
       padding: '16px',
-      animation: 'chatbot-slide-up 0.3s ease-out'
+      animation: 'chatbot-slide-up 0.25s ease-out'
     }} onClick={onClose}>
       <div style={{
         width: '100%',
@@ -234,183 +200,192 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
         {/* Form Content */}
         <div style={{ padding: '24px 32px 32px' }}>
 
-          {/* Google Button */}
-          <button onClick={handleOpenGooglePicker} disabled={loading} style={{
-            width: '100%',
-            padding: '13px',
-            background: '#fff',
-            border: 'none',
-            borderRadius: '12px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '10px',
-            fontSize: '0.88rem',
-            fontWeight: '600',
-            fontFamily: 'inherit',
-            color: '#333',
-            transition: 'all 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-            opacity: loading ? 0.7 : 1
-          }}>
-            <svg width="18" height="18" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg>
-            {t('authGoogle')}
-          </button>
+          {/* Official Native Google Sign-In Button Container */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px', minHeight: '44px' }}>
+            <div id="googleBtnDiv"></div>
+          </div>
 
           {/* Divider */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: '12px',
-            margin: '20px 0', color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem'
+            margin: '16px 0', color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem'
           }}>
             <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
             {t('authOrDivider')}
             <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
           </div>
 
-          {/* Error */}
+          {/* Error Banner */}
           {error && (
             <div style={{
-              padding: '10px 14px', borderRadius: '10px', marginBottom: '16px',
-              background: 'rgba(255, 77, 77, 0.1)', border: '1px solid rgba(255, 77, 77, 0.3)',
-              color: '#ff6b6b', fontSize: '0.8rem', textAlign: 'center'
+              background: 'rgba(255, 107, 107, 0.12)',
+              border: '1px solid rgba(255, 107, 107, 0.3)',
+              borderRadius: '10px',
+              padding: '10px 14px',
+              marginBottom: '16px',
+              color: '#ff6b6b',
+              fontSize: '0.8rem',
+              textAlign: 'center'
             }}>
               {error}
             </div>
           )}
 
-          <form onSubmit={activeTab === 'login' ? handleLogin : handleRegister}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-
-              {/* Name - register only */}
-              {activeTab === 'register' && (
+          {/* LOGIN FORM */}
+          {activeTab === 'login' && (
+            <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label">{t('authEmail')}</label>
                 <div style={{ position: 'relative' }}>
-                  <User size={18} style={iconStyle} />
+                  <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
                   <input
-                    type="text" value={name} onChange={e => setName(e.target.value)}
-                    placeholder={t('authName')} style={inputStyle}
-                    onFocus={e => { e.target.style.borderColor = 'rgba(0, 194, 179, 0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(0, 194, 179, 0.1)'; }}
-                    onBlur={e => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'; e.target.style.boxShadow = 'none'; }}
+                    type="email"
+                    className="form-input"
+                    style={{ paddingLeft: '38px' }}
+                    placeholder="tu@email.com"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                   />
                 </div>
-              )}
-
-              {/* Email */}
-              <div style={{ position: 'relative' }}>
-                <Mail size={18} style={iconStyle} />
-                <input
-                  type="email" value={email} onChange={e => setEmail(e.target.value)}
-                  placeholder={t('authEmail')} style={inputStyle}
-                  onFocus={e => { e.target.style.borderColor = 'rgba(0, 194, 179, 0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(0, 194, 179, 0.1)'; }}
-                  onBlur={e => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'; e.target.style.boxShadow = 'none'; }}
-                />
               </div>
 
-              {/* Phone - register only */}
-              {activeTab === 'register' && (
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label">{t('authPassword')}</label>
                 <div style={{ position: 'relative' }}>
-                  <Phone size={18} style={iconStyle} />
-                  <input
-                    type="tel" value={phone} onChange={e => setPhone(e.target.value)}
-                    placeholder={t('authPhone')} style={inputStyle}
-                    onFocus={e => { e.target.style.borderColor = 'rgba(0, 194, 179, 0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(0, 194, 179, 0.1)'; }}
-                    onBlur={e => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'; e.target.style.boxShadow = 'none'; }}
-                  />
-                </div>
-              )}
-
-              {/* Password */}
-              <div style={{ position: 'relative' }}>
-                <Lock size={18} style={iconStyle} />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password} onChange={e => setPassword(e.target.value)}
-                  placeholder={t('authPassword')} style={{ ...inputStyle, paddingRight: '44px' }}
-                  onFocus={e => { e.target.style.borderColor = 'rgba(0, 194, 179, 0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(0, 194, 179, 0.1)'; }}
-                  onBlur={e => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'; e.target.style.boxShadow = 'none'; }}
-                />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} style={{
-                  position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  color: 'rgba(255,255,255,0.35)', padding: '4px', display: 'flex'
-                }}>
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-
-              {/* Confirm Password - register only */}
-              {activeTab === 'register' && (
-                <div style={{ position: 'relative' }}>
-                  <Lock size={18} style={iconStyle} />
+                  <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    value={confirmPass} onChange={e => setConfirmPass(e.target.value)}
-                    placeholder={t('authConfirmPass')} style={inputStyle}
-                    onFocus={e => { e.target.style.borderColor = 'rgba(0, 194, 179, 0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(0, 194, 179, 0.1)'; }}
-                    onBlur={e => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'; e.target.style.boxShadow = 'none'; }}
+                    className="form-input"
+                    style={{ paddingLeft: '38px', paddingRight: '38px' }}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{
+                      position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+                      background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer', padding: 0
+                    }}
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" disabled={loading} className="btn btn-primary" style={{
+                width: '100%', marginTop: '8px', padding: '12px', fontWeight: '700',
+                background: 'linear-gradient(135deg, #00C2B3, #00a89b)', border: 'none', borderRadius: '12px'
+              }}>
+                {loading ? t('authLoading') : t('authBtnLogin')}
+              </button>
+            </form>
+          )}
+
+          {/* REGISTER FORM */}
+          {activeTab === 'register' && (
+            <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label">{t('authName')}</label>
+                <div style={{ position: 'relative' }}>
+                  <User size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+                  <input
+                    type="text"
+                    className="form-input"
+                    style={{ paddingLeft: '38px' }}
+                    placeholder="Ej. Juan Pérez"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
                   />
                 </div>
-              )}
+              </div>
 
-              {/* Legal acceptance notice */}
-              <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.45)', textAlign: 'center', margin: '4px 0' }}>
-                {language === 'es' ? 'Al continuar, aceptas nuestros ' : 'By continuing, you agree to our '}
-                <strong style={{ color: '#00C2B3' }}>
-                  {language === 'es' ? 'Términos de Garantía' : 'Warranty Terms'}
-                </strong>
-                {language === 'es' ? ' y el ' : ' & '}
-                <strong style={{ color: '#00C2B3' }}>
-                  {language === 'es' ? 'Aviso de Privacidad' : 'Privacy Policy'}
-                </strong>.
-              </p>
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label">{t('authEmail')}</label>
+                <div style={{ position: 'relative' }}>
+                  <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+                  <input
+                    type="email"
+                    className="form-input"
+                    style={{ paddingLeft: '38px' }}
+                    placeholder="tu@email.com"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                  />
+                </div>
+              </div>
 
-              {/* Submit */}
-              <button type="submit" disabled={loading} style={{
-                width: '100%',
-                padding: '14px',
-                background: 'linear-gradient(135deg, #00C2B3, #00a89b)',
-                border: 'none',
-                borderRadius: '12px',
-                color: '#fff',
-                fontSize: '0.95rem',
-                fontWeight: '700',
-                fontFamily: 'inherit',
-                cursor: loading ? 'wait' : 'pointer',
-                transition: 'all 0.2s',
-                boxShadow: '0 4px 16px rgba(0, 194, 179, 0.3)',
-                marginTop: '4px',
-                opacity: loading ? 0.7 : 1,
-                letterSpacing: '0.02em'
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label">{t('authPhone')}</label>
+                <div style={{ position: 'relative' }}>
+                  <Phone size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+                  <input
+                    type="tel"
+                    className="form-input"
+                    style={{ paddingLeft: '38px' }}
+                    placeholder="+52 999 123 4567"
+                    value={phone}
+                    onChange={e => setPhone(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label">{t('authPassword')}</label>
+                <div style={{ position: 'relative' }}>
+                  <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    className="form-input"
+                    style={{ paddingLeft: '38px', paddingRight: '38px' }}
+                    placeholder="Mínimo 6 caracteres"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label">{t('authConfirmPass')}</label>
+                <div style={{ position: 'relative' }}>
+                  <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    className="form-input"
+                    style={{ paddingLeft: '38px' }}
+                    placeholder="Repite tu contraseña"
+                    value={confirmPass}
+                    onChange={e => setConfirmPass(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <button type="submit" disabled={loading} className="btn btn-primary" style={{
+                width: '100%', marginTop: '8px', padding: '12px', fontWeight: '700',
+                background: 'linear-gradient(135deg, #00C2B3, #00a89b)', border: 'none', borderRadius: '12px'
               }}>
-                {loading ? '...' : (activeTab === 'login' ? t('authBtnLogin') : t('authBtnRegister'))}
+                {loading ? t('authLoading') : t('authBtnRegister')}
               </button>
-            </div>
-          </form>
+            </form>
+          )}
 
-          {/* Switch tab link */}
-          <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>
-            {activeTab === 'login' ? t('authNoAccount') : t('authHasAccount')}{' '}
-            <button onClick={() => switchTab(activeTab === 'login' ? 'register' : 'login')} style={{
-              background: 'none', border: 'none', color: '#00C2B3',
-              cursor: 'pointer', fontWeight: '600', fontFamily: 'inherit', fontSize: '0.8rem',
-              textDecoration: 'underline', padding: 0
-            }}>
-              {activeTab === 'login' ? t('authRegisterLink') : t('authLoginLink')}
-            </button>
+          {/* Privacy Note */}
+          <p style={{
+            fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)',
+            textAlign: 'center', marginTop: '16px', lineHeight: '1.4'
+          }}>
+            {language === 'es' ? 'Al continuar, aceptas nuestros ' : 'By continuing, you agree to our '}
+            <span style={{ color: '#00C2B3', textDecoration: 'underline' }}>
+              {language === 'es' ? 'Términos de Garantía' : 'Warranty Terms'}
+            </span>
+            {language === 'es' ? ' y el ' : ' & '}
+            <span style={{ color: '#00C2B3', textDecoration: 'underline' }}>
+              {language === 'es' ? 'Aviso de Privacidad' : 'Privacy Policy'}
+            </span>.
           </p>
         </div>
       </div>
-
-      <GoogleAccountPickerModal
-        isOpen={showGooglePicker}
-        onClose={() => setShowGooglePicker(false)}
-        onSelectAccount={handleGoogleAccountSelected}
-      />
     </div>
   );
 }
