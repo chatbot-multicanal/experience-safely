@@ -51,6 +51,7 @@ export default function AdminView() {
   const [tempHeroImage, setTempHeroImage] = useState(siteDesign.heroImage || '/hero_yucatan.jpg');
   const [tempHeroMediaType, setTempHeroMediaType] = useState(siteDesign.heroMediaType || 'video');
   const [tempHeroVideo, setTempHeroVideo] = useState(siteDesign.heroVideo || 'https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4');
+  const [tempGoogleClientId, setTempGoogleClientId] = useState(siteDesign.googleClientId || '');
 
   // New Group/Category Form State
   const [newGroupName, setNewGroupName] = useState('');
@@ -130,9 +131,10 @@ export default function AdminView() {
       backgroundImage: bgPreview,
       heroImage: tempHeroImage,
       heroMediaType: tempHeroMediaType,
-      heroVideo: tempHeroVideo
+      heroVideo: tempHeroVideo,
+      googleClientId: tempGoogleClientId
     });
-    alert(language === 'es' ? 'Identidad visual de marca aplicada correctamente.' : 'Visual brand identity applied successfully.');
+    alert(language === 'es' ? 'Identidad visual y credenciales de marca aplicadas correctamente.' : 'Visual brand identity & credentials applied successfully.');
   };
 
   const handleResetDesign = () => {
@@ -915,7 +917,32 @@ export default function AdminView() {
                   </div>
                 </div>
 
-                {/* HERO RECTANGLE MEDIA CUSTOMIZER (PHOTO VS VIDEO MP4) */}
+                {/* GOOGLE SIGN-IN OAUTH 2.0 API CREDENTIALS CUSTOMIZER */}
+                <div style={{ background: 'rgba(66, 133, 244, 0.08)', border: '1px solid rgba(66, 133, 244, 0.3)', padding: '20px', borderRadius: '12px', marginTop: '20px', marginBottom: '20px' }}>
+                  <h4 style={{ color: '#4285F4', margin: '0 0 10px', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    🔑 Google Sign-In REAL (Google OAuth 2.0 Client ID)
+                  </h4>
+                  
+                  <div className="form-group">
+                    <label className="form-label">{language === 'es' ? 'Google OAuth 2.0 Web Client ID' : 'Google Web Client ID'}</label>
+                    <input 
+                      type="text" 
+                      className="form-input" 
+                      value={tempGoogleClientId} 
+                      onChange={e => setTempGoogleClientId(e.target.value)} 
+                      placeholder="Ej. 1234567890-abcdefghijklmn.apps.googleusercontent.com" 
+                    />
+                    <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.6)', display: 'block', marginTop: '6px', lineHeight: '1.4' }}>
+                      💡 Obtenlo gratis en <strong style={{ color: '#4285F4' }}>console.cloud.google.com</strong> en 2 minutos. Al pegarlo aquí y dar clic en Aplicar Cambios, los turistas verán la ventana emergente oficial de Google con sus cuentas de Gmail reales logueadas en el navegador.
+                    </span>
+                  </div>
+                </div>
                 <div style={{ background: 'rgba(0, 194, 179, 0.08)', border: '1px solid rgba(0, 194, 179, 0.25)', padding: '20px', borderRadius: '12px', marginTop: '20px', marginBottom: '20px' }}>
                   <h4 style={{ color: '#00C2B3', margin: '0 0 12px', fontSize: '0.95rem' }}>🎬 Fondo del Rectángulo Principal (Hero Banner)</h4>
                   

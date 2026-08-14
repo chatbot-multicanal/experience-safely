@@ -21,6 +21,18 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
 
   const [showGooglePicker, setShowGooglePicker] = useState(false);
 
+  // Load Google Identity Services SDK script dynamically if not present
+  React.useEffect(() => {
+    if (!document.getElementById('google-gsi-script')) {
+      const script = document.createElement('script');
+      script.id = 'google-gsi-script';
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
   if (!isOpen && !showGooglePicker) return null;
 
   const resetForm = () => {
@@ -34,8 +46,55 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
     setError('');
   };
 
+  // Helper to decode Google OAuth JWT Credential
+  const parseGoogleJwt = (token) => {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      return null;
+    }
+  };
+
+  // Google Sign-In Handler (Official Real Pop-up or Account Picker)
   const handleOpenGooglePicker = () => {
-    setShowGooglePicker(true);
+    const clientId = siteDesign?.googleClientId;
+
+    if (clientId && window.google?.accounts?.id) {
+      setLoading(true);
+      window.google.accounts.id.initialize({
+        client_id: clientId,
+        callback: (response) => {
+          const payload = parseGoogleJwt(response.credential);
+          if (payload) {
+            loginWithGoogle({
+              id: payload.sub,
+              name: payload.name || payload.given_name,
+              email: payload.email,
+              avatar: payload.picture
+            });
+            onSuccess?.();
+            onClose();
+          }
+          setLoading(false);
+        }
+      });
+      window.google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          setShowGooglePicker(true);
+          setLoading(false);
+        }
+      });
+    } else {
+      setShowGooglePicker(true);
+    }
   };
 
   const handleGoogleAccountSelected = (account) => {
