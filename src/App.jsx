@@ -283,67 +283,74 @@ function AppContent() {
               🌐 {language === 'es' ? 'ES | EN' : 'EN | ES'}
             </button>
 
-            {/* Direct Tourist Login / Register Button when not logged in */}
-            {currentProfile === 'tourist' && !touristUser && (
-              <button
-                onClick={() => setShowTouristAuthModal(true)}
-                style={{
-                  background: 'linear-gradient(135deg, #00C2B3, #00a89b)',
-                  border: 'none',
-                  color: '#fff',
-                  padding: '6px 14px',
-                  borderRadius: '20px',
-                  fontSize: '0.75rem',
-                  fontWeight: '700',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  boxShadow: '0 2px 8px rgba(0, 194, 179, 0.3)',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-1px)'}
-                onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-              >
-                <User size={14} />
-                {language === 'es' ? 'Ingresar / Registrarse' : 'Sign In / Register'}
-              </button>
-            )}
-
-            {/* Tourist User Badge */}
-            {currentProfile === 'tourist' && touristUser && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{
-                  display: 'flex', alignItems: 'center', gap: '8px',
-                  background: 'rgba(0, 194, 179, 0.1)',
-                  border: '1px solid rgba(0, 194, 179, 0.25)',
-                  padding: '5px 12px 5px 6px',
-                  borderRadius: '20px',
-                  animation: 'fade-in 0.3s ease'
-                }}>
-                  <div style={{
-                    width: '26px', height: '26px', borderRadius: '50%',
+            {/* Direct Tourist Login / Register Button & User Badge */}
+            {currentProfile === 'tourist' && (
+              !touristUser ? (
+                <button
+                  onClick={() => setShowTouristAuthModal(true)}
+                  style={{
                     background: 'linear-gradient(135deg, #00C2B3, #00a89b)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '0.7rem', fontWeight: '700', color: '#fff'
-                  }}>
-                    {touristUser.name?.charAt(0)?.toUpperCase() || <User size={14} />}
-                  </div>
-                  <span style={{ fontSize: '0.72rem', color: '#00C2B3', fontWeight: '600', maxWidth: '90px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {touristUser.name?.split(' ')[0]}
-                  </span>
-                </div>
-                <button onClick={logoutTourist} title={t('authLogout')} style={{
-                  background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '50%', padding: '5px', cursor: 'pointer',
-                  color: 'rgba(255,255,255,0.4)', display: 'flex', transition: 'all 0.2s'
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,77,77,0.15)'; e.currentTarget.style.color = '#ff6b6b'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'rgba(255,255,255,0.4)'; }}
+                    border: 'none',
+                    color: '#fff',
+                    padding: '7px 16px',
+                    borderRadius: '20px',
+                    fontSize: '0.78rem',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    boxShadow: '0 2px 10px rgba(0, 194, 179, 0.4)',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-1px)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
                 >
-                  <LogOut size={13} />
+                  <User size={15} />
+                  {language === 'es' ? '🔑 Ingresar / Registrarse' : '🔑 Sign In / Register'}
                 </button>
-              </div>
+              ) : (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div 
+                    onClick={() => setShowTouristAuthModal(true)}
+                    title={language === 'es' ? 'Clic para cambiar de cuenta' : 'Click to switch account'}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '8px',
+                      background: 'rgba(0, 194, 179, 0.12)',
+                      border: '1px solid rgba(0, 194, 179, 0.35)',
+                      padding: '5px 12px 5px 6px',
+                      borderRadius: '20px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    <div style={{
+                      width: '26px', height: '26px', borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #00C2B3, #00a89b)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '0.75rem', fontWeight: '700', color: '#fff'
+                    }}>
+                      {touristUser.name?.charAt(0)?.toUpperCase() || <User size={14} />}
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: '#00C2B3', fontWeight: '700', maxWidth: '110px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {touristUser.name?.split(' ')[0]}
+                    </span>
+                  </div>
+                  <button 
+                    onClick={logoutTourist} 
+                    title={language === 'es' ? 'Cerrar sesión' : 'Log out'}
+                    style={{
+                      background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
+                      borderRadius: '50%', padding: '6px', cursor: 'pointer',
+                      color: 'rgba(255,255,255,0.5)', display: 'flex', transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,77,77,0.2)'; e.currentTarget.style.color = '#ff6b6b'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; }}
+                  >
+                    <LogOut size={13} />
+                  </button>
+                </div>
+              )
             )}
 
             {/* Profile Switcher */}
