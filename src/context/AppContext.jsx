@@ -707,7 +707,13 @@ export const AppProvider = ({ children }) => {
   const [touristUser, setTouristUser] = useState(() => {
     try {
       const saved = localStorage.getItem('es_tourist_user');
-      return (saved && saved !== 'undefined' && saved !== 'null') ? JSON.parse(saved) : null;
+      if (saved && saved !== 'undefined' && saved !== 'null') {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.email !== 'viajero.google@gmail.com' && parsed.email !== 'turista@gmail.com' && parsed.name !== 'Turista' && parsed.name !== 'Turista Google') {
+          return parsed;
+        }
+      }
+      return null;
     } catch { return null; }
   });
   const [registeredUsers, setRegisteredUsers] = useState(() => {

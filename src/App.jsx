@@ -307,12 +307,12 @@ function AppContent() {
                   onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
                 >
                   <User size={15} />
-                  {touristUser 
-                    ? (language === 'es' ? `👤 ${touristUser.name?.split(' ')[0] || 'Mi Cuenta'}` : `👤 ${touristUser.name?.split(' ')[0] || 'My Account'}`) 
+                  {touristUser && touristUser.name && touristUser.name !== 'Turista' && touristUser.name !== 'Turista Google'
+                    ? `👤 ${touristUser.name.split(' ')[0]}` 
                     : (language === 'es' ? '🔑 Ingresar / Registrarse' : '🔑 Sign In / Register')}
                 </button>
 
-                {touristUser && (
+                {touristUser && touristUser.name && touristUser.name !== 'Turista' && touristUser.name !== 'Turista Google' && (
                   <button 
                     onClick={logoutTourist} 
                     title={language === 'es' ? 'Cerrar sesión' : 'Log out'}
