@@ -283,9 +283,9 @@ function AppContent() {
               🌐 {language === 'es' ? 'ES | EN' : 'EN | ES'}
             </button>
 
-            {/* Direct Tourist Login / Register Button & User Badge */}
+            {/* Direct Tourist Login / Register Button */}
             {currentProfile === 'tourist' && (
-              !touristUser ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <button
                   onClick={() => setShowTouristAuthModal(true)}
                   style={{
@@ -294,7 +294,7 @@ function AppContent() {
                     color: '#fff',
                     padding: '7px 16px',
                     borderRadius: '20px',
-                    fontSize: '0.78rem',
+                    fontSize: '0.8rem',
                     fontWeight: '700',
                     cursor: 'pointer',
                     display: 'flex',
@@ -307,35 +307,12 @@ function AppContent() {
                   onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
                 >
                   <User size={15} />
-                  {language === 'es' ? '🔑 Ingresar / Registrarse' : '🔑 Sign In / Register'}
+                  {touristUser 
+                    ? (language === 'es' ? `👤 ${touristUser.name?.split(' ')[0] || 'Mi Cuenta'}` : `👤 ${touristUser.name?.split(' ')[0] || 'My Account'}`) 
+                    : (language === 'es' ? '🔑 Ingresar / Registrarse' : '🔑 Sign In / Register')}
                 </button>
-              ) : (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <div 
-                    onClick={() => setShowTouristAuthModal(true)}
-                    title={language === 'es' ? 'Clic para cambiar de cuenta' : 'Click to switch account'}
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: '8px',
-                      background: 'rgba(0, 194, 179, 0.12)',
-                      border: '1px solid rgba(0, 194, 179, 0.35)',
-                      padding: '5px 12px 5px 6px',
-                      borderRadius: '20px',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s'
-                    }}
-                  >
-                    <div style={{
-                      width: '26px', height: '26px', borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #00C2B3, #00a89b)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '0.75rem', fontWeight: '700', color: '#fff'
-                    }}>
-                      {touristUser.name?.charAt(0)?.toUpperCase() || <User size={14} />}
-                    </div>
-                    <span style={{ fontSize: '0.75rem', color: '#00C2B3', fontWeight: '700', maxWidth: '110px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {touristUser.name?.split(' ')[0]}
-                    </span>
-                  </div>
+
+                {touristUser && (
                   <button 
                     onClick={logoutTourist} 
                     title={language === 'es' ? 'Cerrar sesión' : 'Log out'}
@@ -349,8 +326,8 @@ function AppContent() {
                   >
                     <LogOut size={13} />
                   </button>
-                </div>
-              )
+                )}
+              </div>
             )}
 
             {/* Profile Switcher */}
