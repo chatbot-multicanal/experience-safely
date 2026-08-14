@@ -740,18 +740,20 @@ export const AppProvider = ({ children }) => {
     return { success: true };
   };
 
-  const loginWithGoogle = () => {
+  const loginWithGoogle = (accountData) => {
     const googleUser = {
-      id: `google-${Date.now()}`,
-      name: 'Turista Google',
-      email: 'turista@gmail.com',
-      phone: '',
+      id: accountData?.id || `google-${Date.now()}`,
+      name: accountData?.name || 'Turista Google',
+      email: accountData?.email || 'viajero.google@gmail.com',
+      avatar: accountData?.avatar || null,
+      phone: accountData?.phone || '',
       provider: 'google',
       createdAt: new Date().toISOString()
     };
     setTouristUser(googleUser);
     localStorage.setItem('es_tourist_user', JSON.stringify(googleUser));
-    return { success: true };
+    addAuditLog('system', `Inicio de sesión mediante Google Sign-In: ${googleUser.name} (${googleUser.email})`);
+    return { success: true, user: googleUser };
   };
 
   const logoutTourist = () => {

@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { X, Mail, Lock, User, Phone, Eye, EyeOff, ShieldCheck } from 'lucide-react';
+import GoogleAccountPickerModal from './GoogleAccountPickerModal';
 
 export default function AuthModal({ isOpen, onClose, onSuccess }) {
   const context = useContext(AppContext) || {};
@@ -18,7 +19,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
   const [password, setPassword] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
 
-  if (!isOpen) return null;
+  const [showGooglePicker, setShowGooglePicker] = useState(false);
+
+  if (!isOpen && !showGooglePicker) return null;
 
   const resetForm = () => {
     setName(''); setEmail(''); setPhone('');
@@ -31,14 +34,17 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
     setError('');
   };
 
-  const handleGoogleLogin = () => {
+  const handleOpenGooglePicker = () => {
+    setShowGooglePicker(true);
+  };
+
+  const handleGoogleAccountSelected = (account) => {
     setLoading(true);
-    setTimeout(() => {
-      loginWithGoogle();
-      setLoading(false);
-      onSuccess?.();
-      onClose();
-    }, 800);
+    loginWithGoogle(account);
+    setLoading(false);
+    setShowGooglePicker(false);
+    onSuccess?.();
+    onClose();
   };
 
   const handleLogin = (e) => {
@@ -170,7 +176,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
         <div style={{ padding: '24px 32px 32px' }}>
 
           {/* Google Button */}
-          <button onClick={handleGoogleLogin} disabled={loading} style={{
+          <button onClick={handleOpenGooglePicker} disabled={loading} style={{
             width: '100%',
             padding: '13px',
             background: '#fff',
@@ -340,6 +346,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
           </p>
         </div>
       </div>
+
+      <GoogleAccountPickerModal
+        isOpen={showGooglePicker}
+        onClose={() => setShowGooglePicker(false)}
+        onSelectAccount={handleGoogleAccountSelected}
+      />
     </div>
   );
 }
