@@ -1013,15 +1013,30 @@ export default function AdminView() {
                         <span>📁 {language === 'es' ? 'Seleccionar / Subir Video MP4 desde tu Equipo' : 'Upload MP4 Video File'}</span>
                       </div>
 
-                      <label className="form-label" style={{ fontSize: '0.75rem', marginTop: '8px' }}>
-                        {language === 'es' ? 'O ingresa enlace / URL externa:' : 'Or enter external video URL:'}
+                      {/* Video Preset Selector */}
+                      <label className="form-label" style={{ fontSize: '0.78rem', marginBottom: '6px' }}>
+                        {language === 'es' ? '📽️ Videos HD de Alta Velocidad (Selecciona uno):' : '📽️ Fast HD Videos (Select one):'}
+                      </label>
+                      <select 
+                        className="form-select" 
+                        value={tempHeroVideo} 
+                        onChange={e => setTempHeroVideo(e.target.value)}
+                        style={{ marginBottom: '14px', background: 'rgba(0, 194, 179, 0.1)', color: '#00C2B3', fontWeight: '600' }}
+                      >
+                        <option value="https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4">🌊 Cenote Cristalino Yucatán (Recomendado)</option>
+                        <option value="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-caribbean-beach-41552-large.mp4">🏖️ Vista Aérea Costa Yucatán</option>
+                        <option value="https://assets.mixkit.co/videos/preview/mixkit-sun-setting-over-the-ocean-41549-large.mp4">🌅 Atardecer Dorado en la Playa</option>
+                      </select>
+
+                      <label className="form-label" style={{ fontSize: '0.75rem' }}>
+                        {language === 'es' ? 'O ingresa tu propio enlace / URL de video MP4:' : 'Or enter your custom MP4 video URL:'}
                       </label>
                       <input 
                         type="text" 
                         className="form-input" 
                         value={tempHeroVideo} 
                         onChange={e => setTempHeroVideo(e.target.value)} 
-                        placeholder="https://ejemplo.com/cenote-video.mp4" 
+                        placeholder="https://ejemplo.com/tu-video.mp4" 
                       />
                     </div>
                   ) : (
