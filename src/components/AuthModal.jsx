@@ -45,6 +45,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
       try {
         window.google.accounts.id.initialize({
           client_id: clientId,
+          auto_select: false,
           callback: (response) => {
             const payload = parseGoogleJwt(response.credential);
             if (payload) {
