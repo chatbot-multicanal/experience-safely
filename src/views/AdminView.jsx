@@ -161,37 +161,68 @@ export default function AdminView() {
     });
   };
 
-  // Helper to convert uploaded files to permanent Base64 Data URLs
-  const fileToBase64 = (file, callback) => {
+  // Optimized Image & Media Converter (Canvas Resizer HD < 300KB to prevent localStorage quota errors)
+  const fileToOptimizedBase64 = (file, callback, maxDim = 1920) => {
     if (!file) return;
+    if (file.type.startsWith('video/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => callback(e.target.result);
+      reader.readAsDataURL(file);
+      return;
+    }
+
     const reader = new FileReader();
-    reader.onload = (event) => {
-      callback(event.target.result);
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+        callback(optimizedBase64);
+      };
+      img.src = e.target.result;
     };
     reader.readAsDataURL(file);
   };
 
-  // Logo file change (permanent Base64)
+  // Logo file change (optimized HD Base64)
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
-    fileToBase64(file, (base64) => setLogoPreview(base64));
+    fileToOptimizedBase64(file, (base64) => setLogoPreview(base64), 512);
   };
 
-  // Background file change (permanent Base64)
+  // Background file change (optimized HD Base64)
   const handleBgChange = (e) => {
     const file = e.target.files[0];
-    fileToBase64(file, (base64) => setBgPreview(base64));
+    fileToOptimizedBase64(file, (base64) => setBgPreview(base64), 1920);
   };
 
-  // Hero Rectangle Media File Change (permanent Base64)
+  // Hero Rectangle Media File Change (optimized HD Base64)
   const handleHeroImageChange = (e) => {
     const file = e.target.files[0];
-    fileToBase64(file, (base64) => setTempHeroImage(base64));
+    fileToOptimizedBase64(file, (base64) => setTempHeroImage(base64), 1920);
   };
 
   const handleHeroVideoChange = (e) => {
     const file = e.target.files[0];
-    fileToBase64(file, (base64) => setTempHeroVideo(base64));
+    fileToOptimizedBase64(file, (base64) => setTempHeroVideo(base64));
   };
 
   // Add category handler
