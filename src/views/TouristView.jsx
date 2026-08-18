@@ -224,6 +224,10 @@ export default function TouristView() {
                 loop
                 muted
                 playsInline
+                onError={(e) => {
+                  console.warn("Video failed to play, switching fallback background");
+                  e.currentTarget.style.display = 'none';
+                }}
                 style={{
                   position: 'absolute',
                   top: 0,
@@ -235,7 +239,10 @@ export default function TouristView() {
                 }}
                 src={siteDesign.heroVideo}
               />
-            ) : (
+            ) : null}
+
+            {/* Ken Burns Animated Image (Default & Fallback) */}
+            {(!siteDesign?.heroMediaType || siteDesign?.heroMediaType === 'image' || !siteDesign?.heroVideo) && (
               <div className="hero-ken-burns" style={{
                 position: 'absolute',
                 top: '-10%',
@@ -249,14 +256,15 @@ export default function TouristView() {
                 zIndex: 0
               }} />
             )}
-            {/* Dark overlay for text readability */}
+
+            {/* Light semi-transparent overlay for text readability without darkening background */}
             <div style={{
               position: 'absolute',
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
-              background: 'linear-gradient(135deg, rgba(13, 24, 42, 0.85), rgba(21, 38, 63, 0.65))',
+              background: 'linear-gradient(135deg, rgba(13, 24, 42, 0.45), rgba(21, 38, 63, 0.25))',
               zIndex: 1
             }} />
             <div className="hero-glow" style={{
