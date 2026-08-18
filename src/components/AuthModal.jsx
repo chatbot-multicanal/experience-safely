@@ -39,7 +39,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
   useEffect(() => {
     if (!isOpen) return;
 
-    const clientId = siteDesign?.googleClientId?.trim();
+    const clientId = siteDesign?.googleClientId?.trim() || '349285752255-bqt54uh1ks66q8i0i851r2dbiupia2tn.apps.googleusercontent.com';
 
     if (clientId && window.google?.accounts?.id) {
       try {

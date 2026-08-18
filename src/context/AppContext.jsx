@@ -684,7 +684,7 @@ export const AppProvider = ({ children }) => {
       heroVideo: 'https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4',
       logo: '/Logo - Experience Safely.png',
       backgroundImage: '/hero_yucatan.jpg',
-      googleClientId: ''
+      googleClientId: '349285752255-bqt54uh1ks66q8i0i851r2dbiupia2tn.apps.googleusercontent.com'
     };
     try {
       const saved = localStorage.getItem('es_site_design');
