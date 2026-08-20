@@ -140,24 +140,25 @@ export default function AdminView() {
   const handleResetDesign = () => {
     try {
       localStorage.removeItem('es_site_design');
+      localStorage.removeItem('es_site_design_v2');
     } catch(e) {}
     setTempTitle('Experience Safely');
     setTempSlogan('The Safest Way to Experience Yucatán');
     setSelectedColor('#FF6B4D');
     setLogoPreview('/Logo - Experience Safely.png');
-    setBgPreview('/hero_yucatan.jpg');
-    setTempHeroImage('/hero_yucatan.jpg');
+    setBgPreview('/images/discover yucatan.jpeg');
+    setTempHeroImage('/images/discover yucatan.jpeg');
     setTempHeroMediaType('video');
-    setTempHeroVideo('https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4');
+    setTempHeroVideo('/images/video cenote.mov');
     updateSiteDesign({
       title: 'Experience Safely',
       slogan: 'The Safest Way to Experience Yucatán',
       accentColor: '#FF6B4D',
-      heroImage: '/hero_yucatan.jpg',
+      heroImage: '/images/discover yucatan.jpeg',
       heroMediaType: 'video',
-      heroVideo: 'https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4',
+      heroVideo: '/images/video cenote.mov',
       logo: '/Logo - Experience Safely.png',
-      backgroundImage: '/hero_yucatan.jpg'
+      backgroundImage: '/images/discover yucatan.jpeg'
     });
   };
 

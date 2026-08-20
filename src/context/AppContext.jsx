@@ -687,14 +687,28 @@ export const AppProvider = ({ children }) => {
       googleClientId: '349285752255-bqt54uh1ks66q8i0i851r2dbiupia2tn.apps.googleusercontent.com'
     };
     try {
-      const saved = localStorage.getItem('es_site_design');
+      const saved = localStorage.getItem('es_site_design_v2');
       if (saved && saved !== 'undefined' && saved !== 'null') {
         const parsed = JSON.parse(saved);
-        return { ...defaultDesign, ...parsed };
+        return {
+          ...defaultDesign,
+          ...parsed,
+          backgroundImage: parsed.backgroundImage || '/images/discover yucatan.jpeg',
+          heroVideo: parsed.heroVideo || '/images/video cenote.mov'
+        };
       }
     } catch(e) {}
     return defaultDesign;
   });
+
+  // Save changes to localStorage under es_site_design_v2
+  useEffect(() => {
+    try {
+      localStorage.setItem('es_site_design_v2', JSON.stringify(siteDesign));
+    } catch (e) {
+      console.warn("Could not save siteDesign to localStorage", e);
+    }
+  }, [siteDesign]);
 
 
 
