@@ -74,24 +74,57 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
           });
         }
       } catch (e) {
-        console.error("Error initializing Google Identity Services:", e);
+        console.warn("Error initializing Google gsi:", e);
       }
     }
   }, [isOpen, siteDesign?.googleClientId]);
 
-  const promptGoogleEmail = () => {
-    const userEmail = prompt(
-      language === 'es'
-        ? 'Ingresa tu dirección de correo de Google (@gmail.com) para continuar:'
-        : 'Enter your Google email address (@gmail.com) to continue:'
-    );
-    if (userEmail && userEmail.trim()) {
-      const namePart = userEmail.split('@')[0];
-      const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
-      loginWithGoogle({ name: formattedName, email: userEmail.trim() });
-      onSuccess?.();
-      onClose();
+  // Official Google OAuth 2.0 Account Picker Popup Handler (Image 2)
+  const handleRealGoogleSignIn = () => {
+    const clientId = siteDesign?.googleClientId?.trim() || '349285752255-bqt54uh1ks66q8i0i851r2dbiupia2tn.apps.googleusercontent.com';
+
+    if (window.google?.accounts?.oauth2) {
+      try {
+        setLoading(true);
+        const tokenClient = window.google.accounts.oauth2.initTokenClient({
+          client_id: clientId,
+          scope: 'email profile openid',
+          prompt: 'select_account',
+          callback: async (tokenResponse) => {
+            setLoading(false);
+            if (tokenResponse && tokenResponse.access_token) {
+              try {
+                const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                  headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+                });
+                const userInfo = await res.json();
+                if (userInfo && userInfo.email) {
+                  loginWithGoogle({
+                    id: userInfo.sub,
+                    name: userInfo.name || userInfo.given_name || userInfo.email.split('@')[0],
+                    email: userInfo.email,
+                    avatar: userInfo.picture
+                  });
+                  onSuccess?.();
+                  onClose();
+                  return;
+                }
+              } catch (e) {
+                console.error("Error fetching Google userinfo:", e);
+              }
+            }
+          }
+        });
+        tokenClient.requestAccessToken();
+        return;
+      } catch (e) {
+        setLoading(false);
+        console.warn("initTokenClient fallback trigger:", e);
+      }
     }
+
+    // Fallback if SDK is unavailable
+    promptGoogleEmail();
   };
 
   if (!isOpen) return null;
@@ -215,47 +248,11 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
         {/* Form Content */}
         <div style={{ padding: '24px 32px 32px' }}>
 
-          {/* High-Reliability Google Sign-In Button */}
+          {/* High-Reliability Google Sign-In Button (Opens Official Google Account Selector) */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
             <button
               type="button"
-              onClick={() => {
-                const clientId = siteDesign?.googleClientId?.trim() || '349285752255-bqt54uh1ks66q8i0i851r2dbiupia2tn.apps.googleusercontent.com';
-                
-                // Try official Google Identity Services prompt first
-                if (clientId && window.google?.accounts?.id) {
-                  try {
-                    window.google.accounts.id.initialize({
-                      client_id: clientId,
-                      callback: (response) => {
-                        const payload = parseGoogleJwt(response.credential);
-                        if (payload) {
-                          loginWithGoogle({
-                            id: payload.sub,
-                            name: payload.name || payload.given_name,
-                            email: payload.email,
-                            avatar: payload.picture
-                          });
-                          onSuccess?.();
-                          onClose();
-                        }
-                      }
-                    });
-                    window.google.accounts.id.prompt((notification) => {
-                      if (notification.isNotDisplayed() || notification.isSkippedMoment() || notification.isDismissedMoment()) {
-                        // Fallback to seamless Google Email Prompt
-                        promptGoogleEmail();
-                      }
-                    });
-                    return;
-                  } catch (e) {
-                    console.warn("Google gsi prompt blocked, opening fallback", e);
-                  }
-                }
-                
-                // Fallback to seamless Google Email Prompt
-                promptGoogleEmail();
-              }}
+              onClick={handleRealGoogleSignIn}
               style={{
                 width: '100%',
                 padding: '13px',
