@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
 import { X, Mail, Lock, User, Phone, Eye, EyeOff, ShieldCheck } from 'lucide-react';
+import GoogleAccountPickerModal from './GoogleAccountPickerModal';
 
 export default function AuthModal({ isOpen, onClose, onSuccess }) {
   const context = useContext(AppContext) || {};
@@ -79,7 +80,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
     }
   }, [isOpen, siteDesign?.googleClientId]);
 
-  // Official Google OAuth 2.0 Account Picker Popup Handler (Image 2)
+  const [showGooglePicker, setShowGooglePicker] = useState(false);
+
+  // Official Google OAuth 2.0 Account Picker Popup Handler
   const handleRealGoogleSignIn = () => {
     const clientId = siteDesign?.googleClientId?.trim() || '349285752255-bqt54uh1ks66q8i0i851r2dbiupia2tn.apps.googleusercontent.com';
 
@@ -112,6 +115,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
               } catch (e) {
                 console.error("Error fetching Google userinfo:", e);
               }
+            } else if (tokenResponse && tokenResponse.error) {
+              setShowGooglePicker(true);
             }
           }
         });
@@ -123,11 +128,17 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
       }
     }
 
-    // Fallback if SDK is unavailable
-    promptGoogleEmail();
+    setShowGooglePicker(true);
   };
 
-  if (!isOpen) return null;
+  const handleGoogleAccountSelected = (account) => {
+    loginWithGoogle(account);
+    setShowGooglePicker(false);
+    onSuccess?.();
+    onClose();
+  };
+
+  if (!isOpen && !showGooglePicker) return null;
 
   const resetForm = () => {
     setName(''); setEmail(''); setPhone('');
@@ -465,6 +476,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
           </p>
         </div>
       </div>
+
+      <GoogleAccountPickerModal
+        isOpen={showGooglePicker}
+        onClose={() => setShowGooglePicker(false)}
+        onSelectAccount={handleGoogleAccountSelected}
+      />
     </div>
   );
 }
