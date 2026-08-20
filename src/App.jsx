@@ -155,7 +155,7 @@ function AppContent() {
     <div 
       className="app-container"
       style={{
-        backgroundImage: `linear-gradient(rgba(13, 24, 42, 0.45), rgba(13, 24, 42, 0.55)), url("${siteDesign?.backgroundImage || 'https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&q=80&w=1920'}")`,
+        backgroundImage: `linear-gradient(rgba(13, 24, 42, 0.45), rgba(13, 24, 42, 0.55)), url("${siteDesign?.backgroundImage || '/images/discover yucatan.jpeg'}")`,
         backgroundSize: 'cover',
         backgroundAttachment: 'fixed',
         backgroundPosition: 'center',

@@ -1015,7 +1015,7 @@ export default function AdminView() {
 
                       {/* Video Preset Selector */}
                       <label className="form-label" style={{ fontSize: '0.78rem', marginBottom: '6px' }}>
-                        {language === 'es' ? '📽️ Videos HD de Alta Velocidad (Selecciona uno):' : '📽️ Fast HD Videos (Select one):'}
+                        {language === 'es' ? '📽️ Videos HD Yucatán (Selecciona uno):' : '📽️ Fast HD Videos (Select one):'}
                       </label>
                       <select 
                         className="form-select" 
@@ -1023,9 +1023,9 @@ export default function AdminView() {
                         onChange={e => setTempHeroVideo(e.target.value)}
                         style={{ marginBottom: '14px', background: 'rgba(0, 194, 179, 0.1)', color: '#00C2B3', fontWeight: '600' }}
                       >
-                        <option value="https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4">🌊 Cenote Cristalino Yucatán (Recomendado)</option>
+                        <option value="/images/video cenote.mov">🌊 Video Cenote Cristalino (Local public/video cenote.mov)</option>
+                        <option value="https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4">🌊 Cenote Yucatán Stream HD</option>
                         <option value="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-caribbean-beach-41552-large.mp4">🏖️ Vista Aérea Costa Yucatán</option>
-                        <option value="https://assets.mixkit.co/videos/preview/mixkit-sun-setting-over-the-ocean-41549-large.mp4">🌅 Atardecer Dorado en la Playa</option>
                       </select>
 
                       <label className="form-label" style={{ fontSize: '0.75rem' }}>
