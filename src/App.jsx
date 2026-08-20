@@ -154,14 +154,11 @@ function AppContent() {
   return (
     <div 
       className="app-container"
-      style={siteDesign?.backgroundImage ? {
-        backgroundImage: `linear-gradient(rgba(13, 24, 42, 0.82), rgba(13, 24, 42, 0.88)), url(${siteDesign.backgroundImage})`,
+      style={{
+        backgroundImage: `linear-gradient(rgba(13, 24, 42, 0.45), rgba(13, 24, 42, 0.55)), url("${siteDesign?.backgroundImage || 'https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&q=80&w=1920'}")`,
         backgroundSize: 'cover',
         backgroundAttachment: 'fixed',
         backgroundPosition: 'center',
-        minHeight: '100vh',
-        position: 'relative'
-      } : {
         minHeight: '100vh',
         position: 'relative'
       }}
