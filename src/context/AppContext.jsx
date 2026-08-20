@@ -769,11 +769,13 @@ export const AppProvider = ({ children }) => {
       avatar: accountData?.avatar || null,
       phone: accountData?.phone || '',
       provider: 'google',
+      emailVerified: true,
+      verificationBadge: '✓ Correo Verificado por Google',
       createdAt: new Date().toISOString()
     };
     setTouristUser(googleUser);
     localStorage.setItem('es_tourist_user', JSON.stringify(googleUser));
-    addAuditLog('system', `Inicio de sesión mediante Google Sign-In: ${googleUser.name} (${googleUser.email})`);
+    addAuditLog('system', `Inicio de sesión mediante Google Sign-In (Verificado): ${googleUser.name} (${googleUser.email})`);
     return { success: true, user: googleUser };
   };
 
