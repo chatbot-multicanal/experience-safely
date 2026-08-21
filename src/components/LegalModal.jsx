@@ -99,22 +99,22 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
                 <div style={{ background: 'rgba(13, 24, 42, 0.6)', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', borderRadius: '14px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#00C2B3', marginBottom: '8px' }}>
                     <Mail size={20} />
-                    <strong style={{ fontSize: '0.95rem' }}>Correo Oficial</strong>
+                    <strong style={{ fontSize: '0.95rem' }}>Correos Oficiales</strong>
                   </div>
-                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>
-                    contacto@experiencesafely.com<br />
-                    soporte@experiencesafely.com
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>
+                    ✉️ <a href="mailto:contacto@experiencesafely.com" style={{ color: '#00C2B3', textDecoration: 'underline' }}>contacto@experiencesafely.com</a><br />
+                    ✉️ <a href="mailto:ventas@experiencesafely.com" style={{ color: '#00C2B3', textDecoration: 'underline' }}>ventas@experiencesafely.com</a>
                   </p>
                 </div>
 
                 <div style={{ background: 'rgba(13, 24, 42, 0.6)', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', borderRadius: '14px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#FF6B4D', marginBottom: '8px' }}>
                     <MessageSquare size={20} />
-                    <strong style={{ fontSize: '0.95rem' }}>WhatsApp & Atención Móvil</strong>
+                    <strong style={{ fontSize: '0.95rem' }}>WhatsApp & Llamadas</strong>
                   </div>
-                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>
-                    +52 (999) 123-4567<br />
-                    +52 (999) 765-4321
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>
+                    💬 <strong>WhatsApp:</strong> <a href="https://wa.me/5219902305070" target="_blank" rel="noopener noreferrer" style={{ color: '#FF6B4D', fontWeight: '700' }}>+52 1 990 230 5070</a><br />
+                    📞 <strong>Llamadas:</strong> <a href="tel:+5219902305070" style={{ color: '#FF6B4D', fontWeight: '700' }}>+52 1 990 230 5070</a>
                   </p>
                 </div>
               </div>
@@ -122,11 +122,11 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
               <div style={{ background: 'rgba(13, 24, 42, 0.6)', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', borderRadius: '14px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#FFC857', marginBottom: '8px' }}>
                   <MapPin size={20} />
-                  <strong style={{ fontSize: '0.95rem' }}>Oficinas Centrales</strong>
+                  <strong style={{ fontSize: '0.95rem' }}>Oficina Central</strong>
                 </div>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>
-                  Mérida, Yucatán, México.<br />
-                  Horarios de atención telefónica: Lunes a Domingo de 7:00 AM a 10:00 PM (Hora Centro México).
+                <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>
+                  📍 <strong>Mérida, Yucatán, México.</strong><br />
+                  🕒 Horarios de atención: Lunes a Domingo de 7:00 AM a 10:00 PM (Hora Centro México).
                 </p>
               </div>
             </div>

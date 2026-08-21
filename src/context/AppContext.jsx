@@ -434,7 +434,7 @@ const TRANSLATIONS = {
     chatBotChukumInfo: '🏛️ **Residencias & Chukum**: En Yucatán integramos acabados orgánicos de Chukum en piscinas y villas de lujo. Si deseas conocer propiedades exclusivas con acabado Chukum o invertir en la región, escribe a un asesor.',
     chatBotPdfInfo: '📄 **Presentación Oficial**: Puedes ver o descargar la presentación comercial completa con información del ecosistema, métricas e inversión en PDF haciendo clic aquí: [Descargar Presentación PDF](/Experience_Safely_Presentacion.pdf)',
     chatBotTransportInfo: '🚐 **Transporte Seguro**: Todos nuestros paquetes incluyen la opción de transporte privado en camionetas sanitizadas con aire acondicionado y chofer certificado desde tu hotel o el aeropuerto de Mérida/Cancún.',
-    chatBotSupportInfo: '📱 **Atención Humana 24/7**: Si prefieres hablar con un asesor humano por WhatsApp o teléfono, llama al **+52 999 123 4567** o escríbenos directamente.',
+    chatBotSupportInfo: '📱 **Atención Humana 24/7**: Si prefieres hablar con un asesor humano por WhatsApp o teléfono, llama al **+52 1 990 230 5070** o escríbenos directamente a **contacto@experiencesafely.com** / **ventas@experiencesafely.com**.',
     chatBotDefault: 'Puedo ayudarte con información sobre tours, seguridad, precios, **Chukum / casas**, **transporte** y reservas. Prueba preguntarme sobre **cenotes**, **haciendas**, **precios** o **seguridad**.',
     authTitle: 'Bienvenido a Experience Safely',
     authSubtitle: 'Inicia sesión o regístrate para reservar experiencias seguras',
