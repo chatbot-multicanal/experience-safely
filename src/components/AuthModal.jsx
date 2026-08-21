@@ -451,30 +451,85 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
                 </div>
               </div>
 
-              {/* Sensitive Health & Accessibility Data Authorization Checkbox */}
-              <div style={{
-                marginTop: '10px',
-                padding: '12px 14px',
-                borderRadius: '12px',
-                background: 'rgba(0, 194, 179, 0.08)',
-                border: '1px solid rgba(0, 194, 179, 0.25)',
-                fontSize: '0.78rem',
-                color: 'rgba(255,255,255,0.85)',
-                lineHeight: '1.5'
-              }}>
-                <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer' }}>
-                  <input 
-                    type="checkbox" 
-                    defaultChecked={true}
-                    required
-                    style={{ marginTop: '2px', accentColor: '#00C2B3', width: '16px', height: '16px' }}
-                  />
-                  <span>
-                    {language === 'es'
-                      ? 'Autorizo expresamente que Experience Safely y el proveedor de la experiencia traten la información sensible que proporcione sobre salud, movilidad, alergias, restricciones físicas o necesidades de accesibilidad, exclusivamente para adaptar el servicio, proteger mi seguridad, atender emergencias y coordinar la experiencia reservada.'
-                      : 'I expressly authorize Experience Safely and the experience provider to process sensitive information I provide regarding health, mobility, allergies, physical restrictions or accessibility needs, exclusively to adapt the service, protect my safety, handle emergencies and coordinate the reserved experience.'}
-                  </span>
-                </label>
+              {/* 4 REGISTRATION CONSENT CHECKBOXES */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
+                
+                {/* 1. Aviso de Privacidad */}
+                <div style={{
+                  padding: '10px 12px', borderRadius: '10px',
+                  background: 'rgba(0, 194, 179, 0.06)', border: '1px solid rgba(0, 194, 179, 0.2)',
+                  fontSize: '0.76rem', color: 'rgba(255,255,255,0.85)', lineHeight: '1.4'
+                }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', cursor: 'pointer' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={acceptPrivacyNotice}
+                      onChange={e => setAcceptPrivacyNotice(e.target.checked)}
+                      style={{ marginTop: '2px', accentColor: '#00C2B3', width: '15px', height: '15px' }}
+                    />
+                    <span>
+                      {language === 'es' ? 'He leído y acepto el Aviso de Privacidad de Experience Safely.' : 'I have read and accept the Experience Safely Privacy Notice.'}
+                    </span>
+                  </label>
+                </div>
+
+                {/* 2. Promociones y Comunicaciones Comerciales */}
+                <div style={{
+                  padding: '10px 12px', borderRadius: '10px',
+                  background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.08)',
+                  fontSize: '0.76rem', color: 'rgba(255,255,255,0.85)', lineHeight: '1.4'
+                }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', cursor: 'pointer' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={acceptPromotions}
+                      onChange={e => setAcceptPromotions(e.target.checked)}
+                      style={{ marginTop: '2px', accentColor: '#00C2B3', width: '15px', height: '15px' }}
+                    />
+                    <span>
+                      {language === 'es' ? 'Acepto recibir promociones, recomendaciones y comunicaciones comerciales de Experience Safely. Podré darme de baja en cualquier momento.' : 'I agree to receive promotions, recommendations and commercial communications from Experience Safely. I can unsubscribe at any time.'}
+                    </span>
+                  </label>
+                </div>
+
+                {/* 3. Datos Sensibles de Salud y Emergencias */}
+                <div style={{
+                  padding: '10px 12px', borderRadius: '10px',
+                  background: 'rgba(0, 194, 179, 0.06)', border: '1px solid rgba(0, 194, 179, 0.2)',
+                  fontSize: '0.76rem', color: 'rgba(255,255,255,0.85)', lineHeight: '1.4'
+                }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', cursor: 'pointer' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={acceptSensitiveData}
+                      onChange={e => setAcceptSensitiveData(e.target.checked)}
+                      style={{ marginTop: '2px', accentColor: '#00C2B3', width: '15px', height: '15px' }}
+                    />
+                    <span>
+                      {language === 'es' ? 'Autorizo el tratamiento de datos sensibles necesarios para seguridad, accesibilidad o atención de emergencias durante la experiencia.' : 'I authorize the processing of sensitive data necessary for safety, accessibility or emergency response during the experience.'}
+                    </span>
+                  </label>
+                </div>
+
+                {/* 4. Ubicación y Geolocalización */}
+                <div style={{
+                  padding: '10px 12px', borderRadius: '10px',
+                  background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.08)',
+                  fontSize: '0.76rem', color: 'rgba(255,255,255,0.85)', lineHeight: '1.4'
+                }}>
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', cursor: 'pointer' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={acceptLocationData}
+                      onChange={e => setAcceptLocationData(e.target.checked)}
+                      style={{ marginTop: '2px', accentColor: '#00C2B3', width: '15px', height: '15px' }}
+                    />
+                    <span>
+                      {language === 'es' ? 'Autorizo el uso de mi ubicación para mostrar experiencias cercanas, puntos de encuentro, rutas, asistencia y funciones de seguridad.' : 'I authorize the use of my location to show nearby experiences, meeting points, routes, assistance and safety features.'}
+                    </span>
+                  </label>
+                </div>
+
               </div>
 
               <button type="submit" disabled={loading} className="btn btn-primary" style={{
