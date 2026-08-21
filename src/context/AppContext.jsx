@@ -785,7 +785,26 @@ const TRANSLATIONS = {
 };
 
 export const AppProvider = ({ children }) => {
-  const [experiences, setExperiences] = useState(INITIAL_EXPERIENCES);
+  // Persist experiences state in localStorage so edits and photo changes persist
+  const [experiences, setExperiences] = useState(() => {
+    try {
+      const saved = localStorage.getItem('es_experiences_v3');
+      if (saved && saved !== 'undefined' && saved !== 'null') {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (e) {}
+    return INITIAL_EXPERIENCES;
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('es_experiences_v3', JSON.stringify(experiences));
+    } catch (e) {}
+  }, [experiences]);
+
   const [calendarAvailability, setCalendarAvailability] = useState(generateInitialAvailability());
   
   const [bookings, setBookings] = useState([
