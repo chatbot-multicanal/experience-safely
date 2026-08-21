@@ -140,8 +140,8 @@ export default function TouristView() {
 
   // Filtering Logic
   const filteredExperiences = (experiences || []).filter(exp => {
-    // 1. Category Filter
-    if (filterCategory !== 'todos' && exp.category !== filterCategory) return false;
+    // 1. Category Filter (Supports primary and secondary category like tours & restaurants)
+    if (filterCategory !== 'todos' && exp.category !== filterCategory && exp.secondaryCategory !== filterCategory) return false;
     
     // 2. Search Query Filter
     if (searchQuery.trim()) {
@@ -410,7 +410,9 @@ export default function TouristView() {
                     <div className="card-img-wrapper" style={{ height: '200px', width: '100%' }}>
                       <div className="card-img-animated" style={{ background: `linear-gradient(to bottom, transparent, rgba(13,24,42,0.9)), url(${exp.image || '/branding_2.jpg'})` }} />
                       <span className="badge badge-teal" style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        {exp.category === 'tours' ? 'TOURS' : exp.category.toUpperCase()}
+                        {exp.secondaryCategory 
+                          ? `${exp.category === 'tours' ? 'TOURS' : exp.category.toUpperCase()} & RESTAURANTE`
+                          : (exp.category === 'tours' ? 'TOURS' : exp.category.toUpperCase())}
                       </span>
                     </div>
 
@@ -517,7 +519,9 @@ export default function TouristView() {
                         {/* Title & Info Overlay */}
                         <div style={{ position: 'absolute', bottom: '20px', left: '24px', right: '24px' }}>
                           <span className="badge badge-teal" style={{ marginBottom: '10px', textTransform: 'uppercase' }}>
-                            {selectedExp.category === 'tours' ? 'TOURS' : selectedExp.category.toUpperCase()}
+                            {selectedExp.secondaryCategory 
+                              ? `${selectedExp.category === 'tours' ? 'TOURS' : selectedExp.category.toUpperCase()} & RESTAURANTE`
+                              : (selectedExp.category === 'tours' ? 'TOURS' : selectedExp.category.toUpperCase())}
                           </span>
                           <h1 style={{ fontSize: '2.1rem', fontWeight: '800', lineHeight: '1.2', color: '#fff', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>{selectedExp.name}</h1>
                           <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
