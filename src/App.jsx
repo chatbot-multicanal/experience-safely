@@ -348,7 +348,7 @@ function AppContent() {
                 style={{ position: 'relative' }}
               >
                 <Settings2 size={14} /> {t('navAdmin')}
-                {((providers || []).filter(p => p.status === 'Pendiente').length > 0) && (
+                {auth?.isAdminLoggedIn && ((providers || []).filter(p => p.status === 'Pendiente').length > 0) && (
                   <>
                     <span className="admin-badge-pulse" />
                     <span className="admin-badge-bubble">
