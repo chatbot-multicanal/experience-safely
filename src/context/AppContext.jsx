@@ -93,6 +93,31 @@ const INITIAL_EXPERIENCES = [
     syncedFromWix: false,
   },
   {
+    id: 'exp-sayachaltun',
+    name: 'Sayachaltún Marina & Ecoparque — Kayak & Cenotes de Manglar en Telchac Puerto',
+    description: 'Explora el impresionante ecoparque marítimo Sayachaltún en Telchac Puerto. Navega en kayak o lancha ecológica por los tunelizados senderos de manglar, nada en los manantiales de agua dulce y cenotes escondidos de la ría, disfruta del mirador panóramico de aves y degusta la mejor gastronomía marina en el restaurante Sayachaltún.',
+    category: 'barcos',
+    location: 'Telchac Puerto, Yucatán',
+    price: 850,
+    capacity: 15,
+    image: '/images/discover yucatan.jpeg',
+    rating: 4.9,
+    reviewsCount: 5,
+    pricingType: 'individual',
+    bookingType: 'tour',
+    externalWebsiteUrl: 'https://sayachaltun.com/',
+    schedules: ['08:30 AM', '11:00 AM', '01:30 PM', '04:00 PM'],
+    reviews: [
+      { id: 'rev-sy1', author: 'Roberto N.', rating: 5, comment: 'Sayachaltún en Telchac Puerto es increíble. Los kayaks están en perfecto estado y los chalecos de salvavidas súper limpios.', date: '2026-08-15', source: 'Google' },
+      { id: 'rev-sy2', author: 'Fernanda V.', rating: 5, comment: 'El recorrido por los túneles de manglar es mágico. Restaurante riquísimo.', date: '2026-08-01', source: 'Facebook' }
+    ],
+    safetyBadges: ['Auditoría Ecoturística Verified', 'Guías de Manglar Certificados', 'Chalecos Salvavidas ISO'],
+    safetyDescription: 'Ecoparque certificado con guías ecoturisticos locales expertos en rescate acuático. Kayaks y embarcaciones inspeccionados periódicamente. Seguro de viajero completo incluido.',
+    providerId: 'provider-8',
+    providerName: 'Sayachaltún Marina & Ecoparque Official',
+    syncedFromWix: false,
+  },
+  {
     id: 'exp-2',
     name: 'Cena de Gala en Hacienda Mucuyché',
     description: 'Disfruta de una velada gastronómica exclusiva de 5 tiempos inspirada en recetas ancestrales del henequén, servida en los majestuenses jardines iluminados de la Hacienda Mucuyché. Incluye recorrido nocturno por el cenote de la hacienda.',
@@ -854,7 +879,8 @@ export const AppProvider = ({ children }) => {
     { id: 'provider-4', name: 'Rosas & Xocolate Boutique', rfc: 'RXB091210PP1', status: 'Aprobado', safetyRating: 'Gold', contact: 'reservaciones@rosasandxocolate.com' },
     { id: 'provider-5', name: 'Marinas del Norte Yucatán', rfc: 'MNY201103BC3', status: 'Pendiente', safetyRating: 'None', contact: 'ventas@marinasnorte.com' },
     { id: 'provider-6', name: 'Homúnja’ Parque Ecoturístico', rfc: 'HPE190412HK8', status: 'Aprobado', safetyRating: 'Gold', contact: 'contacto@homunja.com.mx' },
-    { id: 'provider-7', name: 'Tour Ría Lagartos Official', rfc: 'TRL170914KL5', status: 'Aprobado', safetyRating: 'Gold', contact: 'info@tourriolagartos.com' }
+    { id: 'provider-7', name: 'Tour Ría Lagartos Official', rfc: 'TRL170914KL5', status: 'Aprobado', safetyRating: 'Gold', contact: 'info@tourriolagartos.com' },
+    { id: 'provider-8', name: 'Sayachaltún Marina & Ecoparque Official', rfc: 'SME181005PT9', status: 'Aprobado', safetyRating: 'Gold', contact: 'contacto@sayachaltun.com' }
   ]);
 
   // Provider Profiles state (CLABE and Bank credentials)
@@ -894,6 +920,12 @@ export const AppProvider = ({ children }) => {
       commercialPhone: '9868620000',
       paymentEmail: 'info@tourriolagartos.com',
       bankClabe: '012914002015385555'
+    },
+    'provider-8': {
+      representativeName: 'Gerencia Sayachaltún',
+      commercialPhone: '9919650000',
+      paymentEmail: 'contacto@sayachaltun.com',
+      bankClabe: '012914002015384444'
     }
   });
 
