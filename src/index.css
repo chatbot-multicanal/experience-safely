@@ -118,6 +118,22 @@ h1, h2, h3, h4, h5, h6 {
   will-change: transform;
 }
 
+/* Translucent Glass Modal System */
+.glass-modal {
+  background: rgba(13, 24, 42, 0.68) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(0, 194, 179, 0.35) !important;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65), 0 0 40px rgba(0, 194, 179, 0.2) !important;
+  border-radius: 24px !important;
+}
+
+.modal-backdrop-blur {
+  background: rgba(8, 15, 27, 0.65) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
 .glass-card:hover {
   background: var(--color-bg-card-hover);
   transform: translateY(-8px) scale(1.03);

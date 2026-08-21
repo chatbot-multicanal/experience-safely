@@ -184,8 +184,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
     <div style={{
       position: 'fixed',
       inset: 0,
-      background: 'rgba(0, 0, 0, 0.75)',
-      backdropFilter: 'blur(8px)',
+      background: 'rgba(8, 15, 27, 0.65)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -193,16 +194,16 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
       padding: '16px',
       animation: 'chatbot-slide-up 0.25s ease-out'
     }} onClick={onClose}>
-      <div style={{
-        width: '100%',
-        maxWidth: '420px',
-        background: 'linear-gradient(180deg, rgba(21, 38, 63, 0.98), rgba(13, 24, 42, 0.99))',
-        borderRadius: '24px',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: '0 24px 64px rgba(0, 0, 0, 0.6), 0 0 80px rgba(0, 194, 179, 0.06)',
-        overflow: 'hidden',
-        position: 'relative'
-      }} onClick={e => e.stopPropagation()}>
+      <div 
+        className="glass-modal"
+        style={{
+          width: '100%',
+          maxWidth: '420px',
+          overflow: 'hidden',
+          position: 'relative'
+        }} 
+        onClick={e => e.stopPropagation()}
+      >
 
         {/* Close button */}
         <button onClick={onClose} style={{

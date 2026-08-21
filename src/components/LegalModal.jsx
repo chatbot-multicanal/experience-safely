@@ -16,17 +16,19 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
 
   return (
     <div style={{
-      position: 'fixed', inset: 0, background: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(10px)',
+      position: 'fixed', inset: 0, background: 'rgba(8, 15, 27, 0.65)', backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000, padding: '16px',
       animation: 'chatbot-slide-up 0.3s ease-out'
     }} onClick={onClose}>
-      <div style={{
-        width: '100%', maxWidth: '720px', maxHeight: '85vh',
-        background: 'linear-gradient(180deg, rgba(21, 38, 63, 0.99), rgba(13, 24, 42, 1))',
-        borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: '0 24px 64px rgba(0, 0, 0, 0.7), 0 0 80px rgba(0, 194, 179, 0.08)',
-        display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative'
-      }} onClick={e => e.stopPropagation()}>
+      <div 
+        className="glass-modal"
+        style={{
+          width: '100%', maxWidth: '720px', maxHeight: '85vh',
+          display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative'
+        }} 
+        onClick={e => e.stopPropagation()}
+      >
 
         {/* Close Button */}
         <button onClick={onClose} style={{

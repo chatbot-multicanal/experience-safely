@@ -382,7 +382,7 @@ function AppContent() {
           currentProfile === 'provider' ? (
             /* PROFESSIONAL PARTNER PORTAL GATE */
             <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 0' }} className="animate-fade-in">
-              <div className="glass-card" style={{ width: '100%', maxWidth: '480px', padding: '36px', border: '1px solid rgba(0, 194, 179, 0.25)', borderRadius: '24px', background: 'linear-gradient(180deg, rgba(21, 38, 63, 0.98), rgba(13, 24, 42, 0.99))' }}>
+              <div className="glass-card glass-modal" style={{ width: '100%', maxWidth: '480px', padding: '36px' }}>
                 
                 <div style={{ textAlign: 'center', marginBottom: '24px' }}>
                   <div style={{ display: 'inline-flex', background: 'rgba(0, 194, 179, 0.15)', color: '#00C2B3', padding: '16px', borderRadius: '50%', marginBottom: '16px' }}>
@@ -461,7 +461,7 @@ function AppContent() {
           ) : (
             /* ADMIN ACCESS GATE */
             <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 0' }} className="animate-fade-in">
-              <div className="glass-card" style={{ width: '100%', maxWidth: '450px', padding: '36px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
+              <div className="glass-card glass-modal" style={{ width: '100%', maxWidth: '450px', padding: '36px' }}>
                 
                 <div style={{ textAlign: 'center', marginBottom: '24px' }}>
                   <div style={{ display: 'inline-flex', background: 'rgba(255, 107, 77, 0.15)', color: 'var(--color-coral)', padding: '16px', borderRadius: '50%', marginBottom: '16px' }}>

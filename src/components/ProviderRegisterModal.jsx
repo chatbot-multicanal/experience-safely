@@ -41,16 +41,19 @@ export default function ProviderRegisterModal({ isOpen, onClose }) {
 
   return (
     <div style={{
-      position: 'fixed', inset: 0, background: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(8px)',
+      position: 'fixed', inset: 0, background: 'rgba(8, 15, 27, 0.65)', backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000, padding: '16px',
       animation: 'chatbot-slide-up 0.3s ease-out'
     }} onClick={handleClose}>
-      <div style={{
-        width: '100%', maxWidth: '480px',
-        background: 'linear-gradient(180deg, rgba(21, 38, 63, 0.98), rgba(13, 24, 42, 0.99))',
-        borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: '0 24px 64px rgba(0,0,0,0.6)', overflow: 'hidden', position: 'relative'
-      }} onClick={e => e.stopPropagation()}>
+      <div 
+        className="glass-modal"
+        style={{
+          width: '100%', maxWidth: '480px',
+          overflow: 'hidden', position: 'relative'
+        }} 
+        onClick={e => e.stopPropagation()}
+      >
 
         <button onClick={handleClose} style={{
           position: 'absolute', top: '16px', right: '16px',
