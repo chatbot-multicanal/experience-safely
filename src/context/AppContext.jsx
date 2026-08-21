@@ -337,7 +337,7 @@ const TRANSLATIONS = {
     btnViewDetails: 'Ver Detalles',
     backToCatalog: 'Volver al catálogo',
     descriptionLabel: 'Descripción',
-    protocolsLabel: 'Protocolos y Equipamiento de Seguridad',
+    protocolsLabel: 'Observaciones & Recomendaciones de Seguridad',
     reviewsTitle: 'Reseñas de la Comunidad',
     noReviews: 'Aún no hay reseñas para esta experiencia.',
     addReviewTitle: 'Comparte tu Experiencia',

@@ -363,8 +363,16 @@ export default function TouristView() {
             </div>
           </div>
 
-          {/* Category Filter Pills Bar */}
-          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '16px', marginBottom: '24px' }}>
+          {/* Category Filter Pills Bar (Spaced cleanly without clipping) */}
+          <div style={{ 
+            display: 'flex', 
+            gap: '10px', 
+            overflowX: 'auto', 
+            padding: '14px 8px 20px 8px', 
+            marginTop: '24px', 
+            marginBottom: '32px',
+            alignItems: 'center'
+          }}>
             {(categories || []).map(cat => {
               const label = language === 'es' 
                 ? cat.label 
@@ -374,7 +382,7 @@ export default function TouristView() {
                   key={cat.id}
                   onClick={() => setFilterCategory(cat.id)}
                   className={`btn btn-sm category-pill ${filterCategory === cat.id ? 'btn-primary' : 'btn-outline'}`}
-                  style={{ whiteSpace: 'nowrap', borderRadius: '30px' }}
+                  style={{ whiteSpace: 'nowrap', borderRadius: '30px', padding: '10px 20px', fontSize: '0.85rem' }}
                 >
                   {label}
                 </button>
@@ -426,21 +434,26 @@ export default function TouristView() {
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '20px' }}>
                         {(exp.safetyBadges || []).slice(0, 2).map((b, i) => (
                           <span key={i} style={{ fontSize: '0.65rem', background: 'rgba(255, 107, 77, 0.08)', color: 'var(--color-coral)', border: '1px solid rgba(255, 107, 77, 0.2)', padding: '2px 8px', borderRadius: '10px', fontWeight: '600' }}>
-                            ✓ {b}
+                            {b}
                           </span>
                         ))}
                       </div>
 
-                      <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      {/* Pricing & CTA */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', paddingTop: '12px', borderTop: '1px solid var(--color-border)' }}>
                         <div>
-                          <div style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>
-                            {isPackage ? t('pricePackage') : t('pricePerPerson')}
-                          </div>
-                          <div style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--color-text-light)' }}>
-                            ${displayPrice.toLocaleString('es-MX')} MXN
-                          </div>
+                          <span style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', display: 'block' }}>
+                            {isPackage ? (language === 'es' ? 'Paquete Completo desde' : 'Package From') : (language === 'es' ? 'Entrada General desde' : 'Ticket From')}
+                          </span>
+                          <span style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--color-text-light)' }}>
+                            ${displayPrice.toLocaleString('es-MX')} <span style={{ fontSize: '0.75rem', fontWeight: '600' }}>MXN</span>
+                          </span>
                         </div>
-                        <button className="btn btn-secondary btn-sm" onClick={() => handleOpenDetail(exp.id)}>
+                        <button 
+                          className="btn btn-secondary btn-sm" 
+                          onClick={() => setSelectedExpId(exp.id)}
+                          style={{ borderRadius: '10px', fontWeight: '700' }}
+                        >
                           {t('btnViewDetails')}
                         </button>
                       </div>
@@ -452,64 +465,87 @@ export default function TouristView() {
           )}
         </>
       ) : (
-        // EXPERIENCE DETAIL MODE
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }} className="animate-fade-in">
-          {/* Back Button */}
-          <button onClick={handleCloseDetail} className="btn btn-outline" style={{ marginBottom: '24px', padding: '10px 16px' }}>
-            <ArrowLeft size={16} /> {t('backToCatalog')}
-          </button>
+        /* DETAIL VIEW OF SELECTED EXPERIENCE */
+        <div className="container" style={{ paddingTop: '20px', paddingBottom: '60px' }}>
+            <button 
+              className="btn btn-outline btn-sm" 
+              onClick={() => setSelectedExpId(null)}
+              style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}
+            >
+              <ArrowLeft size={16} /> {t('backToCatalog')}
+            </button>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '32px' }} className="detail-layout">
-            
-            {/* Left Content Column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              
-              {/* Cover Banner */}
-              <div style={{ height: '350px', width: '100%', background: `linear-gradient(to bottom, transparent, rgba(13, 24, 42, 0.9)), url(${selectedExp.image || '/branding_1.jpg'})`, backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '16px', position: 'relative' }}>
-                <span className="badge badge-teal" style={{ position: 'absolute', bottom: '20px', left: '20px', fontSize: '0.9rem', padding: '8px 16px' }}>
-                  {selectedExp.category}
-                </span>
-              </div>
-
-              {/* Title & Location */}
-              <div>
-                <h1 style={{ fontSize: '2rem', marginBottom: '12px', lineHeight: '1.2' }}>{selectedExp.name}</h1>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>
-                    <MapPin size={16} /> {selectedExp.location}, Yucatán
-                  </span>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem', color: 'var(--color-gold)' }}>
-                    <Star size={16} fill="var(--color-gold)" style={{ color: 'var(--color-gold)' }} /> {selectedExp.rating} ({selectedExp.reviewsCount} {t('reviewsCountLabel')})
-                  </span>
-                </div>
-              </div>
-
-              {/* Description */}
-              <div className="glass-card" style={{ padding: '24px' }}>
-                <h3 style={{ marginBottom: '12px', borderBottom: '1px solid var(--color-border)', paddingBottom: '8px' }}>{t('descriptionLabel')}</h3>
-                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: '1.7' }}>{selectedExp.description}</p>
-              </div>
-
-              {/* Safety protocols */}
-              <div className="glass-card" style={{ padding: '24px', border: '1px solid rgba(0, 194, 179, 0.4)', background: 'rgba(0, 194, 179, 0.03)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-teal-light)', marginBottom: '16px' }}>
-                  <ShieldCheck size={24} />
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: '700' }}>{t('protocolsLabel')} (Verified Safe)</h3>
-                </div>
-                <p style={{ color: 'var(--color-text-light)', fontSize: '0.9rem', marginBottom: '16px' }}>
-                  {selectedExp.safetyDescription}
-                </p>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                  {(selectedExp.safetyBadges || []).map((badge, idx) => (
-                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
-                      <CheckCircle2 size={14} className="text-teal" style={{ color: 'var(--color-teal-light)' }} />
-                      <span>{badge}</span>
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '32px' }}>
+              {/* Left Detail Column */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                {/* Hero Header Card */}
+                <div className="glass-card" style={{ padding: '0', overflow: 'hidden' }}>
+                  <div style={{ height: '320px', position: 'relative' }}>
+                    <div style={{
+                      position: 'absolute', inset: 0,
+                      backgroundImage: `linear-gradient(to bottom, transparent 30%, rgba(13,24,42,0.95)), url(${selectedExp.image || '/branding_1.jpg'})`,
+                      backgroundSize: 'cover', backgroundPosition: 'center'
+                    }} />
+                    <div style={{ position: 'absolute', bottom: '24px', left: '24px', right: '24px' }}>
+                      <span className="badge badge-teal" style={{ marginBottom: '12px' }}>{selectedExp.category}</span>
+                      <h1 style={{ fontSize: '2.2rem', fontWeight: '800', lineHeight: '1.2', color: '#fff' }}>{selectedExp.name}</h1>
+                      <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
+                        <MapPin size={14} /> {selectedExp.location}, Yucatán
+                      </p>
                     </div>
-                  ))}
+                  </div>
+                  
+                  <div style={{ padding: '16px 24px', background: 'rgba(13, 24, 42, 0.9)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--color-border)' }}>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+                      🔒 {language === 'es' ? 'Socio Verificado con Auditoría de Seguridad Activa' : 'Verified Partner with Active Safety Audit'}
+                    </span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem', color: 'var(--color-gold)' }}>
+                      <Star size={16} fill="var(--color-gold)" style={{ color: 'var(--color-gold)' }} /> {selectedExp.rating} ({selectedExp.reviewsCount} {t('reviewsCountLabel')})
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              {/* Community Reviews Section */}
+                {/* Description */}
+                <div className="glass-card" style={{ padding: '24px' }}>
+                  <h3 style={{ marginBottom: '12px', borderBottom: '1px solid var(--color-border)', paddingBottom: '8px' }}>{t('descriptionLabel')}</h3>
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: '1.7' }}>{selectedExp.description}</p>
+                </div>
+
+                {/* Observaciones & Recomendaciones de Seguridad */}
+                <div className="glass-card" style={{ padding: '24px', border: '1px solid rgba(0, 194, 179, 0.4)', background: 'rgba(0, 194, 179, 0.03)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--color-teal-light)', marginBottom: '16px' }}>
+                    <ShieldCheck size={24} />
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: '700', margin: 0 }}>
+                      📋 {language === 'es' ? 'Observaciones & Recomendaciones de Seguridad' : 'Safety Observations & Recommendations'}
+                    </h3>
+                  </div>
+                  
+                  <p style={{ color: 'var(--color-text-light)', fontSize: '0.9rem', marginBottom: '16px', lineHeight: '1.6' }}>
+                    {selectedExp.safetyDescription}
+                  </p>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '20px' }}>
+                    {(selectedExp.safetyBadges || []).map((badge, idx) => (
+                      <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: 'var(--color-text-muted)' }}>
+                        <CheckCircle2 size={15} className="text-teal" style={{ color: 'var(--color-teal-light)' }} />
+                        <span>{badge}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Cuidados Recomendados para el Viajero */}
+                  <div style={{ background: 'rgba(13, 24, 42, 0.6)', padding: '16px', borderRadius: '12px', borderLeft: '4px solid #00C2B3' }}>
+                    <h4 style={{ fontSize: '0.88rem', color: '#00C2B3', margin: '0 0 8px 0', fontWeight: '700' }}>
+                      💡 {language === 'es' ? 'Cuidados Específicos para tu Visita:' : 'Important Visitor Care:'}
+                    </h4>
+                    <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '0.82rem', color: 'var(--color-text-muted)', lineHeight: '1.6' }}>
+                      <li>🌿 <strong>Preservación Ambiental:</strong> Utiliza únicamente protector solar y repelente 100% biodegradable. Pasa a la regadera previa antes de ingresar al agua.</li>
+                      <li>🦺 <strong>Uso de Equipo:</strong> El uso del chaleco salvavidas certificado es obligatorio en zonas de cenotes y cuerpo de agua.</li>
+                      <li>👟 <strong>Calzado Aconsejado:</strong> Se sugiere calzado acuático antiderrapante para senderos húmedos de piedra o escaleras.</li>
+                      <li>⏰ <strong>Tolerancia:</strong> Presentarse 15 minutos antes de la hora de su reservación.</li>
+                    </ul>
+                  </div>
+                </div>
               <div className="glass-card" style={{ padding: '24px' }}>
                 <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Star size={20} fill="var(--color-gold)" style={{ color: 'var(--color-gold)' }} /> {t('reviewsTitle')}
