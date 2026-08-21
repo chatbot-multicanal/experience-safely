@@ -62,6 +62,7 @@ export default function ProviderView() {
   const [editBadges, setEditBadges] = useState('');
   const [editSafetyDesc, setEditSafetyDesc] = useState('');
   const [editImage, setEditImage] = useState('');
+  const [editGallery, setEditGallery] = useState(['', '', '', '']);
   const [editCalendarSyncType, setEditCalendarSyncType] = useState('manual');
   const [editIcalUrl, setEditIcalUrl] = useState('');
 
@@ -78,12 +79,29 @@ export default function ProviderView() {
     setEditImage(exp.image || '');
     setEditCalendarSyncType(exp.calendarSyncType || 'manual');
     setEditIcalUrl(exp.icalUrl || '');
+
+    const currentGal = exp.gallery || [];
+    setEditGallery([
+      currentGal[0] || exp.image || '',
+      currentGal[1] || '',
+      currentGal[2] || '',
+      currentGal[3] || ''
+    ]);
+  };
+
+  const handleGalleryChange = (index, value) => {
+    setEditGallery(prev => {
+      const nextG = [...prev];
+      nextG[index] = value;
+      return nextG;
+    });
   };
 
   const handleSaveEditExp = (e) => {
     e.preventDefault();
     if (!editingExp) return;
     const badgesArray = editBadges.split(',').map(b => b.trim()).filter(Boolean);
+    const validGallery = editGallery.filter(Boolean);
     updateExperience({
       ...editingExp,
       name: editName,
@@ -94,12 +112,13 @@ export default function ProviderView() {
       capacity: Number(editCapacityVal),
       safetyBadges: badgesArray,
       safetyDescription: editSafetyDesc,
-      image: editImage || editingExp.image,
+      image: editImage || validGallery[0] || editingExp.image,
+      gallery: validGallery.length > 0 ? validGallery : [editImage || editingExp.image],
       calendarSyncType: editCalendarSyncType,
       icalUrl: editIcalUrl
     });
     setEditingExp(null);
-    alert(language === 'es' ? 'Experiencia y calendario sincronizado actualizados con éxito.' : 'Experience and calendar sync updated successfully.');
+    alert(language === 'es' ? 'Experiencia, fotos de galería y calendario actualizados con éxito.' : 'Experience, gallery photos and calendar updated successfully.');
   };
 
   // Profile Editor States
@@ -655,6 +674,45 @@ export default function ProviderView() {
                           style={{ width: '70px', height: '46px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #00C2B3' }} 
                         />
                       )}
+                    </div>
+                  </div>
+
+                  {/* Gallery HD 4 Photos Changer Section */}
+                  <div className="form-group" style={{ marginTop: '16px', background: 'rgba(0,194,179,0.04)', padding: '14px', borderRadius: '12px', border: '1px dashed rgba(0,194,179,0.25)' }}>
+                    <label className="form-label" style={{ color: '#00C2B3', fontWeight: '700', marginBottom: '8px' }}>
+                      📸 {language === 'es' ? 'Galería HD (4 Fotos de la Experiencia):' : 'HD Gallery (4 Photos):'}
+                    </label>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                      {[0, 1, 2, 3].map((idx) => (
+                        <div key={idx} style={{ background: 'rgba(255,255,255,0.03)', padding: '8px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                          <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.7)', display: 'block', marginBottom: '4px' }}>
+                            {language === 'es' ? `Foto ${idx + 1} de 4:` : `Photo ${idx + 1} of 4:`}
+                          </span>
+                          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                            <input 
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onloadend = () => handleGalleryChange(idx, reader.result);
+                                  reader.readAsDataURL(file);
+                                }
+                              }}
+                              className="form-input"
+                              style={{ flex: 1, padding: '4px', fontSize: '0.72rem' }}
+                            />
+                            {editGallery[idx] && (
+                              <img 
+                                src={editGallery[idx]} 
+                                alt={`gallery-${idx}`} 
+                                style={{ width: '42px', height: '30px', objectFit: 'cover', borderRadius: '4px', border: '1px solid #00C2B3' }} 
+                              />
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
