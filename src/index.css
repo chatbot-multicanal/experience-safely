@@ -456,6 +456,52 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 24px;
 }
 
+/* Horizontal Scrollable Carousel Cards System */
+.carousel-cards-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.carousel-cards-container {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding: 12px 6px 24px 6px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-cards-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.carousel-cards-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.carousel-cards-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 194, 179, 0.4);
+  border-radius: 10px;
+}
+
+.carousel-cards-container::-webkit-scrollbar-thumb:hover {
+  background: var(--color-teal-light);
+}
+
+.carousel-card-item {
+  flex: 0 0 325px;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 640px) {
+  .carousel-card-item {
+    flex: 0 0 285px;
+  }
+}
+
 @media (max-width: 768px) {
   .header-content {
     flex-direction: column;
