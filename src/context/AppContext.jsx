@@ -1123,7 +1123,7 @@ export const AppProvider = ({ children }) => {
     return { available: true, price: slot.price, spotsLeft: remaining };
   };
 
-  const bookExperience = (experienceId, dateStr, guests, name, email, paymentMethod = 'Tarjeta de Crédito') => {
+  const bookExperience = (experienceId, dateStr, guests, name, email, paymentMethod = 'Tarjeta de Crédito', pickupAddress = '') => {
     const check = checkAvailability(experienceId, dateStr, guests);
     if (!check.available) return { success: false, error: check.reason };
     
@@ -1142,6 +1142,7 @@ export const AppProvider = ({ children }) => {
       totalPrice,
       touristName: name,
       touristEmail: email,
+      pickupAddress: pickupAddress || 'Recolección Estándar en Punto de Encuentro',
       status: 'Confirmada',
       paymentMethod,
       safetyPassCode: passCode

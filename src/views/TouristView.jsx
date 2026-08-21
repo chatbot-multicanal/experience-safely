@@ -49,7 +49,10 @@ export default function TouristView() {
   const [selectedHours, setSelectedHours] = useState(4);
   const [touristName, setTouristName] = useState('');
   const [touristEmail, setTouristEmail] = useState('');
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  // Pickup & Dropoff Transport States
+  const [includePickup, setIncludePickup] = useState(true);
+  const [pickupAddress, setPickupAddress] = useState('');
+
   const [paymentMethod, setPaymentMethod] = useState('Tarjeta de Crédito');
   const [showCheckout, setShowCheckout] = useState(false);
   const [checkoutStep, setCheckoutStep] = useState(1); // 1 = Details, 2 = Payment, 3 = Ticket
@@ -110,8 +113,9 @@ export default function TouristView() {
       return;
     }
 
-    // Process simulation
-    const result = bookExperience(selectedExp.id, bookingDate, bookingGuests, touristName, touristEmail, paymentMethod);
+    // Process simulation with Pickup & Dropoff Address
+    const finalPickup = includePickup ? pickupAddress : (language === 'es' ? 'Recolección Estándar en Punto de Encuentro' : 'Standard Meeting Point Pickup');
+    const result = bookExperience(selectedExp.id, bookingDate, bookingGuests, touristName, touristEmail, paymentMethod, finalPickup);
     if (result && result.success) {
       setSuccessBooking(result.booking);
       setCheckoutStep(3);
@@ -1040,6 +1044,42 @@ export default function TouristView() {
                   />
                 </div>
 
+                {/* 5. HOTEL PICKUP & DROPOFF SERVICE OPTION */}
+                <div style={{
+                  margin: '16px 0',
+                  padding: '14px',
+                  borderRadius: '12px',
+                  background: 'rgba(0, 194, 179, 0.08)',
+                  border: '1px solid rgba(0, 194, 179, 0.25)',
+                  fontSize: '0.82rem'
+                }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: '700', color: '#00C2B3', marginBottom: '8px' }}>
+                    <input 
+                      type="checkbox"
+                      checked={includePickup}
+                      onChange={e => setIncludePickup(e.target.checked)}
+                      style={{ accentColor: '#00C2B3', width: '16px', height: '16px' }}
+                    />
+                    <span>🚐 {language === 'es' ? 'Recolección & Regreso a tu Hotel / Domicilio' : 'Hotel Pickup & Dropoff Included'}</span>
+                  </label>
+
+                  {includePickup && (
+                    <div style={{ marginTop: '8px' }}>
+                      <label style={{ display: 'block', fontSize: '0.72rem', color: 'rgba(255,255,255,0.7)', marginBottom: '4px' }}>
+                        {language === 'es' ? 'Hotel, Airbnb o Dirección de Recolección:' : 'Hotel / Airbnb Pickup Address:'}
+                      </label>
+                      <input 
+                        type="text"
+                        className="form-input"
+                        placeholder={language === 'es' ? 'Ej. Hotel Fiesta Americana Mérida / Casa Centro' : 'e.g. Fiesta Americana Hotel / Airbnb Address'}
+                        value={pickupAddress}
+                        onChange={e => setPickupAddress(e.target.value)}
+                        style={{ fontSize: '0.8rem', padding: '8px 12px' }}
+                      />
+                    </div>
+                  )}
+                </div>
+
                 {/* 4. Pricing Calculation */}
                 {bookingDate && (
                   <div style={{ borderTop: '1px solid var(--color-border)', margin: '16px 0 24px 0', paddingTop: '16px' }}>
@@ -1310,6 +1350,13 @@ export default function TouristView() {
                       <strong>{successBooking.guests} {successBooking.guests === 1 ? (language === 'es' ? 'Pasaje' : 'Ticket') : (language === 'es' ? 'Pasajes' : 'Tickets')}</strong>
                     </div>
                   </div>
+
+                  {pickupAddress && (
+                    <div style={{ borderBottom: '1px dashed #ccc', paddingBottom: '10px', marginBottom: '10px', fontSize: '0.8rem', color: '#007A7B' }}>
+                      <span style={{ color: 'var(--color-text-dark-muted)', display: 'block', fontSize: '0.65rem' }}>🚐 RECOLECCIÓN & REGRESO EN HOTEL/DOMICILIO:</span>
+                      <strong>✓ {pickupAddress}</strong>
+                    </div>
+                  )}
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
