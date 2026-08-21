@@ -378,25 +378,36 @@ export default function TouristView() {
 
         <div className="container" style={{ paddingTop: '10px', paddingBottom: '60px' }}>
           
-          {/* Hero Banner Section */}
-          <div className="glass-card hero-banner animate-fade-in" style={{ padding: '40px', position: 'relative', overflow: 'hidden', borderRadius: '24px', marginBottom: '32px' }}>
-            <div style={{ position: 'relative', zIndex: 2, maxWidth: '750px' }}>
-              <span className="badge badge-teal" style={{ marginBottom: '16px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={14} /> {language === 'es' ? 'Plataforma Oficial de Experiencias Verificadas' : 'Official Verified Experiences Platform'}
+          {/* Compact Minimalist Banner Line */}
+          <div className="glass-card animate-fade-in" style={{
+            padding: '10px 20px',
+            borderRadius: '30px',
+            marginBottom: '20px',
+            display: 'flex',
+            justify: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '12px',
+            background: 'rgba(13, 24, 42, 0.75)',
+            border: '1px solid rgba(0, 194, 179, 0.35)',
+            boxShadow: '0 4px 15px rgba(0, 194, 179, 0.15)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              <span className="badge badge-teal" style={{ fontSize: '0.72rem', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <Sparkles size={13} /> {language === 'es' ? 'PLATAFORMA OFICIAL' : 'OFFICIAL PLATFORM'}
               </span>
-              <h1 style={{ fontSize: '2.4rem', fontWeight: '800', lineHeight: '1.25', marginBottom: '16px' }}>
+              <span style={{ fontSize: '0.95rem', fontWeight: '700', color: '#fff' }}>
                 {language === 'es' ? 'Experiencias Seguras & Memorables en Yucatán' : 'Safe & Memorable Experiences in Yucatan'}
-              </h1>
-              <p style={{ fontSize: '1.05rem', color: 'var(--color-text-muted)', lineHeight: '1.6', marginBottom: '24px' }}>
-                {language === 'es' ? 'Reserva tours, cenotes, catamaranes y hospedajes ecoturísticos con sellos de auditoría de seguridad verificados.' : 'Book audited tours, cenotes, charters and boutique ecoparks.'}
-              </p>
-              
-              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                <button className="btn btn-secondary" onClick={() => setShowProviderRegModal(true)}>
-                  <Building2 size={18} /> {language === 'es' ? 'Registrar Mi Empresa Turística' : 'Register My Tour Company'}
-                </button>
-              </div>
+              </span>
             </div>
+
+            <button 
+              className="btn btn-secondary btn-sm" 
+              onClick={() => setShowProviderRegModal(true)}
+              style={{ borderRadius: '20px', fontSize: '0.75rem', padding: '5px 14px', textTransform: 'uppercase', letterSpacing: '0.05em' }}
+            >
+              <Building2 size={14} /> {language === 'es' ? 'Registrar Empresa Turística' : 'Register Tour Company'}
+            </button>
           </div>
 
           {/* Search and Filters Bar */}
