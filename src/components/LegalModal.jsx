@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ShieldCheck, FileText, Lock, AlertTriangle, Scale, CheckCircle2 } from 'lucide-react';
+import { X, ShieldCheck, FileText, Lock, AlertTriangle, Scale, CheckCircle2, Phone, HelpCircle, Mail, MapPin, MessageSquare } from 'lucide-react';
 
 export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', language = 'es' }) {
   const [activeTab, setActiveTab] = useState(initialTab); // 'privacy' | 'terms' | 'restrictions'
@@ -53,7 +53,9 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)', background: 'rgba(13, 24, 42, 0.5)'
         }}>
           {[
-            { id: 'privacy', icon: Lock, label: language === 'es' ? 'Aviso de Privacidad' : 'Privacy Policy' },
+            { id: 'contact', icon: Phone, label: language === 'es' ? 'Contacto' : 'Contact' },
+            { id: 'privacy', icon: Lock, label: language === 'es' ? 'Avisos de Privacidad' : 'Privacy Notices' },
+            { id: 'faq', icon: HelpCircle, label: language === 'es' ? 'Preguntas Frecuentes' : 'FAQ' },
             { id: 'terms', icon: ShieldCheck, label: language === 'es' ? 'Términos de Garantía' : 'Warranty Terms' },
             { id: 'restrictions', icon: AlertTriangle, label: language === 'es' ? 'Derechos y Restricciones' : 'User Rights & Limits' },
           ].map(tab => {
@@ -85,6 +87,97 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
           padding: '24px 32px', overflowY: 'auto', flex: 1,
           color: 'rgba(255, 255, 255, 0.8)', fontSize: '0.88rem', lineHeight: '1.7'
         }}>
+
+          {/* TAB 0: CONTACTO */}
+          {activeTab === 'contact' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ background: 'rgba(0, 194, 179, 0.08)', border: '1px solid rgba(0, 194, 179, 0.25)', padding: '16px', borderRadius: '16px', color: '#00C2B3', fontSize: '0.85rem' }}>
+                📞 <strong>Canales Oficiales de Atención y Soporte 24/7 de Experience Safely</strong>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div style={{ background: 'rgba(13, 24, 42, 0.6)', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', borderRadius: '14px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#00C2B3', marginBottom: '8px' }}>
+                    <Mail size={20} />
+                    <strong style={{ fontSize: '0.95rem' }}>Correo Oficial</strong>
+                  </div>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>
+                    contacto@experiencesafely.com<br />
+                    soporte@experiencesafely.com
+                  </p>
+                </div>
+
+                <div style={{ background: 'rgba(13, 24, 42, 0.6)', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', borderRadius: '14px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#FF6B4D', marginBottom: '8px' }}>
+                    <MessageSquare size={20} />
+                    <strong style={{ fontSize: '0.95rem' }}>WhatsApp & Atención Móvil</strong>
+                  </div>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>
+                    +52 (999) 123-4567<br />
+                    +52 (999) 765-4321
+                  </p>
+                </div>
+              </div>
+
+              <div style={{ background: 'rgba(13, 24, 42, 0.6)', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', borderRadius: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#FFC857', marginBottom: '8px' }}>
+                  <MapPin size={20} />
+                  <strong style={{ fontSize: '0.95rem' }}>Oficinas Centrales</strong>
+                </div>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>
+                  Mérida, Yucatán, México.<br />
+                  Horarios de atención telefónica: Lunes a Domingo de 7:00 AM a 10:00 PM (Hora Centro México).
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: PREGUNTAS FRECUENTES (FAQ) */}
+          {activeTab === 'faq' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ background: 'rgba(0, 194, 179, 0.08)', border: '1px solid rgba(0, 194, 179, 0.25)', padding: '12px 16px', borderRadius: '12px', color: '#00C2B3', fontSize: '0.8rem' }}>
+                ❓ Resuelve de inmediato tus dudas sobre reservaciones, garantías de seguridad y pases.
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ background: 'rgba(13, 24, 42, 0.6)', padding: '14px 16px', borderRadius: '12px', borderLeft: '3px solid #00C2B3' }}>
+                  <strong style={{ color: '#fff', fontSize: '0.9rem', display: 'block', marginBottom: '6px' }}>
+                    1. ¿Cómo recibo mi boleto / pase de seguridad digital?
+                  </strong>
+                  <p style={{ margin: 0, fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)', lineHeight: '1.5' }}>
+                    Inmediatamente al confirmar tu reserva, la plataforma genera tu boleto digital con código QR de seguridad y código alfanumérico único. Puedes descargarlo en pantalla o mostrarlo desde tu teléfono al llegar.
+                  </p>
+                </div>
+
+                <div style={{ background: 'rgba(13, 24, 42, 0.6)', padding: '14px 16px', borderRadius: '12px', borderLeft: '3px solid #FF6B4D' }}>
+                  <strong style={{ color: '#fff', fontSize: '0.9rem', display: 'block', marginBottom: '6px' }}>
+                    2. ¿Qué pasa si hay mal clima o lluvia severa el día del tour?
+                  </strong>
+                  <p style={{ margin: 0, fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)', lineHeight: '1.5' }}>
+                    Tu reservación cuenta con la Garantía Safely contra Mal Tiempo. Si la capitanía de puerto o las autoridades suspenden actividades, se reprograma sin penalización o se reembolsa el 100% de tu dinero.
+                  </p>
+                </div>
+
+                <div style={{ background: 'rgba(13, 24, 42, 0.6)', padding: '14px 16px', borderRadius: '12px', borderLeft: '3px solid #FFC857' }}>
+                  <strong style={{ color: '#fff', fontSize: '0.9rem', display: 'block', marginBottom: '6px' }}>
+                    3. ¿El equipo de protección (chalecos salvavidas) viene incluido?
+                  </strong>
+                  <p style={{ margin: 0, fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)', lineHeight: '1.5' }}>
+                    Sí. Todas las experiencias y cenotes auditados por Experience Safely incluyen chalecos salvavidas certificados y equipo verificado sin costo adicional.
+                  </p>
+                </div>
+
+                <div style={{ background: 'rgba(13, 24, 42, 0.6)', padding: '14px 16px', borderRadius: '12px', borderLeft: '3px solid #00C2B3' }}>
+                  <strong style={{ color: '#fff', fontSize: '0.9rem', display: 'block', marginBottom: '6px' }}>
+                    4. ¿Cómo sé que un operador o hacienda está verificado?
+                  </strong>
+                  <p style={{ margin: 0, fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)', lineHeight: '1.5' }}>
+                    Cada experiencia cuenta con el sello de auditoría de seguridad activa y guías certificados en primeros auxilios validados por la plataforma.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* TAB 1: AVISO DE PRIVACIDAD */}
           {activeTab === 'privacy' && (

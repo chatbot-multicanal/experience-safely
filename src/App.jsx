@@ -512,32 +512,75 @@ function AppContent() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-          <div>
-            <strong>© 2026 {titleText}.</strong> {t('footerRights')}
+      {/* Enhanced Footer */}
+      <footer className="footer" style={{
+        background: 'rgba(13, 24, 42, 0.96)',
+        borderTop: '1px solid rgba(0, 194, 179, 0.3)',
+        padding: '32px 24px 24px',
+        color: 'var(--color-text-muted)',
+        fontSize: '0.85rem'
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          
+          {/* Top Section: Links Grid */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px', paddingBottom: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+            
+            {/* Logo / Brand Name */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <img src={siteDesign?.logo || '/Logo - Experience Safely.png'} alt="Experience Safely" style={{ height: '38px', objectFit: 'contain' }} />
+              <span style={{ fontWeight: '800', color: '#fff', fontSize: '1.05rem', letterSpacing: '-0.02em' }}>
+                EXPERIENCE <span style={{ color: '#00C2B3' }}>SAFELY</span>
+              </span>
+            </div>
+
+            {/* Navigation Links */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', alignItems: 'center' }}>
+              <button 
+                onClick={() => { setLegalTab('contact'); setShowLegalModal(true); }}
+                style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.85rem', fontWeight: '600', transition: 'all 0.2s', padding: '4px 8px' }}
+              >
+                📞 {language === 'es' ? 'Contacto' : 'Contact'}
+              </button>
+
+              <button 
+                onClick={() => { setLegalTab('privacy'); setShowLegalModal(true); }}
+                style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.85rem', fontWeight: '600', transition: 'all 0.2s', padding: '4px 8px' }}
+              >
+                🔒 {language === 'es' ? 'Avisos de privacidad' : 'Privacy Notices'}
+              </button>
+
+              <button 
+                onClick={() => { setLegalTab('faq'); setShowLegalModal(true); }}
+                style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.85rem', fontWeight: '600', transition: 'all 0.2s', padding: '4px 8px' }}
+              >
+                ❓ {language === 'es' ? 'Preguntas frecuentes' : 'FAQ'}
+              </button>
+            </div>
           </div>
-          <div style={{ display: 'flex', gap: '16px', fontSize: '0.75rem' }}>
-            <button 
-              onClick={() => { setLegalTab('terms'); setShowLegalModal(true); }}
-              style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.75rem', padding: 0 }}
-            >
-              {language === 'es' ? 'Términos de Garantía' : 'Warranty Terms'}
-            </button>
-            <button 
-              onClick={() => { setLegalTab('privacy'); setShowLegalModal(true); }}
-              style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.75rem', padding: 0 }}
-            >
-              {language === 'es' ? 'Aviso de Privacidad' : 'Privacy Policy'}
-            </button>
-            <button 
-              onClick={() => { setLegalTab('restrictions'); setShowLegalModal(true); }}
-              style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.75rem', padding: 0 }}
-            >
-              {language === 'es' ? 'Soporte de Seguridad & Derechos' : 'Security Support & Rights'}
-            </button>
+
+          {/* Bottom Section: Rights & Creator Badge */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', fontSize: '0.8rem' }}>
+            
+            {/* Rights Reserved & Registered Trademark */}
+            <div style={{ color: 'rgba(255,255,255,0.7)' }}>
+              © 2026 <strong>experiencesafely.com</strong> — {language === 'es' ? 'Todos los derechos reservados. Marca registrada.' : 'All rights reserved. Registered trademark.'}
+            </div>
+
+            {/* Created by Innocentia.tech */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem' }}>
+              <span style={{ color: 'rgba(255,255,255,0.6)' }}>{language === 'es' ? 'Creado por' : 'Created by'}</span>
+              <a 
+                href="https://innocentia.tech" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                style={{ color: '#00C2B3', fontWeight: '700', textDecoration: 'none', background: 'rgba(0, 194, 179, 0.12)', padding: '4px 12px', borderRadius: '12px', border: '1px solid rgba(0, 194, 179, 0.35)', transition: 'all 0.2s' }}
+              >
+                Innocentia.tech
+              </a>
+            </div>
+
           </div>
+
         </div>
       </footer>
 
