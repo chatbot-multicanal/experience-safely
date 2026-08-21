@@ -20,6 +20,7 @@ export default function TouristView() {
     categories = [],
     addExperienceReview = () => {},
     touristUser = null,
+    bookings = [],
     siteDesign = {}
   } = context;
   
@@ -540,53 +541,119 @@ export default function TouristView() {
                   )}
                 </div>
 
-                {/* Add Review Form */}
-                <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '20px' }}>
-                  <h4 style={{ fontSize: '1rem', marginBottom: '12px' }}>{t('addReviewTitle')}</h4>
-                  <form onSubmit={handleReviewSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 150px', gap: '12px' }}>
+                {/* Verified Review System & Form */}
+                <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '24px', marginTop: '24px' }}>
+                  {(() => {
+                    const hasVerifiedBooking = touristUser && (bookings || []).some(b => 
+                      b.experienceId === selectedExp.id && 
+                      (b.touristEmail === touristUser.email || touristUser.provider === 'google' || b.touristName === touristUser.name)
+                    );
+
+                    if (!hasVerifiedBooking) {
+                      return (
+                        <div style={{
+                          background: 'rgba(13, 24, 42, 0.75)',
+                          border: '1px solid rgba(0, 194, 179, 0.25)',
+                          borderRadius: '16px',
+                          padding: '24px 20px',
+                          textAlign: 'center',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '10px'
+                        }}>
+                          <div style={{ background: 'rgba(0, 194, 179, 0.12)', color: '#00C2B3', padding: '10px', borderRadius: '50%', display: 'inline-flex' }}>
+                            <ShieldCheck size={26} />
+                          </div>
+                          <h4 style={{ margin: 0, fontSize: '0.98rem', color: '#fff', fontWeight: '700' }}>
+                            {language === 'es' ? 'Reseñas Reservadas a Turistas Verificados' : 'Verified Guest Reviews Only'}
+                          </h4>
+                          <p style={{ fontSize: '0.82rem', color: 'var(--color-text-muted)', maxWidth: '460px', margin: 0, lineHeight: '1.5' }}>
+                            {language === 'es' 
+                              ? 'Para garantizar opiniones reales y proteger a la comunidad en Experience Safely, solo los turistas que hayan reservado y vivido esta experiencia pueden publicar su calificación.' 
+                              : 'To guarantee authentic reviews and maintain trust, only travelers who have booked and completed this experience can submit a rating.'}
+                          </p>
+                          {!touristUser && (
+                            <button 
+                              type="button"
+                              className="btn btn-outline btn-sm" 
+                              onClick={() => setIsAuthOpen(true)} 
+                              style={{ marginTop: '8px', fontSize: '0.8rem', borderRadius: '20px' }}
+                            >
+                              {language === 'es' ? '🔑 Iniciar Sesión para Publicar Opinión' : '🔑 Log In to Submit Review'}
+                            </button>
+                          )}
+                        </div>
+                      );
+                    }
+
+                    return (
                       <div>
-                        <label className="form-label">{t('reviewName')}</label>
-                        <input 
-                          type="text" 
-                          className="form-input" 
-                          placeholder="Ej. Juan Pérez"
-                          value={newRevAuthor}
-                          onChange={e => setNewRevAuthor(e.target.value)}
-                          required
-                        />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                          <ShieldCheck size={18} color="#00C2B3" />
+                          <h4 style={{ fontSize: '1rem', margin: 0 }}>{t('addReviewTitle')}</h4>
+                          <span style={{ fontSize: '0.7rem', background: 'rgba(0,194,179,0.15)', color: '#00C2B3', padding: '2px 8px', borderRadius: '12px', fontWeight: '700' }}>
+                            {language === 'es' ? '✓ Reserva Verificada' : '✓ Verified Booking'}
+                          </span>
+                        </div>
+
+                        <form onSubmit={handleReviewSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+                            <div style={{ flex: '1 1 200px', display: 'flex', flexDirection: 'column' }}>
+                              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: '700', color: 'var(--color-text-muted)', marginBottom: '6px' }}>
+                                {t('reviewName')}
+                              </label>
+                              <input 
+                                type="text" 
+                                className="form-input" 
+                                placeholder="Ej. Juan Pérez"
+                                value={newRevAuthor || touristUser?.name || ''}
+                                onChange={e => setNewRevAuthor(e.target.value)}
+                                required
+                                style={{ width: '100%', height: '42px', margin: 0 }}
+                              />
+                            </div>
+                            <div style={{ flex: '0 0 160px', display: 'flex', flexDirection: 'column' }}>
+                              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: '700', color: 'var(--color-text-muted)', marginBottom: '6px' }}>
+                                {t('reviewRating')}
+                              </label>
+                              <select 
+                                className="form-select"
+                                value={newRevRating}
+                                onChange={e => setNewRevRating(Number(e.target.value))}
+                                style={{ width: '100%', height: '42px', margin: 0 }}
+                              >
+                                <option value="5">⭐⭐⭐⭐⭐ 5/5</option>
+                                <option value="4">⭐⭐⭐⭐ 4/5</option>
+                                <option value="3">⭐⭐⭐ 3/5</option>
+                                <option value="2">⭐⭐ 2/5</option>
+                                <option value="1">⭐ 1/5</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: '700', color: 'var(--color-text-muted)', marginBottom: '6px' }}>
+                              {t('reviewComment')}
+                            </label>
+                            <textarea 
+                              className="form-input" 
+                              rows="3" 
+                              style={{ width: '100%', resize: 'vertical', minHeight: '80px', margin: 0 }}
+                              placeholder={language === 'es' ? 'Escribe aquí tu opinión sobre la seguridad, el servicio y tu experiencia...' : 'Write your comment here about safety, service and experience...'}
+                              value={newRevComment}
+                              onChange={e => setNewRevComment(e.target.value)}
+                              required
+                            />
+                          </div>
+
+                          <button type="submit" className="btn btn-primary btn-sm" style={{ alignSelf: 'flex-start', padding: '10px 22px', fontWeight: '700' }}>
+                            {t('btnSubmitReview')}
+                          </button>
+                        </form>
                       </div>
-                      <div>
-                        <label className="form-label">{t('reviewRating')}</label>
-                        <select 
-                          className="form-select"
-                          value={newRevRating}
-                          onChange={e => setNewRevRating(Number(e.target.value))}
-                        >
-                          <option value="5">⭐⭐⭐⭐⭐</option>
-                          <option value="4">⭐⭐⭐⭐</option>
-                          <option value="3">⭐⭐⭐</option>
-                          <option value="2">⭐⭐</option>
-                          <option value="1">⭐</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="form-label">{t('reviewComment')}</label>
-                      <textarea 
-                        className="form-input" 
-                        rows="3" 
-                        style={{ resize: 'vertical' }}
-                        placeholder={language === 'es' ? 'Escribe aquí tu opinión...' : 'Write your comment here...'}
-                        value={newRevComment}
-                        onChange={e => setNewRevComment(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <button type="submit" className="btn btn-secondary btn-sm" style={{ alignSelf: 'flex-start' }}>
-                      {t('btnSubmitReview')}
-                    </button>
-                  </form>
+                    );
+                  })()}
                 </div>
               </div>
             </div>
