@@ -16,6 +16,7 @@ export default function ProviderView() {
     updateCalendarAvailability = () => {}, 
     updateProviderProfile = () => {}, 
     addExperience = () => {},
+    updateExperience = () => {},
     language = 'es',
     t = (k) => k,
     categories = []
@@ -50,9 +51,47 @@ export default function ProviderView() {
   const [newBadges, setNewBadges] = useState('Equipo de Primeros Auxilios, Guía Local Certificado');
   const [newSafetyDesc, setNewSafetyDesc] = useState('Nuestros guías e instructores cuentan con todas las autorizaciones vigentes.');
 
-  // Image Upload Simulation States
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState('');
+  // Edit Experience Modal States
+  const [editingExp, setEditingExp] = useState(null);
+  const [editName, setEditName] = useState('');
+  const [editDesc, setEditDesc] = useState('');
+  const [editCategory, setEditCategory] = useState('');
+  const [editLocation, setEditLocation] = useState('');
+  const [editPriceVal, setEditPriceVal] = useState(0);
+  const [editCapacityVal, setEditCapacityVal] = useState(0);
+  const [editBadges, setEditBadges] = useState('');
+  const [editSafetyDesc, setEditSafetyDesc] = useState('');
+
+  const handleOpenEditModal = (exp) => {
+    setEditingExp(exp);
+    setEditName(exp.name || '');
+    setEditDesc(exp.description || '');
+    setEditCategory(exp.category || 'cenotes');
+    setEditLocation(exp.location || 'Yucatán');
+    setEditPriceVal(exp.price || 0);
+    setEditCapacityVal(exp.capacity || 10);
+    setEditBadges((exp.safetyBadges || []).join(', '));
+    setEditSafetyDesc(exp.safetyDescription || '');
+  };
+
+  const handleSaveEditExp = (e) => {
+    e.preventDefault();
+    if (!editingExp) return;
+    const badgesArray = editBadges.split(',').map(b => b.trim()).filter(Boolean);
+    updateExperience({
+      ...editingExp,
+      name: editName,
+      description: editDesc,
+      category: editCategory,
+      location: editLocation,
+      price: Number(editPriceVal),
+      capacity: Number(editCapacityVal),
+      safetyBadges: badgesArray,
+      safetyDescription: editSafetyDesc
+    });
+    setEditingExp(null);
+    alert(language === 'es' ? 'Experiencia actualizada con éxito.' : 'Experience updated successfully.');
+  };
 
   // Profile Editor States
   const myProfile = providerProfiles[providerId] || {
@@ -328,7 +367,11 @@ export default function ProviderView() {
                     <button className="btn btn-outline btn-sm" style={{ flex: 1 }} onClick={() => { setSelectedExpId(exp.id); setActiveTab('calendar'); }}>
                       <Calendar size={14} /> {language === 'es' ? 'Calendario' : 'Calendar'}
                     </button>
-                    <button className="btn btn-outline-teal btn-sm" style={{ flex: 1 }}>
+                    <button 
+                      className="btn btn-outline-teal btn-sm" 
+                      style={{ flex: 1 }}
+                      onClick={() => handleOpenEditModal(exp)}
+                    >
                       <Edit size={14} /> {language === 'es' ? 'Editar' : 'Edit'}
                     </button>
                   </div>
@@ -511,6 +554,79 @@ export default function ProviderView() {
                     </button>
                     <button type="submit" className="btn btn-primary">
                       {t('btnSubmitAdd')}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* EDIT EXPERIENCE FORM MODAL */}
+          {editingExp && (
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(8, 15, 27, 0.65)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px' }}>
+              <div className="glass-modal" style={{ width: '100%', maxWidth: '600px', padding: '32px', maxHeight: '90vh', overflowY: 'auto' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                  <h3 style={{ fontSize: '1.25rem', color: '#fff' }}>✏️ {language === 'es' ? 'Editar Experiencia / Servicio' : 'Edit Experience / Service'}</h3>
+                  <button onClick={() => setEditingExp(null)} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer' }}>
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <form onSubmit={handleSaveEditExp}>
+                  <div className="form-group">
+                    <label className="form-label">{t('labelExpName')} *</label>
+                    <input type="text" className="form-input" required value={editName} onChange={e => setEditName(e.target.value)} />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">{language === 'es' ? 'Descripción Detallada *' : 'Detailed Description *'}</label>
+                    <textarea className="form-input" rows="4" required value={editDesc} onChange={e => setEditDesc(e.target.value)} />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                    <div className="form-group">
+                      <label className="form-label">{t('labelCategory')}</label>
+                      <select className="form-select" value={editCategory} onChange={e => setEditCategory(e.target.value)}>
+                        {(categories || []).filter(c => c.id !== 'todos').map(c => (
+                          <option key={c.id} value={c.id}>{c.label}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">{t('labelLocation')}</label>
+                      <input type="text" className="form-input" value={editLocation} onChange={e => setEditLocation(e.target.value)} />
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                    <div className="form-group">
+                      <label className="form-label">{t('labelPrice')} (MXN) *</label>
+                      <input type="number" className="form-input" required value={editPriceVal} onChange={e => setEditPriceVal(e.target.value)} />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">{t('labelCapacity')} *</label>
+                      <input type="number" className="form-input" required value={editCapacityVal} onChange={e => setEditCapacityVal(e.target.value)} />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">{t('labelBadges')}</label>
+                    <input type="text" className="form-input" value={editBadges} onChange={e => setEditBadges(e.target.value)} />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">{t('labelSafetyDesc')}</label>
+                    <textarea className="form-input" rows="2" value={editSafetyDesc} onChange={e => setEditSafetyDesc(e.target.value)} />
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '24px' }}>
+                    <button type="button" className="btn btn-outline" onClick={() => setEditingExp(null)}>
+                      {t('loginCancel')}
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      💾 {language === 'es' ? 'Guardar Cambios' : 'Save Changes'}
                     </button>
                   </div>
                 </form>
