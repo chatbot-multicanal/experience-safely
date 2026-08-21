@@ -61,6 +61,9 @@ export default function ProviderView() {
   const [editCapacityVal, setEditCapacityVal] = useState(0);
   const [editBadges, setEditBadges] = useState('');
   const [editSafetyDesc, setEditSafetyDesc] = useState('');
+  const [editImage, setEditImage] = useState('');
+  const [editCalendarSyncType, setEditCalendarSyncType] = useState('manual');
+  const [editIcalUrl, setEditIcalUrl] = useState('');
 
   const handleOpenEditModal = (exp) => {
     setEditingExp(exp);
@@ -72,6 +75,9 @@ export default function ProviderView() {
     setEditCapacityVal(exp.capacity || 10);
     setEditBadges((exp.safetyBadges || []).join(', '));
     setEditSafetyDesc(exp.safetyDescription || '');
+    setEditImage(exp.image || '');
+    setEditCalendarSyncType(exp.calendarSyncType || 'manual');
+    setEditIcalUrl(exp.icalUrl || '');
   };
 
   const handleSaveEditExp = (e) => {
@@ -87,10 +93,13 @@ export default function ProviderView() {
       price: Number(editPriceVal),
       capacity: Number(editCapacityVal),
       safetyBadges: badgesArray,
-      safetyDescription: editSafetyDesc
+      safetyDescription: editSafetyDesc,
+      image: editImage || editingExp.image,
+      calendarSyncType: editCalendarSyncType,
+      icalUrl: editIcalUrl
     });
     setEditingExp(null);
-    alert(language === 'es' ? 'Experiencia actualizada con éxito.' : 'Experience updated successfully.');
+    alert(language === 'es' ? 'Experiencia y calendario sincronizado actualizados con éxito.' : 'Experience and calendar sync updated successfully.');
   };
 
   // Profile Editor States
@@ -619,6 +628,79 @@ export default function ProviderView() {
                   <div className="form-group">
                     <label className="form-label">{t('labelSafetyDesc')}</label>
                     <textarea className="form-input" rows="2" value={editSafetyDesc} onChange={e => setEditSafetyDesc(e.target.value)} />
+                  </div>
+
+                  {/* Photo & Image Changer Section */}
+                  <div className="form-group" style={{ marginTop: '20px', background: 'rgba(255,255,255,0.03)', padding: '14px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <label className="form-label" style={{ color: '#FF6B4D', fontWeight: '700' }}>🖼️ {language === 'es' ? 'Cambiar Foto Principal de Portada:' : 'Change Main Cover Photo:'}</label>
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                      <input 
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => setEditImage(reader.result);
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                        className="form-input"
+                        style={{ flex: 1, padding: '8px' }}
+                      />
+                      {editImage && (
+                        <img 
+                          src={editImage} 
+                          alt="preview" 
+                          style={{ width: '70px', height: '46px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #00C2B3' }} 
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Calendar Sync Mode Option (Manual vs iCal) */}
+                  <div style={{ background: 'rgba(0, 194, 179, 0.08)', border: '1px solid rgba(0, 194, 179, 0.25)', padding: '16px', borderRadius: '14px', margin: '20px 0' }}>
+                    <label className="form-label" style={{ color: '#00C2B3', fontWeight: '700', marginBottom: '8px' }}>
+                      📅 {language === 'es' ? 'Sincronización de Calendario & Disponibilidad' : 'Calendar & Availability Sync'}
+                    </label>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '12px' }}>
+                      <button
+                        type="button"
+                        onClick={() => setEditCalendarSyncType('manual')}
+                        className={`btn btn-sm ${editCalendarSyncType === 'manual' ? 'btn-primary' : 'btn-outline'}`}
+                        style={{ borderRadius: '10px', fontSize: '0.78rem' }}
+                      >
+                        🗓️ {language === 'es' ? 'Manual (Panel Platform)' : 'Manual (Platform)'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEditCalendarSyncType('ical')}
+                        className={`btn btn-sm ${editCalendarSyncType === 'ical' ? 'btn-primary' : 'btn-outline'}`}
+                        style={{ borderRadius: '10px', fontSize: '0.78rem' }}
+                      >
+                        🔗 {language === 'es' ? 'Enlace iCal (Google/Wix/Airbnb)' : 'iCal Link Sync'}
+                      </button>
+                    </div>
+
+                    {editCalendarSyncType === 'ical' && (
+                      <div>
+                        <label className="form-label" style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)' }}>
+                          {language === 'es' ? 'URL de Calendario iCal / Google Calendar (.ics):' : 'iCal / Google Calendar URL (.ics):'}
+                        </label>
+                        <input
+                          type="url"
+                          className="form-input"
+                          placeholder="https://calendar.google.com/calendar/ical/.../basic.ics"
+                          value={editIcalUrl}
+                          onChange={e => setEditIcalUrl(e.target.value)}
+                          style={{ fontSize: '0.8rem' }}
+                        />
+                        <span style={{ fontSize: '0.7rem', color: '#00C2B3', display: 'block', marginTop: '4px' }}>
+                          ✓ {language === 'es' ? 'Las fechas bloqueadas en tu Google Calendar o Wix se actualizarán automáticamente.' : 'Blocked dates in your external calendar sync automatically.'}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '24px' }}>
