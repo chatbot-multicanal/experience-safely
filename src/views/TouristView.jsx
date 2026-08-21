@@ -414,7 +414,7 @@ export default function TouristView() {
             {(categories || []).map(cat => {
               const label = language === 'es' 
                 ? cat.label 
-                : cat.id === 'todos' ? 'All' : cat.id === 'cenotes' ? 'Cenotes' : cat.id === 'haciendas' ? 'Haciendas' : cat.id === 'barcos' ? 'Boats & Marinas' : cat.id === 'holisticas' ? 'Wellness' : cat.id === 'restaurantes' ? 'Gastronomy' : cat.id === 'hoteles' ? 'Hotels' : cat.id === 'spas' ? 'Spas' : cat.label;
+                : cat.id === 'todos' ? 'All' : cat.id === 'cenotes' ? 'Cenotes' : cat.id === 'haciendas' ? 'Haciendas' : cat.id === 'barcos' ? 'Boats & Marinas' : cat.id === 'deportes' ? 'Sports & Padel' : cat.id === 'holisticas' ? 'Wellness' : cat.id === 'restaurantes' ? 'Gastronomy' : cat.id === 'hoteles' ? 'Hotels' : cat.id === 'spas' ? 'Spas' : cat.label;
               return (
                 <button
                   key={cat.id}
