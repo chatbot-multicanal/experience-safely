@@ -725,6 +725,11 @@ export const AppProvider = ({ children }) => {
     isProviderLoggedIn: false
   });
 
+  // ChatBot global open/close state
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const openChatBot = () => setIsChatOpen(true);
+  const closeChatBot = () => setIsChatOpen(false);
+
   // Tourist User Authentication (persisted in localStorage)
   const [touristUser, setTouristUser] = useState(() => {
     try {
@@ -1149,7 +1154,11 @@ export const AppProvider = ({ children }) => {
       registerTourist,
       loginTourist,
       loginWithGoogle,
-      logoutTourist
+      logoutTourist,
+      isChatOpen,
+      setIsChatOpen,
+      openChatBot,
+      closeChatBot
     }}>
       {children}
     </AppContext.Provider>

@@ -4,9 +4,10 @@ import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react';
 
 export default function ChatBot() {
   const context = useContext(AppContext) || {};
-  const { experiences = [], language = 'es', t = (k) => k } = context;
+  const { experiences = [], language = 'es', t = (k) => k, isChatOpen = false, setIsChatOpen = () => {} } = context;
 
-  const [isOpen, setIsOpen] = useState(false);
+  const isOpen = isChatOpen;
+  const setIsOpen = (val) => setIsChatOpen(val);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);

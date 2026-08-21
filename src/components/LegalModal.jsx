@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { AppContext } from '../context/AppContext';
-import { X, ShieldCheck, FileText, Lock, AlertTriangle, Scale, CheckCircle2, Phone, HelpCircle, Mail, MapPin, MessageSquare } from 'lucide-react';
+import { X, ShieldCheck, FileText, Lock, AlertTriangle, Scale, CheckCircle2, Phone, HelpCircle, Mail, MapPin, MessageSquare, Bot, Sparkles } from 'lucide-react';
 
 export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', language = 'es' }) {
-  const { siteDesign = {} } = useContext(AppContext) || {};
+  const { siteDesign = {}, openChatBot = () => {} } = useContext(AppContext) || {};
   const [activeTab, setActiveTab] = useState(initialTab);
 
   const contactEmail = siteDesign?.contactEmail?.trim() || 'contacto@experiencesafely.com';
@@ -143,8 +143,59 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
           {/* TAB: PREGUNTAS FRECUENTES (FAQ) */}
           {activeTab === 'faq' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ background: 'rgba(0, 194, 179, 0.08)', border: '1px solid rgba(0, 194, 179, 0.25)', padding: '12px 16px', borderRadius: '12px', color: '#00C2B3', fontSize: '0.8rem' }}>
-                ❓ Resuelve de inmediato tus dudas sobre reservaciones, garantías de seguridad y pases.
+              
+              {/* Interactive Banner: Direct Link to Open Assistant ChatBot */}
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(0, 194, 179, 0.15), rgba(21, 38, 63, 0.9))',
+                border: '1px solid rgba(0, 194, 179, 0.4)',
+                padding: '16px 20px',
+                borderRadius: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '14px',
+                boxShadow: '0 8px 24px rgba(0, 194, 179, 0.12)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ background: '#00C2B3', color: '#0d182a', padding: '10px', borderRadius: '12px', display: 'flex' }}>
+                    <Bot size={22} />
+                  </div>
+                  <div>
+                    <strong style={{ color: '#fff', fontSize: '0.95rem', display: 'block' }}>
+                      {language === 'es' ? '¿Tienes más preguntas o dudas sobre un tour?' : 'Have more questions about a tour?'}
+                    </strong>
+                    <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.75)' }}>
+                      {language === 'es' ? 'Chatea en vivo 24/7 con nuestro Asistente de IA para recomendaciones e informes al instante.' : 'Chat live 24/7 with our AI Assistant for instant recommendations.'}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    onClose();
+                    setTimeout(() => openChatBot(), 150);
+                  }}
+                  style={{
+                    background: '#00C2B3',
+                    color: '#0d182a',
+                    border: 'none',
+                    padding: '10px 18px',
+                    borderRadius: '12px',
+                    fontWeight: '700',
+                    fontSize: '0.85rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    boxShadow: '0 4px 12px rgba(0,194,179,0.3)',
+                    transition: 'transform 0.2s'
+                  }}
+                  className="hover-teal"
+                >
+                  <Sparkles size={16} />
+                  {language === 'es' ? '💬 Abrir Chat con el Bot' : '💬 Open Chat Assistant'}
+                </button>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
