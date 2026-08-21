@@ -11,6 +11,9 @@ export default function ProviderRegisterModal({ isOpen, onClose }) {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [contactName, setContactName] = useState('');
+  const [address, setAddress] = useState('');
+  const [operatingHours, setOperatingHours] = useState('');
+  const [comment, setComment] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   if (!isOpen) return null;
@@ -19,7 +22,7 @@ export default function ProviderRegisterModal({ isOpen, onClose }) {
     e.preventDefault();
     if (!companyName || !rfc || !email) return;
     
-    addAuditLog('provider', `Nueva solicitud de registro de empresa: "${companyName}" (RFC: ${rfc}) - PENDIENTE DE APROBACIÓN`);
+    addAuditLog('provider', `Nueva solicitud de registro de empresa: "${companyName}" (RFC: ${rfc}, Dirección: ${address}, Horarios: ${operatingHours}) - PENDIENTE DE APROBACIÓN`);
     setIsSubmitted(true);
   };
 
@@ -30,6 +33,9 @@ export default function ProviderRegisterModal({ isOpen, onClose }) {
     setPhone('');
     setEmail('');
     setContactName('');
+    setAddress('');
+    setOperatingHours('');
+    setComment('');
     onClose();
   };
 
@@ -144,6 +150,39 @@ export default function ProviderRegisterModal({ isOpen, onClose }) {
                     style={{ width: '100%' }}
                   />
                 </div>
+              </div>
+
+              {/* Dirección */}
+              <div>
+                <label className="form-label">{language === 'es' ? 'Dirección Física / Comercial' : 'Business Address'}</label>
+                <input 
+                  type="text" className="form-input" required
+                  placeholder="Ej. Calle 60 #450 x 53 y 55, Centro, Mérida, Yucatán"
+                  value={address} onChange={e => setAddress(e.target.value)}
+                  style={{ width: '100%' }}
+                />
+              </div>
+
+              {/* Horario */}
+              <div>
+                <label className="form-label">{language === 'es' ? 'Horario de Atención / Operativo' : 'Operating Hours'}</label>
+                <input 
+                  type="text" className="form-input" required
+                  placeholder="Ej. Lunes a Domingo de 8:00 AM a 6:00 PM"
+                  value={operatingHours} onChange={e => setOperatingHours(e.target.value)}
+                  style={{ width: '100%' }}
+                />
+              </div>
+
+              {/* Comentario */}
+              <div>
+                <label className="form-label">{language === 'es' ? 'Comentarios / Notas para Auditoría' : 'Comments / Audit Notes'}</label>
+                <textarea 
+                  className="form-input" rows="2"
+                  placeholder="Ej. Contamos con 3 embarcaciones con certificación de Capitanía de Puerto y guías certificados..."
+                  value={comment} onChange={e => setComment(e.target.value)}
+                  style={{ width: '100%', resize: 'vertical', minHeight: '60px' }}
+                />
               </div>
 
               <div style={{
