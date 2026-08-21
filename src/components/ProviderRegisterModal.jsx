@@ -61,31 +61,69 @@ export default function ProviderRegisterModal({ isOpen, onClose }) {
         </button>
 
         {isSubmitted ? (
-          <div style={{ padding: '40px 32px', textAlign: 'center' }}>
+          <div style={{ padding: '36px 28px', textAlign: 'center' }}>
             <div style={{
               width: '64px', height: '64px', borderRadius: '50%',
               background: 'rgba(0, 194, 179, 0.15)', border: '2px solid #00C2B3',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px',
               color: '#00C2B3'
             }}>
               <CheckCircle2 size={36} />
             </div>
-            <h3 style={{ fontSize: '1.25rem', color: '#fff', margin: '0 0 10px' }}>
-              {language === 'es' ? '¡Solicitud Registrada!' : 'Application Submitted!'}
+            <h3 style={{ fontSize: '1.25rem', color: '#fff', margin: '0 0 8px' }}>
+              {language === 'es' ? '¡Solicitud de Socio Registrada!' : 'Application Submitted!'}
             </h3>
-            <p style={{ fontSize: '0.88rem', color: 'rgba(255,255,255,0.7)', lineHeight: '1.6', marginBottom: '20px' }}>
+            <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', lineHeight: '1.5', marginBottom: '16px' }}>
               {language === 'es' 
-                ? 'Tu empresa ha quedado en estado '
-                : 'Your company is currently '}
+                ? 'Tu empresa ha quedado registrada en la Bitácora de Auditoría del Panel Administrador en estado '
+                : 'Your application has been logged into Admin Audit Panel as '}
               <strong style={{ color: '#FFC857' }}>
                 {language === 'es' ? 'PENDIENTE DE APROBACIÓN ⏳' : 'PENDING APPROVAL ⏳'}
-              </strong>
-              {language === 'es'
-                ? '. Nuestro equipo auditará tu RFC y certificaciones de seguridad antes de habilitar tu panel de socio.'
-                : '. Our audit team will review your RFC and safety credentials before activating your partner account.'}
+              </strong>.
             </p>
-            <button onClick={handleClose} className="btn btn-primary" style={{ width: '100%' }}>
-              {language === 'es' ? 'Entendido' : 'Got it'}
+
+            {/* Summary Box */}
+            <div style={{
+              background: 'rgba(13, 24, 42, 0.7)', border: '1px solid rgba(0, 194, 179, 0.25)',
+              padding: '14px', borderRadius: '14px', textAlign: 'left', fontSize: '0.8rem',
+              color: 'rgba(255,255,255,0.85)', marginBottom: '20px', lineHeight: '1.6'
+            }}>
+              <div>🏢 <strong>Empresa:</strong> {companyName} (RFC: {rfc})</div>
+              <div>👤 <strong>Contacto:</strong> {contactName} ({phone} / {email})</div>
+              {address && <div>📍 <strong>Dirección:</strong> {address}</div>}
+              {operatingHours && <div>🕒 <strong>Horarios:</strong> {operatingHours}</div>}
+              {comment && <div>💬 <strong>Comentarios:</strong> {comment}</div>}
+            </div>
+
+            {/* Direct Action Buttons for Immediate Alert */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
+              <a
+                href={`https://wa.me/5219902305070?text=${encodeURIComponent(`Hola Experience Safely, he enviado una solicitud de registro de Empresa Socio:\n\n*Empresa:* ${companyName}\n*RFC:* ${rfc}\n*Representante:* ${contactName}\n*Tel:* ${phone}\n*Email:* ${email}\n*Dirección:* ${address}\n*Horarios:* ${operatingHours}\n*Notas:* ${comment}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  background: '#25D366', color: '#fff', padding: '12px', borderRadius: '12px',
+                  fontWeight: '700', textDecoration: 'none', fontSize: '0.85rem'
+                }}
+              >
+                💬 {language === 'es' ? 'Enviar Notificación Inmediata por WhatsApp' : 'Send WhatsApp Alert'}
+              </a>
+
+              <a
+                href={`mailto:ventas@experiencesafely.com?subject=${encodeURIComponent(`Nueva Solicitud de Socio: ${companyName}`)}&body=${encodeURIComponent(`Solicitud de Afiliación:\n\nEmpresa: ${companyName}\nRFC: ${rfc}\nRepresentante: ${contactName}\nTeléfono: ${phone}\nCorreo: ${email}\nDirección: ${address}\nHorarios: ${operatingHours}\nComentarios: ${comment}`)}`}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                  background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.15)',
+                  padding: '10px', borderRadius: '12px', fontWeight: '600', textDecoration: 'none', fontSize: '0.82rem'
+                }}
+              >
+                ✉️ {language === 'es' ? 'Enviar Copia por Correo a Administración' : 'Send Email Copy'}
+              </a>
+            </div>
+
+            <button onClick={handleClose} className="btn btn-outline" style={{ width: '100%' }}>
+              {language === 'es' ? 'Cerrar Ventana' : 'Close Window'}
             </button>
           </div>
         ) : (
