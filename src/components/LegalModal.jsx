@@ -195,7 +195,7 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
               </div>
 
               <p style={{ margin: 0, lineHeight: '1.7', textAlign: 'justify' }}>
-                <strong>{siteDesign?.companyRightsName ? siteDesign.companyRightsName.toUpperCase() : 'EXPERIENCE SAFELY S.A.P.I. DE C.V.'}</strong>, conocida comercialmente como <strong>Experience Safely</strong>, con domicilio en <strong>{contactLocation}</strong>, es responsable del tratamiento de los datos personales que recabe a través de su sitio web, aplicación, formularios, representantes, canales de mensajería, puntos de venta, eventos y medios electrónicos relacionados con la plataforma.
+                <strong>Experience Safely</strong>, con domicilio en <strong>{contactLocation}</strong>, es responsable del tratamiento de los datos personales que recabe a través de su sitio web, aplicación, formularios, representantes, canales de mensajería, puntos de venta, eventos y medios electrónicos relacionados con la plataforma.
               </p>
 
               <h4 style={{ color: '#fff', fontSize: '0.95rem', margin: '8px 0 2px', fontWeight: '700' }}>
