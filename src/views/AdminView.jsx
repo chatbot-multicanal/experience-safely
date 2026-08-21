@@ -523,6 +523,7 @@ export default function AdminView() {
                   <tr style={{ borderBottom: '1px solid var(--color-border)', textAlign: 'left', color: 'var(--color-text-muted)' }}>
                     <th style={{ padding: '10px' }}>ID</th>
                     <th style={{ padding: '10px' }}>{language === 'es' ? 'Experiencia / Servicio' : 'Experience Listing'}</th>
+                    <th style={{ padding: '10px' }}>{language === 'es' ? 'Galería HD' : 'HD Gallery'}</th>
                     <th style={{ padding: '10px' }}>{language === 'es' ? 'Categoría' : 'Category'}</th>
                     <th style={{ padding: '10px' }}>{language === 'es' ? 'Ubicación' : 'Location'}</th>
                     <th style={{ padding: '10px' }}>{language === 'es' ? 'Socio Proveedor' : 'Partner Name'}</th>
@@ -537,7 +538,14 @@ export default function AdminView() {
                       <td style={{ padding: '10px' }}>
                         <strong>{exp.name}</strong>
                       </td>
-                      <td style={{ padding: '10px', textTransform: 'capitalize' }}>{exp.category}</td>
+                      <td style={{ padding: '10px' }}>
+                        <div style={{ display: 'flex', gap: '3px' }}>
+                          {((exp.gallery && exp.gallery.length >= 4) ? exp.gallery.slice(0,4) : [exp.image || '/images/discover yucatan.jpeg', '/images/cenote.jpg', '/images/hacienda.jpg', '/hero_yucatan.jpg']).map((img, i) => (
+                            <img key={i} src={img} alt={`Thumb ${i+1}`} style={{ width: '22px', height: '22px', borderRadius: '4px', objectFit: 'cover', border: '1px solid rgba(255,255,255,0.2)' }} />
+                          ))}
+                        </div>
+                      </td>
+                      <td style={{ padding: '10px', textTransform: 'uppercase', fontSize: '0.75rem', fontWeight: '700', color: '#00C2B3' }}>{exp.category}</td>
                       <td style={{ padding: '10px' }}>{exp.location}</td>
                       <td style={{ padding: '10px', color: 'var(--color-teal-light)' }}>{exp.providerName}</td>
                       <td style={{ padding: '10px', fontWeight: '700' }}>${exp.price.toLocaleString('es-MX')} MXN</td>

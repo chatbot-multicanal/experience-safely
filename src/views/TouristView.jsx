@@ -28,6 +28,8 @@ export default function TouristView() {
   const [activeTab, setActiveTab] = useState('catalog'); // 'catalog' | 'dashboard'
   const [showProviderRegModal, setShowProviderRegModal] = useState(false);
   const [selectedExpId, setSelectedExpId] = useState(null);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [lightboxUrl, setLightboxUrl] = useState(null);
   const [filterCategory, setFilterCategory] = useState('todos');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterDate, setFilterDate] = useState('');
@@ -478,71 +480,150 @@ export default function TouristView() {
             <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '32px' }}>
               {/* Left Detail Column */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                {/* Hero Header Card */}
-                <div className="glass-card" style={{ padding: '0', overflow: 'hidden' }}>
-                  <div style={{ height: '320px', position: 'relative' }}>
-                    <div style={{
-                      position: 'absolute', inset: 0,
-                      backgroundImage: `linear-gradient(to bottom, transparent 30%, rgba(13,24,42,0.95)), url(${selectedExp.image || '/branding_1.jpg'})`,
-                      backgroundSize: 'cover', backgroundPosition: 'center'
-                    }} />
-                    <div style={{ position: 'absolute', bottom: '24px', left: '24px', right: '24px' }}>
-                      <span className="badge badge-teal" style={{ marginBottom: '12px', textTransform: 'uppercase' }}>
-                        {selectedExp.category === 'tours' ? 'TOURS' : selectedExp.category.toUpperCase()}
-                      </span>
-                      <h1 style={{ fontSize: '2.2rem', fontWeight: '800', lineHeight: '1.2', color: '#fff' }}>{selectedExp.name}</h1>
-                      <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
-                        <MapPin size={14} /> {selectedExp.location ? (selectedExp.location.includes('Yucatán') ? selectedExp.location : `${selectedExp.location}, Yucatán`) : 'Yucatán'}
-                      </p>
-                    </div>
-                  </div>
+                {/* Hero Header Card with 4-Photo Interactive HD Gallery */}
+                {(() => {
+                  const galleryImages = (selectedExp.gallery && selectedExp.gallery.length >= 4)
+                    ? selectedExp.gallery.slice(0, 4)
+                    : [
+                        selectedExp.image || '/images/discover yucatan.jpeg',
+                        '/images/cenote.jpg',
+                        '/images/hacienda.jpg',
+                        '/hero_yucatan.jpg'
+                      ];
                   
-                  <div style={{ padding: '16px 24px', background: 'rgba(13, 24, 42, 0.9)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--color-border)' }}>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
-                      🔒 {language === 'es' ? 'Socio Verificado con Auditoría de Seguridad Activa' : 'Verified Partner with Active Safety Audit'}
-                    </span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem', color: 'var(--color-gold)' }}>
-                      <Star size={16} fill="var(--color-gold)" style={{ color: 'var(--color-gold)' }} /> {selectedExp.rating} ({selectedExp.reviewsCount} {t('reviewsCountLabel')})
-                    </span>
+                  const currentMainImage = galleryImages[activeImageIndex] || galleryImages[0];
 
-                    {selectedExp.externalWebsiteUrl && (
-                      <a
-                        href={selectedExp.externalWebsiteUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: 'inline-flex', alignItems: 'center', gap: '6px',
-                          background: 'rgba(0, 194, 179, 0.15)', color: '#00C2B3',
-                          border: '1px solid rgba(0, 194, 179, 0.35)',
-                          padding: '4px 10px', borderRadius: '12px', fontSize: '0.78rem',
-                          fontWeight: '700', textDecoration: 'none', transition: 'all 0.2s'
-                        }}
+                  return (
+                    <div className="glass-card" style={{ padding: '0', overflow: 'hidden' }}>
+                      
+                      {/* Main Image Banner */}
+                      <div 
+                        style={{ height: '360px', position: 'relative', cursor: 'pointer' }}
+                        onClick={() => setLightboxUrl(currentMainImage)}
+                        title={language === 'es' ? 'Haz clic para ampliar la fotografía en HD' : 'Click to view full HD photo'}
                       >
-                        🌐 {language === 'es' ? 'Sitio Web Oficial' : 'Official Website'}
-                      </a>
-                    )}
+                        <div style={{
+                          position: 'absolute', inset: 0,
+                          backgroundImage: `linear-gradient(to bottom, transparent 20%, rgba(13,24,42,0.95)), url(${currentMainImage})`,
+                          backgroundSize: 'cover', backgroundPosition: 'center',
+                          transition: 'background-image 0.4s ease-in-out'
+                        }} />
 
-                    {selectedExp.facebookUrl && (
-                      <a
-                        href={selectedExp.facebookUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: 'inline-flex', alignItems: 'center', gap: '6px',
-                          background: 'rgba(24, 119, 242, 0.15)', color: '#1877F2',
-                          border: '1px solid rgba(24, 119, 242, 0.3)',
-                          padding: '4px 10px', borderRadius: '12px', fontSize: '0.78rem',
-                          fontWeight: '700', textDecoration: 'none', transition: 'all 0.2s'
-                        }}
-                      >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="#1877F2">
-                          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                        </svg>
-                        {language === 'es' ? 'Página Oficial en Facebook' : 'Official Facebook Page'}
-                      </a>
-                    )}
-                  </div>
-                </div>
+                        {/* Top Indicator */}
+                        <div style={{ position: 'absolute', top: '16px', right: '16px', background: 'rgba(13,24,42,0.75)', border: '1px solid rgba(255,255,255,0.2)', padding: '6px 14px', borderRadius: '20px', fontSize: '0.78rem', color: '#fff', backdropFilter: 'blur(6px)', fontWeight: '700' }}>
+                          📸 {language === 'es' ? `Foto ${activeImageIndex + 1} de 4` : `Photo ${activeImageIndex + 1} of 4`}
+                        </div>
+
+                        {/* Title & Info Overlay */}
+                        <div style={{ position: 'absolute', bottom: '20px', left: '24px', right: '24px' }}>
+                          <span className="badge badge-teal" style={{ marginBottom: '10px', textTransform: 'uppercase' }}>
+                            {selectedExp.category === 'tours' ? 'TOURS' : selectedExp.category.toUpperCase()}
+                          </span>
+                          <h1 style={{ fontSize: '2.1rem', fontWeight: '800', lineHeight: '1.2', color: '#fff', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>{selectedExp.name}</h1>
+                          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
+                            <MapPin size={14} style={{ color: '#00C2B3' }} /> {selectedExp.location ? (selectedExp.location.includes('Yucatán') ? selectedExp.location : `${selectedExp.location}, Yucatán`) : 'Yucatán'}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* 4 Interactive HD Thumbnails Bar */}
+                      <div style={{
+                        padding: '12px 16px',
+                        background: 'rgba(13, 24, 42, 0.95)',
+                        borderTop: '1px solid rgba(255,255,255,0.1)',
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: '12px'
+                      }}>
+                        {galleryImages.map((imgUrl, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => setActiveImageIndex(idx)}
+                            style={{
+                              padding: 0,
+                              border: activeImageIndex === idx ? '2px solid #00C2B3' : '1px solid rgba(255,255,255,0.15)',
+                              borderRadius: '12px',
+                              overflow: 'hidden',
+                              height: '70px',
+                              background: 'none',
+                              cursor: 'pointer',
+                              position: 'relative',
+                              transition: 'all 0.2s',
+                              transform: activeImageIndex === idx ? 'scale(1.03)' : 'scale(1)',
+                              boxShadow: activeImageIndex === idx ? '0 0 12px rgba(0,194,179,0.5)' : 'none'
+                            }}
+                          >
+                            <img 
+                              src={imgUrl} 
+                              alt={`Foto ${idx + 1}`} 
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                            />
+                            {activeImageIndex === idx && (
+                              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,194,179,0.15)' }} />
+                            )}
+                            <span style={{
+                              position: 'absolute', bottom: '4px', right: '6px',
+                              background: 'rgba(0,0,0,0.7)', color: '#fff', fontSize: '0.65rem',
+                              padding: '2px 5px', borderRadius: '6px', fontWeight: '800'
+                            }}>
+                              {idx + 1}/4
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Bar Info & External Links */}
+                      <div style={{ padding: '14px 24px', background: 'rgba(13, 24, 42, 0.9)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--color-border)', flexWrap: 'wrap', gap: '10px' }}>
+                        <span style={{ fontSize: '0.82rem', color: 'var(--color-text-muted)' }}>
+                          🔒 {language === 'es' ? 'Socio Verificado con Auditoría de Seguridad Activa' : 'Verified Partner with Active Safety Audit'}
+                        </span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem', color: 'var(--color-gold)' }}>
+                            <Star size={16} fill="var(--color-gold)" style={{ color: 'var(--color-gold)' }} /> {selectedExp.rating} ({selectedExp.reviewsCount} {t('reviewsCountLabel')})
+                          </span>
+
+                          {selectedExp.externalWebsiteUrl && (
+                            <a
+                              href={selectedExp.externalWebsiteUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                display: 'inline-flex', alignItems: 'center', gap: '6px',
+                                background: 'rgba(0, 194, 179, 0.15)', color: '#00C2B3',
+                                border: '1px solid rgba(0, 194, 179, 0.35)',
+                                padding: '4px 10px', borderRadius: '12px', fontSize: '0.78rem',
+                                fontWeight: '700', textDecoration: 'none'
+                              }}
+                            >
+                              🌐 {language === 'es' ? 'Sitio Web Oficial' : 'Official Website'}
+                            </a>
+                          )}
+
+                          {selectedExp.facebookUrl && (
+                            <a
+                              href={selectedExp.facebookUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                display: 'inline-flex', alignItems: 'center', gap: '6px',
+                                background: 'rgba(24, 119, 242, 0.15)', color: '#1877F2',
+                                border: '1px solid rgba(24, 119, 242, 0.3)',
+                                padding: '4px 10px', borderRadius: '12px', fontSize: '0.78rem',
+                                fontWeight: '700', textDecoration: 'none'
+                              }}
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="#1877F2">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                              </svg>
+                              {language === 'es' ? 'Página Oficial en Facebook' : 'Official Facebook Page'}
+                            </a>
+                          )}
+                        </div>
+                      </div>
+
+                    </div>
+                  );
+                })()}
 
                 {/* Description */}
                 <div className="glass-card" style={{ padding: '24px' }}>
@@ -1200,6 +1281,38 @@ export default function TouristView() {
         isOpen={showProviderRegModal}
         onClose={() => setShowProviderRegModal(false)}
       />
+
+      {/* Fullscreen HD Lightbox Modal for Gallery Photos */}
+      {lightboxUrl && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.92)',
+          backdropFilter: 'blur(10px)', zIndex: 20000, display: 'flex',
+          alignItems: 'center', justifyContent: 'center', padding: '24px',
+          animation: 'chatbot-slide-up 0.25s ease-out'
+        }} onClick={() => setLightboxUrl(null)}>
+          <button
+            onClick={() => setLightboxUrl(null)}
+            style={{
+              position: 'absolute', top: '24px', right: '24px',
+              background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
+              color: '#fff', borderRadius: '50%', padding: '10px', cursor: 'pointer', display: 'flex'
+            }}
+          >
+            <X size={24} />
+          </button>
+          
+          <img 
+            src={lightboxUrl} 
+            alt="Vista HD" 
+            style={{
+              maxWidth: '90vw', maxHeight: '85vh', objectFit: 'contain',
+              borderRadius: '16px', boxShadow: '0 20px 60px rgba(0,0,0,0.8)',
+              border: '1px solid rgba(255,255,255,0.15)'
+            }}
+            onClick={e => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 }
