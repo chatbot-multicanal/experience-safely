@@ -236,7 +236,7 @@ const INITIAL_EXPERIENCES = [
       'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1599474924187-334a4ae5bd3c?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?auto=format&fit=crop&w=1200&q=80',
-      '/branding_2.jpg'
+      'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=1200&q=80'
     ],
     rating: 5.0,
     reviewsCount: 3,
@@ -264,8 +264,8 @@ const INITIAL_EXPERIENCES = [
     gallery: [
       'https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80',
-      '/images/discover yucatan.jpeg',
-      '/branding_1.jpg'
+      'https://images.unsplash.com/photo-1510894347713-fc3ed6fdf539?auto=format&fit=crop&w=1200&q=80',
+      '/images/discover yucatan.jpeg'
     ],
     rating: 5.0,
     reviewsCount: 4,
@@ -788,7 +788,7 @@ export const AppProvider = ({ children }) => {
   // Persist experiences state in localStorage so edits and photo changes persist
   const [experiences, setExperiences] = useState(() => {
     try {
-      const saved = localStorage.getItem('es_experiences_v3');
+      const saved = localStorage.getItem('es_experiences_v4');
       if (saved && saved !== 'undefined' && saved !== 'null') {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -801,7 +801,7 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     try {
-      localStorage.setItem('es_experiences_v3', JSON.stringify(experiences));
+      localStorage.setItem('es_experiences_v4', JSON.stringify(experiences));
     } catch (e) {}
   }, [experiences]);
 
@@ -820,7 +820,7 @@ export const AppProvider = ({ children }) => {
     } catch (e) {}
 
     const handleStorageChange = (e) => {
-      if (e.key === 'es_experiences_v3' && e.newValue) {
+      if (e.key === 'es_experiences_v4' && e.newValue) {
         try {
           const parsed = JSON.parse(e.newValue);
           if (Array.isArray(parsed)) {
