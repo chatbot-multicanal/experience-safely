@@ -1203,7 +1203,7 @@ export const AppProvider = ({ children }) => {
     return { available: true, price: slot.price, spotsLeft: remaining };
   };
 
-  const bookExperience = (experienceId, dateStr, guests, name, email, paymentMethod = 'Tarjeta de Crédito', pickupAddress = '') => {
+  const bookExperience = (experienceId, dateStr, guests, name, email, paymentMethod = 'Tarjeta de Crédito', pickupAddress = '', selectedSchedule = '') => {
     const check = checkAvailability(experienceId, dateStr, guests);
     if (!check.available) return { success: false, error: check.reason };
     
@@ -1223,6 +1223,7 @@ export const AppProvider = ({ children }) => {
       touristName: name,
       touristEmail: email,
       pickupAddress: pickupAddress || 'Recolección Estándar en Punto de Encuentro',
+      selectedSchedule: selectedSchedule || '09:00 AM',
       status: 'Confirmada',
       paymentMethod,
       safetyPassCode: passCode

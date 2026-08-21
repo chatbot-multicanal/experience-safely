@@ -113,9 +113,10 @@ export default function TouristView() {
       return;
     }
 
-    // Process simulation with Pickup & Dropoff Address
+    // Process simulation with Pickup & Dropoff Address & Selected Schedule
     const finalPickup = includePickup ? pickupAddress : (language === 'es' ? 'Recolección Estándar en Punto de Encuentro' : 'Standard Meeting Point Pickup');
-    const result = bookExperience(selectedExp.id, bookingDate, bookingGuests, touristName, touristEmail, paymentMethod, finalPickup);
+    const finalSchedule = selectedSchedule || (selectedExp.schedules?.[0] || '09:00 AM');
+    const result = bookExperience(selectedExp.id, bookingDate, bookingGuests, touristName, touristEmail, paymentMethod, finalPickup, finalSchedule);
     if (result && result.success) {
       setSuccessBooking(result.booking);
       setCheckoutStep(3);
@@ -991,28 +992,46 @@ export default function TouristView() {
                   </div>
                 )}
 
-                {/* B) TOUR / CENOTE GIRO: TURN / SCHEDULE SELECTOR */}
-                {(selectedExp.bookingType === 'tour' || selectedExp.category === 'cenotes') && (
-                  <div className="form-group" style={{ margin: '16px 0' }}>
-                    <label className="form-label" style={{ color: '#00C2B3' }}>🕒 {language === 'es' ? 'Selecciona Turno / Horario de Entrada:' : 'Select Entry Schedule:'}</label>
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      {(selectedExp.schedules || ['09:00 AM', '12:00 PM', '03:00 PM']).map(sch => {
-                        const isSchSelected = selectedSchedule === sch || (!selectedSchedule && sch === (selectedExp.schedules?.[0] || '09:00 AM'));
-                        return (
-                          <button
-                            key={sch} type="button"
-                            onClick={() => setSelectedSchedule(sch)}
-                            style={{
-                              background: isSchSelected ? '#00C2B3' : 'rgba(255,255,255,0.04)',
-                              color: isSchSelected ? '#fff' : 'rgba(255,255,255,0.7)',
-                              border: isSchSelected ? 'none' : '1px solid rgba(255,255,255,0.1)',
-                              padding: '6px 14px', borderRadius: '16px', fontSize: '0.8rem', fontWeight: '700', cursor: 'pointer'
-                            }}
-                          >
-                            {sch}
-                          </button>
+                {/* B) UNIVERSAL DYNAMIC TIME SLOTS BASED ON SELECTED DATE (YACHTS, PADEL, CENOTES, YOGA, ETC) */}
+                {bookingDate && (
+                  <div className="form-group" style={{ margin: '16px 0', background: 'rgba(0, 194, 179, 0.08)', padding: '14px', borderRadius: '12px', border: '1px solid rgba(0, 194, 179, 0.25)' }}>
+                    <label className="form-label" style={{ color: '#00C2B3', fontWeight: '700', fontSize: '0.85rem' }}>
+                      🕒 {language === 'es' ? `Horarios Disponibles:` : `Available Time Slots:`}
+                    </label>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '8px' }}>
+                      {(() => {
+                        const availableSchedules = selectedExp.schedules || (
+                          selectedExp.bookingType === 'transport' || selectedExp.category === 'barcos' 
+                            ? ['09:00 AM (Salida Matutina)', '02:00 PM (Sunset Atardecer)', '06:00 PM (Nocturno VIP)']
+                            : selectedExp.category === 'deportes'
+                            ? ['07:00 AM', '09:00 AM', '05:00 PM', '07:00 PM', '09:00 PM']
+                            : selectedExp.category === 'holisticas'
+                            ? ['07:00 AM (Amanecer)', '09:00 AM (Fluidez)', '05:30 PM (Atardecer & Cuencos)']
+                            : ['09:00 AM', '12:00 PM', '03:00 PM', '06:00 PM']
                         );
-                      })}
+                        
+                        const currentSch = selectedSchedule || availableSchedules[0];
+
+                        return availableSchedules.map(sch => {
+                          const isSchSelected = currentSch === sch;
+                          return (
+                            <button
+                              key={sch} type="button"
+                              onClick={() => setSelectedSchedule(sch)}
+                              style={{
+                                background: isSchSelected ? '#00C2B3' : 'rgba(255,255,255,0.05)',
+                                color: isSchSelected ? '#fff' : 'rgba(255,255,255,0.8)',
+                                border: isSchSelected ? 'none' : '1px solid rgba(255,255,255,0.15)',
+                                padding: '8px 14px', borderRadius: '16px', fontSize: '0.8rem', fontWeight: '700', cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                boxShadow: isSchSelected ? '0 4px 12px rgba(0, 194, 179, 0.4)' : 'none'
+                              }}
+                            >
+                              {sch}
+                            </button>
+                          );
+                        });
+                      })()}
                     </div>
                   </div>
                 )}
