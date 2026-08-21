@@ -118,6 +118,31 @@ const INITIAL_EXPERIENCES = [
     syncedFromWix: false,
   },
   {
+    id: 'exp-isla-columpios',
+    name: 'Isla Columpios Chuburná — Columpios Acuáticos & Manglares en Chuburná Puerto',
+    description: 'Disfruta del paraíso tropical de Isla Columpios en los bajos cristalinos de Chuburná Puerto. Navega en lancha o kayak a través de los manglares de la ría, relájate en los emblemáticos columpios y hamacas gigantes sumergidos en aguas turquesas, toma fotos espectaculares y disfruta de mariscos frescos bajo las palapas.',
+    category: 'barcos',
+    location: 'Chuburná Puerto, Yucatán',
+    price: 400,
+    capacity: 20,
+    image: '/images/discover yucatan.jpeg',
+    rating: 5.0,
+    reviewsCount: 7,
+    pricingType: 'individual',
+    bookingType: 'tour',
+    externalWebsiteUrl: 'https://islacolumpios.com/',
+    schedules: ['08:00 AM', '10:30 AM', '01:00 PM', '03:30 PM'],
+    reviews: [
+      { id: 'rev-ic1', author: 'Valeria M.', rating: 5, comment: 'Isla Columpios en Chuburná es increíble. Las fotos quedan espectaculares y la atención de los lancheros con chalecos de salvavidas súper bien.', date: '2026-08-16', source: 'Google' },
+      { id: 'rev-ic2', author: 'Gonzalo T.', rating: 5, comment: 'Un lugar mágico y tranquilo. Súper seguro para ir con niños y familia.', date: '2026-08-04', source: 'Facebook' }
+    ],
+    safetyBadges: ['Auditoría Marítima Verified', 'Lancheros Certificados', 'Chalecos Salvavidas ISO'],
+    safetyDescription: 'Ecoparque marítimo auditado por Capitanía de Puerto. Chalecos salvavidas reglamentarios e higienizados. Zona de agua de baja profundidad segura para toda la familia.',
+    providerId: 'provider-9',
+    providerName: 'Isla Columpios Chuburná Official',
+    syncedFromWix: false,
+  },
+  {
     id: 'exp-2',
     name: 'Cena de Gala en Hacienda Mucuyché',
     description: 'Disfruta de una velada gastronómica exclusiva de 5 tiempos inspirada en recetas ancestrales del henequén, servida en los majestuenses jardines iluminados de la Hacienda Mucuyché. Incluye recorrido nocturno por el cenote de la hacienda.',
@@ -880,7 +905,8 @@ export const AppProvider = ({ children }) => {
     { id: 'provider-5', name: 'Marinas del Norte Yucatán', rfc: 'MNY201103BC3', status: 'Pendiente', safetyRating: 'None', contact: 'ventas@marinasnorte.com' },
     { id: 'provider-6', name: 'Homúnja’ Parque Ecoturístico', rfc: 'HPE190412HK8', status: 'Aprobado', safetyRating: 'Gold', contact: 'contacto@homunja.com.mx' },
     { id: 'provider-7', name: 'Tour Ría Lagartos Official', rfc: 'TRL170914KL5', status: 'Aprobado', safetyRating: 'Gold', contact: 'info@tourriolagartos.com' },
-    { id: 'provider-8', name: 'Sayachaltún Marina & Ecoparque Official', rfc: 'SME181005PT9', status: 'Aprobado', safetyRating: 'Gold', contact: 'contacto@sayachaltun.com' }
+    { id: 'provider-8', name: 'Sayachaltún Marina & Ecoparque Official', rfc: 'SME181005PT9', status: 'Aprobado', safetyRating: 'Gold', contact: 'contacto@sayachaltun.com' },
+    { id: 'provider-9', name: 'Isla Columpios Chuburná Official', rfc: 'ICC190608AB2', status: 'Aprobado', safetyRating: 'Gold', contact: 'contacto@islacolumpios.com' }
   ]);
 
   // Provider Profiles state (CLABE and Bank credentials)
@@ -926,6 +952,12 @@ export const AppProvider = ({ children }) => {
       commercialPhone: '9919650000',
       paymentEmail: 'contacto@sayachaltun.com',
       bankClabe: '012914002015384444'
+    },
+    'provider-9': {
+      representativeName: 'Capitán Chuburná',
+      commercialPhone: '9991230000',
+      paymentEmail: 'contacto@islacolumpios.com',
+      bankClabe: '012914002015383333'
     }
   });
 
