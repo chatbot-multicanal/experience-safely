@@ -253,6 +253,35 @@ const INITIAL_EXPERIENCES = [
     syncedFromWix: false,
   },
   {
+    id: 'exp-yoga-holistico',
+    name: 'Clases de Yoga Vinyasa & Meditación Guiada frente al Mar y Selva',
+    description: 'Conecta tu cuerpo y mente en sesiones exclusivas de Yoga Vinyasa, Hatha y Meditación Sonora con cuencos tibetanos al amanecer o atardecer. Incluye tapete pro (mat), bloques de apoyo, té aromático de hierbas mayas y transporte opcional de recolección en tu hotel.',
+    category: 'holisticas',
+    location: 'Progreso / Telchac Puerto, Yucatán',
+    price: 350,
+    capacity: 10,
+    image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=1200&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80',
+      '/images/discover yucatan.jpeg',
+      '/branding_1.jpg'
+    ],
+    rating: 5.0,
+    reviewsCount: 4,
+    pricingType: 'individual',
+    bookingType: 'wellness',
+    schedules: ['07:00 AM (Amanecer)', '09:00 AM (Fluidez)', '05:30 PM (Atardecer & Cuencos)'],
+    reviews: [
+      { id: 'rev-y1', author: 'Mariana P.', rating: 5, comment: 'La vibra de la clase al atardecer frente al mar fue mágica. Los cuencos tibetanos te relajan al 100% y pasaron por mí a mi hotel súper puntuales.', date: '2026-08-15', source: 'Instagram' }
+    ],
+    safetyBadges: ['Instrucción Certificada RYT-500', 'Sanitización Estricta de Equipo', 'Transporte Hotel Incluido'],
+    safetyDescription: 'Tapetes y bloques desinfectados con cuarzos y aceites esenciales naturales tras cada clase. Instrucción apta para todos los niveles.',
+    providerId: 'provider-3',
+    providerName: 'Yucatán Yoga & Wellness Sanctuary',
+    syncedFromWix: false,
+  },
+  {
     id: 'exp-5',
     name: 'Tour Gastronómico Callejero en Mérida',
     description: 'Un recorrido a pie por los mercados y cantinas más antiguos del centro de Mérida. Degusta panuchos, salbutes, cochinita pibil, sopa de lima y helados artesanales de frutas locales de temporada mientras conoces la historia de la ciudad.',
