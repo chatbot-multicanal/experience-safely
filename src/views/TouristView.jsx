@@ -384,11 +384,11 @@ export default function TouristView() {
               <span className="badge badge-teal" style={{ marginBottom: '16px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                 <Sparkles size={14} /> {language === 'es' ? 'Plataforma Oficial de Experiencias Verificadas' : 'Official Verified Experiences Platform'}
               </span>
-              <h1 style={{ fontSize: '2.5rem', fontWeight: '800', lineHeight: '1.25', marginBottom: '16px' }}>
-                {t('catalogTitle')}
+              <h1 style={{ fontSize: '2.4rem', fontWeight: '800', lineHeight: '1.25', marginBottom: '16px' }}>
+                {language === 'es' ? 'Experiencias Seguras & Memorables en Yucatán' : 'Safe & Memorable Experiences in Yucatan'}
               </h1>
               <p style={{ fontSize: '1.05rem', color: 'var(--color-text-muted)', lineHeight: '1.6', marginBottom: '24px' }}>
-                {t('catalogSubtitle')}
+                {language === 'es' ? 'Reserva tours, cenotes, catamaranes y hospedajes ecoturísticos con sellos de auditoría de seguridad verificados.' : 'Book audited tours, cenotes, charters and boutique ecoparks.'}
               </p>
               
               <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
@@ -404,13 +404,13 @@ export default function TouristView() {
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
               
               <div className="form-group" style={{ flex: '2 1 240px', marginBottom: 0 }}>
-                <label className="form-label">{t('searchLabel')}</label>
+                <label className="form-label">{language === 'es' ? 'Buscar Experiencia' : 'Search Experience'}</label>
                 <div style={{ position: 'relative' }}>
                   <Search size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--color-text-muted)' }} />
                   <input 
                     type="text"
                     className="form-input"
-                    placeholder={t('searchPlaceholder')}
+                    placeholder={language === 'es' ? 'Buscar por cenote, tour, lancha, ubicación...' : 'Search by cenote, tour, boat...'}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     style={{ paddingLeft: '40px', width: '100%' }}
@@ -454,207 +454,143 @@ export default function TouristView() {
                 onClick={() => {}}
                 style={{ flex: '1 1 140px', height: '46px', fontWeight: '700' }}
               >
-                {t('btnFilter')}
+                {language === 'es' ? 'FILTRAR' : 'FILTER'}
               </button>
             </div>
           </div>
 
-          {/* Category Filter Pills Bar & Layout Controls */}
+          {/* Category Filter Pills Bar */}
           <div style={{ 
             display: 'flex', 
-            justify: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: '12px',
-            marginTop: '20px', 
-            marginBottom: '20px'
+            gap: '8px', 
+            overflowX: 'auto', 
+            padding: '10px 4px 20px 4px', 
+            marginTop: '16px', 
+            marginBottom: '24px',
+            alignItems: 'center'
           }}>
-            <div style={{ 
-              display: 'flex', 
-              gap: '8px', 
-              overflowX: 'auto', 
-              padding: '6px 2px', 
-              alignItems: 'center'
-            }}>
-              {(categories || []).map(cat => {
-                const label = language === 'es' 
-                  ? cat.label 
-                  : cat.id === 'todos' ? 'All' : cat.id === 'cenotes' ? 'Cenotes' : cat.id === 'haciendas' ? 'Haciendas' : cat.id === 'barcos' ? 'Boats & Marinas' : cat.id === 'holisticas' ? 'Wellness' : cat.id === 'restaurantes' ? 'Gastronomy' : cat.id === 'hoteles' ? 'Hotels' : cat.id === 'spas' ? 'Spas' : cat.label;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setFilterCategory(cat.id)}
-                    className={`btn btn-sm category-pill ${filterCategory === cat.id ? 'btn-primary' : 'btn-outline'}`}
-                    style={{ whiteSpace: 'nowrap', borderRadius: '30px', padding: '8px 16px', fontSize: '0.82rem' }}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Layout Controls & Carousel Nav Arrows */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', fontWeight: '600' }}>
-                {language === 'es' ? 'Modo de vista:' : 'View mode:'}
-              </span>
-              
-              <div style={{ display: 'flex', background: 'rgba(13,24,42,0.8)', border: '1px solid var(--color-border)', borderRadius: '20px', padding: '2px' }}>
+            {(categories || []).map(cat => {
+              const label = language === 'es' 
+                ? cat.label 
+                : cat.id === 'todos' ? 'All' : cat.id === 'cenotes' ? 'Cenotes' : cat.id === 'haciendas' ? 'Haciendas' : cat.id === 'barcos' ? 'Boats & Marinas' : cat.id === 'holisticas' ? 'Wellness' : cat.id === 'restaurantes' ? 'Gastronomy' : cat.id === 'hoteles' ? 'Hotels' : cat.id === 'spas' ? 'Spas' : cat.label;
+              return (
                 <button
-                  onClick={() => setCatalogLayoutMode('carousel')}
-                  className={`btn btn-sm ${catalogLayoutMode === 'carousel' ? 'btn-secondary' : 'btn-outline'}`}
-                  style={{ borderRadius: '18px', padding: '4px 10px', fontSize: '0.75rem' }}
-                  title={language === 'es' ? 'Carrusel Deslizable Lateral' : 'Horizontal Scrollable Carousel'}
+                  key={cat.id}
+                  onClick={() => setFilterCategory(cat.id)}
+                  className={`btn btn-sm category-pill ${filterCategory === cat.id ? 'btn-primary' : 'btn-outline'}`}
+                  style={{ whiteSpace: 'nowrap', borderRadius: '30px', padding: '9px 18px', fontSize: '0.83rem' }}
                 >
-                  <SlidersHorizontal size={14} /> {language === 'es' ? 'Carrusel ↔' : 'Carousel ↔'}
+                  {label}
                 </button>
-                <button
-                  onClick={() => setCatalogLayoutMode('grid')}
-                  className={`btn btn-sm ${catalogLayoutMode === 'grid' ? 'btn-secondary' : 'btn-outline'}`}
-                  style={{ borderRadius: '18px', padding: '4px 10px', fontSize: '0.75rem' }}
-                  title={language === 'es' ? 'Cuadrícula Completa' : 'Full Grid'}
-                >
-                  <LayoutGrid size={14} /> {language === 'es' ? 'Cuadrícula' : 'Grid'}
-                </button>
-              </div>
-
-              {catalogLayoutMode === 'carousel' && (
-                <div style={{ display: 'flex', gap: '4px', marginLeft: '6px' }}>
-                  <button
-                    onClick={() => scrollCarousel('left')}
-                    className="btn btn-outline btn-sm"
-                    style={{ padding: '6px', borderRadius: '50%', background: 'rgba(0,194,179,0.1)', color: '#00C2B3', border: '1px solid rgba(0,194,179,0.3)' }}
-                    title={language === 'es' ? 'Deslizar a la izquierda' : 'Scroll left'}
-                  >
-                    <ChevronLeft size={18} />
-                  </button>
-                  <button
-                    onClick={() => scrollCarousel('right')}
-                    className="btn btn-outline btn-sm"
-                    style={{ padding: '6px', borderRadius: '50%', background: 'rgba(0,194,179,0.1)', color: '#00C2B3', border: '1px solid rgba(0,194,179,0.3)' }}
-                    title={language === 'es' ? 'Deslizar a la derecha' : 'Scroll right'}
-                  >
-                    <ChevronRight size={18} />
-                  </button>
-                </div>
-              )}
-            </div>
+              );
+            })}
           </div>
 
-          {/* Catalog Cards Render */}
+          {/* Catalog Cards Grid (Original Clean Grid Layout) */}
           {filteredExperiences.length === 0 ? (
             <div className="glass-card animate-fade-in-up" style={{ padding: '60px 20px', textAlign: 'center' }}>
-              <p style={{ color: 'var(--color-text-muted)', marginBottom: '16px' }}>{t('noExpFound')}</p>
-              <button className="btn btn-outline" onClick={() => { setSearchQuery(''); setFilterCategory('todos'); setFilterDate(''); }}>{t('btnClearFilters')}</button>
+              <p style={{ color: 'var(--color-text-muted)', marginBottom: '16px' }}>{language === 'es' ? 'No se encontraron experiencias con estos filtros.' : 'No experiences found.'}</p>
+              <button className="btn btn-outline" onClick={() => { setSearchQuery(''); setFilterCategory('todos'); setFilterDate(''); }}>{language === 'es' ? 'Limpiar Filtros' : 'Clear Filters'}</button>
             </div>
           ) : (
-            <div className={catalogLayoutMode === 'carousel' ? 'carousel-cards-wrapper' : 'grid-cards'}>
-              <div 
-                ref={carouselContainerRef}
-                className={catalogLayoutMode === 'carousel' ? 'carousel-cards-container' : 'grid-cards'}
-                style={catalogLayoutMode === 'grid' ? { marginTop: 0 } : {}}
-              >
-                {filteredExperiences.map((exp, idx) => {
-                  const displayPrice = getDisplayPrice(exp);
-                  const isPackage = exp.pricingType === 'package';
-                  const staggerClass = `stagger-${(idx % 4) + 1}`;
-                  
-                  return (
-                    <div 
-                      key={exp.id} 
-                      className={`glass-card animate-fade-in-up ${staggerClass} ${catalogLayoutMode === 'carousel' ? 'carousel-card-item' : ''}`} 
-                      style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '440px' }}
-                    >
-                      {/* Image / Category */}
-                      <div className="card-img-wrapper" style={{ height: '190px', width: '100%', flexShrink: 0 }}>
-                        <div className="card-img-animated" style={{ background: `linear-gradient(to bottom, transparent, rgba(13,24,42,0.9)), url(${exp.image || '/branding_2.jpg'})` }} />
-                        <span className="badge badge-teal" style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                          {exp.secondaryCategory 
-                            ? `${exp.category === 'tours' ? 'TOURS' : exp.category.toUpperCase()} & RESTAURANTE`
-                            : (exp.category === 'tours' ? 'TOURS' : exp.category.toUpperCase())}
-                        </span>
-                      </div>
+            <div className="grid-cards">
+              {filteredExperiences.map((exp, idx) => {
+                const displayPrice = getDisplayPrice(exp);
+                const isPackage = exp.pricingType === 'package';
+                const staggerClass = `stagger-${(idx % 4) + 1}`;
+                
+                return (
+                  <div 
+                    key={exp.id} 
+                    className={`glass-card animate-fade-in-up ${staggerClass}`} 
+                    style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: '460px' }}
+                  >
+                    {/* Image / Category */}
+                    <div className="card-img-wrapper" style={{ height: '200px', width: '100%', flexShrink: 0 }}>
+                      <div className="card-img-animated" style={{ background: `linear-gradient(to bottom, transparent, rgba(13,24,42,0.9)), url(${exp.image || '/branding_2.jpg'})` }} />
+                      <span className="badge badge-teal" style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        {exp.secondaryCategory 
+                          ? `${exp.category === 'tours' ? 'TOURS' : exp.category.toUpperCase()} & RESTAURANTE`
+                          : (exp.category === 'tours' ? 'TOURS' : exp.category.toUpperCase())}
+                      </span>
+                    </div>
 
-                      {/* Card Body */}
-                      <div style={{ padding: '18px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-                        <div>
-                          <div style={{ display: 'flex', gap: '4px', color: 'var(--color-gold)', marginBottom: '6px' }}>
-                            <Star size={14} fill="var(--color-gold)" style={{ color: 'var(--color-gold)' }} />
-                            <span style={{ fontSize: '0.8rem', fontWeight: '700' }}>{exp.rating}</span>
-                            <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>({exp.reviewsCount} {t('reviewsCountLabel')})</span>
-                          </div>
-                          
-                          {/* Title with compact clean sizing */}
-                          <h3 style={{ 
-                            fontSize: '1.02rem', 
-                            fontWeight: '700',
-                            marginBottom: '6px', 
-                            lineHeight: '1.28', 
-                            minHeight: '46px',
-                            maxHeight: '58px',
-                            overflow: 'hidden',
-                            display: '-webkit-box',
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: 'vertical'
-                          }} title={exp.name}>
-                            {exp.name}
-                          </h3>
-                          
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem', color: 'var(--color-text-muted)', marginBottom: '10px' }}>
-                            <MapPin size={12} style={{ color: '#00C2B3' }} /> {exp.location ? (exp.location.includes('Yucatán') ? exp.location : `${exp.location}, Yucatán`) : 'Yucatán'}
-                          </div>
+                    {/* Card Body */}
+                    <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                      <div>
+                        <div style={{ display: 'flex', gap: '4px', color: 'var(--color-gold)', marginBottom: '6px' }}>
+                          <Star size={14} fill="var(--color-gold)" style={{ color: 'var(--color-gold)' }} />
+                          <span style={{ fontSize: '0.8rem', fontWeight: '700' }}>{exp.rating}</span>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>({exp.reviewsCount} {language === 'es' ? 'reseñas' : 'reviews'})</span>
+                        </div>
+                        
+                        {/* Title */}
+                        <h3 style={{ 
+                          fontSize: '1.08rem', 
+                          fontWeight: '700',
+                          marginBottom: '8px', 
+                          lineHeight: '1.3', 
+                          minHeight: '48px'
+                        }}>
+                          {exp.name}
+                        </h3>
+                        
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '12px' }}>
+                          <MapPin size={12} style={{ color: '#00C2B3' }} /> {exp.location ? (exp.location.includes('Yucatán') ? exp.location : `${exp.location}, Yucatán`) : 'Yucatán'}
+                        </div>
 
-                          {/* Description clean clamp */}
-                          <p style={{ 
-                            fontSize: '0.82rem', 
+                        {/* Scrollable Description Box: Tourists can scroll up/down inside text so no letters get cut off */}
+                        <div 
+                          style={{ 
+                            fontSize: '0.83rem', 
                             color: 'var(--color-text-muted)', 
                             lineHeight: '1.45',
-                            display: '-webkit-box', 
-                            WebkitLineClamp: 3, 
-                            WebkitBoxOrient: 'vertical', 
-                            overflow: 'hidden', 
-                            marginBottom: '12px',
-                            minHeight: '52px'
-                          }}>
-                            {exp.description}
-                          </p>
+                            height: '75px',
+                            overflowY: 'auto',
+                            paddingRight: '4px',
+                            marginBottom: '14px',
+                            scrollbarWidth: 'thin'
+                          }}
+                          title={language === 'es' ? 'Desliza hacia abajo dentro del texto para leer la descripción completa' : 'Scroll down to read full text'}
+                        >
+                          {exp.description}
                         </div>
-
-                        <div>
-                          {/* Safety Badges Preview */}
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '14px' }}>
-                            {(exp.safetyBadges || []).slice(0, 2).map((b, i) => (
-                              <span key={i} style={{ fontSize: '0.62rem', background: 'rgba(255, 107, 77, 0.08)', color: 'var(--color-coral)', border: '1px solid rgba(255, 107, 77, 0.2)', padding: '2px 7px', borderRadius: '10px', fontWeight: '600' }}>
-                                {b}
-                              </span>
-                            ))}
-                          </div>
-
-                          {/* Pricing & CTA */}
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', paddingTop: '10px', borderTop: '1px solid var(--color-border)' }}>
-                            <div>
-                              <span style={{ fontSize: '0.68rem', color: 'var(--color-text-muted)', display: 'block' }}>
-                                {isPackage ? (language === 'es' ? 'Paquete Completo' : 'Package From') : (language === 'es' ? 'Entrada General' : 'Ticket From')}
-                              </span>
-                              <span style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--color-text-light)' }}>
-                                ${displayPrice.toLocaleString('es-MX')} <span style={{ fontSize: '0.72rem', fontWeight: '600' }}>MXN</span>
-                              </span>
-                            </div>
-                            <button 
-                              className="btn btn-secondary btn-sm" 
-                              onClick={() => setSelectedExpId(exp.id)}
-                              style={{ borderRadius: '10px', fontWeight: '700', padding: '6px 12px', fontSize: '0.78rem' }}
-                            >
-                              {t('btnViewDetails')}
-                            </button>
-                          </div>
-                        </div>
-
                       </div>
+
+                      <div>
+                        {/* Safety Badges Preview */}
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
+                          {(exp.safetyBadges || []).slice(0, 2).map((b, i) => (
+                            <span key={i} style={{ fontSize: '0.64rem', background: 'rgba(255, 107, 77, 0.08)', color: 'var(--color-coral)', border: '1px solid rgba(255, 107, 77, 0.2)', padding: '2px 8px', borderRadius: '10px', fontWeight: '600' }}>
+                              {b}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* Pricing & CTA */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', paddingTop: '12px', borderTop: '1px solid var(--color-border)' }}>
+                          <div>
+                            <span style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', display: 'block' }}>
+                              {isPackage ? (language === 'es' ? 'Paquete Completo desde' : 'Package From') : (language === 'es' ? 'Entrada General desde' : 'Ticket From')}
+                            </span>
+                            <span style={{ fontSize: '1.18rem', fontWeight: '800', color: 'var(--color-text-light)' }}>
+                              ${displayPrice.toLocaleString('es-MX')} <span style={{ fontSize: '0.75rem', fontWeight: '600' }}>MXN</span>
+                            </span>
+                          </div>
+                          <button 
+                            className="btn btn-secondary btn-sm" 
+                            onClick={() => setSelectedExpId(exp.id)}
+                            style={{ borderRadius: '10px', fontWeight: '700' }}
+                          >
+                            {language === 'es' ? 'VER DETALLES' : 'VIEW DETAILS'}
+                          </button>
+                        </div>
+                      </div>
+
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
