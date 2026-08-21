@@ -451,6 +451,32 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
                 </div>
               </div>
 
+              {/* Sensitive Health & Accessibility Data Authorization Checkbox */}
+              <div style={{
+                marginTop: '10px',
+                padding: '12px 14px',
+                borderRadius: '12px',
+                background: 'rgba(0, 194, 179, 0.08)',
+                border: '1px solid rgba(0, 194, 179, 0.25)',
+                fontSize: '0.78rem',
+                color: 'rgba(255,255,255,0.85)',
+                lineHeight: '1.5'
+              }}>
+                <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer' }}>
+                  <input 
+                    type="checkbox" 
+                    defaultChecked={true}
+                    required
+                    style={{ marginTop: '2px', accentColor: '#00C2B3', width: '16px', height: '16px' }}
+                  />
+                  <span>
+                    {language === 'es'
+                      ? 'Autorizo expresamente que Experience Safely y el proveedor de la experiencia traten la información sensible que proporcione sobre salud, movilidad, alergias, restricciones físicas o necesidades de accesibilidad, exclusivamente para adaptar el servicio, proteger mi seguridad, atender emergencias y coordinar la experiencia reservada.'
+                      : 'I expressly authorize Experience Safely and the experience provider to process sensitive information I provide regarding health, mobility, allergies, physical restrictions or accessibility needs, exclusively to adapt the service, protect my safety, handle emergencies and coordinate the reserved experience.'}
+                  </span>
+                </label>
+              </div>
+
               <button type="submit" disabled={loading} className="btn btn-primary" style={{
                 width: '100%', marginTop: '8px', padding: '12px', fontWeight: '700',
                 background: 'linear-gradient(135deg, #00C2B3, #00a89b)', border: 'none', borderRadius: '12px'
