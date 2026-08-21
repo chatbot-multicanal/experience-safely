@@ -805,6 +805,38 @@ export const AppProvider = ({ children }) => {
     } catch (e) {}
   }, [experiences]);
 
+  // Real-Time Cross-Tab / Multi-Device Synchronization Engine
+  useEffect(() => {
+    let syncChannel;
+    try {
+      if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+        syncChannel = new BroadcastChannel('experiences_safely_realtime_sync');
+        syncChannel.onmessage = (event) => {
+          if (event.data?.type === 'SYNC_EXPERIENCES' && Array.isArray(event.data.payload)) {
+            setExperiences(event.data.payload);
+          }
+        };
+      }
+    } catch (e) {}
+
+    const handleStorageChange = (e) => {
+      if (e.key === 'es_experiences_v3' && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed)) {
+            setExperiences(parsed);
+          }
+        } catch (err) {}
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      if (syncChannel) syncChannel.close();
+    };
+  }, []);
+
   const [calendarAvailability, setCalendarAvailability] = useState(generateInitialAvailability());
   
   const [bookings, setBookings] = useState([
@@ -1296,8 +1328,18 @@ export const AppProvider = ({ children }) => {
   };
 
   const updateExperience = (updatedExp) => {
-    setExperiences(prev => prev.map(e => e.id === updatedExp.id ? updatedExp : e));
-    addAuditLog('system', `Experiencia editada: "${updatedExp.name}"`);
+    setExperiences(prev => {
+      const nextExps = prev.map(e => e.id === updatedExp.id ? updatedExp : e);
+      try {
+        if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+          const syncChannel = new BroadcastChannel('experiences_safely_realtime_sync');
+          syncChannel.postMessage({ type: 'SYNC_EXPERIENCES', payload: nextExps });
+          syncChannel.close();
+        }
+      } catch (e) {}
+      return nextExps;
+    });
+    addAuditLog('system', `Experiencia editada en tiempo real: "${updatedExp.name}"`);
   };
 
   const deleteExperience = (id) => {
