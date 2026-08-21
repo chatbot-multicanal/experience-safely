@@ -267,19 +267,19 @@ export default function TouristView() {
               background: 'linear-gradient(135deg, rgba(13, 24, 42, 0.45), rgba(21, 38, 63, 0.25))',
               zIndex: 1
             }} />
-            <div className="hero-glow" style={{
+            <div className="hero-glow hero-glow-breathing" style={{
               position: 'absolute',
               top: '-50%',
               right: '-20%',
               width: '500px',
               height: '500px',
-              background: 'radial-gradient(circle, rgba(0, 194, 179, 0.15) 0%, rgba(0,0,0,0) 70%)',
+              background: 'radial-gradient(circle, rgba(0, 194, 179, 0.22) 0%, rgba(0,0,0,0) 70%)',
               pointerEvents: 'none',
               zIndex: 2
             }}></div>
 
             <div style={{ maxWidth: '700px', position: 'relative', zIndex: 2 }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 107, 77, 0.15)', color: '#FF6B4D', padding: '6px 14px', borderRadius: '30px', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '20px' }}>
+              <div className="shimmer-badge animate-float" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#FF6B4D', padding: '7px 16px', borderRadius: '30px', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '20px', boxShadow: '0 4px 16px rgba(255, 107, 77, 0.25)' }}>
                 <Award size={14} /> {language === 'es' ? 'La forma más segura de vivir Yucatán' : 'The safest way to experience Yucatan'}
               </div>
               <h1 style={{ fontSize: '2.5rem', lineHeight: '1.2', marginBottom: '16px' }}>
@@ -293,7 +293,7 @@ export default function TouristView() {
             </div>
 
             {/* Global Search Bar */}
-            <div className="search-bar glass-card" style={{
+            <div className="search-bar glass-card animate-fade-in-up" style={{
               display: 'flex',
               flexWrap: 'wrap',
               gap: '12px',
@@ -330,43 +330,39 @@ export default function TouristView() {
                     className="form-input"
                     value={filterDate}
                     onChange={(e) => setFilterDate(e.target.value)}
-                    min={dates && dates.length > 0 ? dates[0] : undefined}
-                    max={dates && dates.length > 0 ? dates[dates.length - 1] : undefined}
                     style={{ paddingLeft: '40px', width: '100%', colorScheme: 'dark' }}
-                    placeholder={t('datePlace')}
                   />
                 </div>
               </div>
 
-              <div className="form-group" style={{ flex: '1 1 100px', marginBottom: 0 }}>
+              <div className="form-group" style={{ flex: '1 1 140px', marginBottom: 0 }}>
                 <label className="form-label">{language === 'es' ? 'Personas' : 'Guests'}</label>
                 <div style={{ position: 'relative' }}>
                   <Users size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--color-text-muted)' }} />
-                  <input 
-                    type="number" 
-                    className="form-input" 
-                    min="1" 
-                    max="20" 
-                    value={filterGuests} 
-                    onChange={(e) => setFilterGuests(Number(e.target.value))}
+                  <select 
+                    className="form-select"
+                    value={filterGuests}
+                    onChange={(e) => setFilterGuests(parseInt(e.target.value))}
                     style={{ paddingLeft: '40px', width: '100%' }}
-                  />
+                  >
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20].map(n => (
+                      <option key={n} value={n}>{n} {n === 1 ? (language === 'es' ? 'persona' : 'guest') : (language === 'es' ? 'personas' : 'guests')}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-end', flex: '1 1 150px' }}>
-                <button 
-                  className="btn btn-secondary" 
-                  style={{ width: '100%', height: '48px', justifyContent: 'center' }}
-                  onClick={() => {}}
-                >
-                  {t('btnFilter')}
-                </button>
-              </div>
+              <button 
+                className="btn btn-primary"
+                onClick={() => {}}
+                style={{ flex: '1 1 140px', height: '46px', fontWeight: '700' }}
+              >
+                {t('btnFilter')}
+              </button>
             </div>
           </div>
 
-          {/* Categories Selector */}
+          {/* Category Filter Pills Bar */}
           <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '16px', marginBottom: '24px' }}>
             {(categories || []).map(cat => {
               const label = language === 'es' 
@@ -376,7 +372,7 @@ export default function TouristView() {
                 <button
                   key={cat.id}
                   onClick={() => setFilterCategory(cat.id)}
-                  className={`btn btn-sm ${filterCategory === cat.id ? 'btn-primary' : 'btn-outline'}`}
+                  className={`btn btn-sm category-pill ${filterCategory === cat.id ? 'btn-primary' : 'btn-outline'}`}
                   style={{ whiteSpace: 'nowrap', borderRadius: '30px' }}
                 >
                   {label}
@@ -387,17 +383,18 @@ export default function TouristView() {
 
           {/* Catalog Cards Grid */}
           {filteredExperiences.length === 0 ? (
-            <div className="glass-card" style={{ padding: '60px 20px', textAlign: 'center' }}>
+            <div className="glass-card animate-fade-in-up" style={{ padding: '60px 20px', textAlign: 'center' }}>
               <p style={{ color: 'var(--color-text-muted)', marginBottom: '16px' }}>{t('noExpFound')}</p>
               <button className="btn btn-outline" onClick={() => { setSearchQuery(''); setFilterCategory('todos'); setFilterDate(''); }}>{t('btnClearFilters')}</button>
             </div>
           ) : (
             <div className="grid-cards">
-              {filteredExperiences.map(exp => {
+              {filteredExperiences.map((exp, idx) => {
                 const displayPrice = getDisplayPrice(exp);
                 const isPackage = exp.pricingType === 'package';
+                const staggerClass = `stagger-${(idx % 4) + 1}`;
                 return (
-                  <div key={exp.id} className="glass-card animate-fade-in" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                  <div key={exp.id} className={`glass-card animate-fade-in-up ${staggerClass}`} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                     {/* Image / Category */}
                     <div className="card-img-wrapper" style={{ height: '200px', width: '100%' }}>
                       <div className="card-img-animated" style={{ background: `linear-gradient(to bottom, transparent, rgba(13,24,42,0.9)), url(${exp.image || '/branding_2.jpg'})` }} />
