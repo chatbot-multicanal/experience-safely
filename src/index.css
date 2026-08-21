@@ -456,6 +456,19 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 24px;
 }
 
+/* Clean Invisible Scrollbar for Card Description Box */
+.clean-scroll-box {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.clean-scroll-box::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
 /* Horizontal Scrollable Carousel Cards System */
 .carousel-cards-wrapper {
   position: relative;

@@ -481,19 +481,20 @@ export default function TouristView() {
                           <MapPin size={12} style={{ color: '#00C2B3' }} /> {exp.location ? (exp.location.includes('Yucatán') ? exp.location : `${exp.location}, Yucatán`) : 'Yucatán'}
                         </div>
 
-                        {/* Scrollable Description Box: Tourists can scroll up/down inside text so no letters get cut off */}
+                        {/* Scrollable Description Box: Clean invisible scroll without ugly browser bars */}
                         <div 
+                          className="clean-scroll-box"
                           style={{ 
                             fontSize: '0.83rem', 
                             color: 'var(--color-text-muted)', 
                             lineHeight: '1.45',
                             height: '75px',
                             overflowY: 'auto',
-                            paddingRight: '4px',
+                            paddingRight: '2px',
                             marginBottom: '14px',
-                            scrollbarWidth: 'thin'
+                            scrollbarWidth: 'none',
+                            msOverflowStyle: 'none'
                           }}
-                          title={language === 'es' ? 'Desliza hacia abajo dentro del texto para leer la descripción completa' : 'Scroll down to read full text'}
                         >
                           {exp.description}
                         </div>
