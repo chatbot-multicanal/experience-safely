@@ -301,78 +301,9 @@ export default function TouristView() {
                 <br />
                 <span style={{ color: '#00C2B3' }}>{language === 'es' ? 'Experiencias seguras' : 'Safe Experiences'}</span>
               </h1>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', marginBottom: '32px' }}>
-                {t('heroSubtitle')}
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', marginBottom: '16px' }}>
+                {language === 'es' ? 'Reserva tours, cenotes, catamaranes y hospedajes ecoturísticos auditados.' : 'Book audited tours, cenotes, charters and boutique hotels.'}
               </p>
-            </div>
-
-            {/* Global Search Bar */}
-            <div className="search-bar glass-card animate-fade-in-up" style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '12px',
-              padding: '20px',
-              background: 'rgba(13, 24, 42, 0.9)',
-              borderRadius: '16px',
-              border: '1px solid rgba(255,255,255,0.15)',
-              position: 'relative',
-              zIndex: 2,
-              boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
-              alignItems: 'flex-end'
-            }}>
-              <div className="form-group" style={{ flex: '1 1 250px', marginBottom: 0 }}>
-                <label className="form-label">{language === 'es' ? '¿Qué buscas?' : 'Search experiences'}</label>
-                <div style={{ position: 'relative' }}>
-                  <Search size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--color-text-muted)' }} />
-                  <input 
-                    type="text" 
-                    className="form-input" 
-                    placeholder={t('searchPlace')} 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    style={{ paddingLeft: '40px', width: '100%' }}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group" style={{ flex: '1 1 160px', marginBottom: 0 }}>
-                <label className="form-label">{language === 'es' ? 'Fecha de Visita' : 'Date of Visit'}</label>
-                <div style={{ position: 'relative' }}>
-                  <Calendar size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--color-text-muted)', pointerEvents: 'none', zIndex: 1 }} />
-                  <input 
-                    type="date"
-                    className="form-input"
-                    value={filterDate}
-                    onChange={(e) => setFilterDate(e.target.value)}
-                    style={{ paddingLeft: '40px', width: '100%', colorScheme: 'dark' }}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group" style={{ flex: '1 1 140px', marginBottom: 0 }}>
-                <label className="form-label">{language === 'es' ? 'Personas' : 'Guests'}</label>
-                <div style={{ position: 'relative' }}>
-                  <Users size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--color-text-muted)' }} />
-                  <select 
-                    className="form-select"
-                    value={filterGuests}
-                    onChange={(e) => setFilterGuests(parseInt(e.target.value))}
-                    style={{ paddingLeft: '40px', width: '100%' }}
-                  >
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20].map(n => (
-                      <option key={n} value={n}>{n} {n === 1 ? (language === 'es' ? 'persona' : 'guest') : (language === 'es' ? 'personas' : 'guests')}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <button 
-                className="btn btn-primary"
-                onClick={() => {}}
-                style={{ flex: '1 1 140px', height: '46px', fontWeight: '700' }}
-              >
-                {t('btnFilter')}
-              </button>
             </div>
           </div>
 
