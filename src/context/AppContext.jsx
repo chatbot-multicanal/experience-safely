@@ -71,7 +71,7 @@ const INITIAL_EXPERIENCES = [
     id: 'exp-rio-lagartos',
     name: 'Tour Ría Lagartos — Flamingos, Baño Maya & Las Coloradas',
     description: 'Embarca en un recorrido ecoturístico inolvidable por la Reserva de la Biosfera Ría Lagartos. Avista cientos de flamingos rosados en su hábitat natural, cocodrilos, águilas y garzas. Experimenta el tradicional baño purificante de barro maya rico en minerales y admira las increíbles charcas salineras de color rosa intenso en Las Coloradas.',
-    category: 'barcos',
+    category: 'tours',
     location: 'Ría Lagartos, Yucatán',
     price: 1650,
     capacity: 6,

@@ -407,8 +407,8 @@ export default function TouristView() {
                     {/* Image / Category */}
                     <div className="card-img-wrapper" style={{ height: '200px', width: '100%' }}>
                       <div className="card-img-animated" style={{ background: `linear-gradient(to bottom, transparent, rgba(13,24,42,0.9)), url(${exp.image || '/branding_2.jpg'})` }} />
-                      <span className="badge badge-teal" style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 2 }}>
-                        {exp.category}
+                      <span className="badge badge-teal" style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        {exp.category === 'tours' ? 'TOURS' : exp.category.toUpperCase()}
                       </span>
                     </div>
 
@@ -423,7 +423,7 @@ export default function TouristView() {
                       <h3 style={{ fontSize: '1.15rem', marginBottom: '8px', lineHeight: '1.3' }}>{exp.name}</h3>
                       
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '16px' }}>
-                        <MapPin size={12} /> {exp.location}, Yucatán
+                        <MapPin size={12} /> {exp.location ? (exp.location.includes('Yucatán') ? exp.location : `${exp.location}, Yucatán`) : 'Yucatán'}
                       </div>
 
                       <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', marginBottom: '16px', flex: 1 }}>
@@ -487,10 +487,12 @@ export default function TouristView() {
                       backgroundSize: 'cover', backgroundPosition: 'center'
                     }} />
                     <div style={{ position: 'absolute', bottom: '24px', left: '24px', right: '24px' }}>
-                      <span className="badge badge-teal" style={{ marginBottom: '12px' }}>{selectedExp.category}</span>
+                      <span className="badge badge-teal" style={{ marginBottom: '12px', textTransform: 'uppercase' }}>
+                        {selectedExp.category === 'tours' ? 'TOURS' : selectedExp.category.toUpperCase()}
+                      </span>
                       <h1 style={{ fontSize: '2.2rem', fontWeight: '800', lineHeight: '1.2', color: '#fff' }}>{selectedExp.name}</h1>
                       <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
-                        <MapPin size={14} /> {selectedExp.location}, Yucatán
+                        <MapPin size={14} /> {selectedExp.location ? (selectedExp.location.includes('Yucatán') ? selectedExp.location : `${selectedExp.location}, Yucatán`) : 'Yucatán'}
                       </p>
                     </div>
                   </div>
