@@ -286,33 +286,39 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
             </div>
           )}
 
-          {/* TAB 3: DERECHOS Y RESTRICCIONES */}
+          {/* TAB 3: DERECHOS, DESLINDE Y RESTRICCIONES */}
           {activeTab === 'restrictions' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div style={{ background: 'rgba(255, 200, 87, 0.08)', border: '1px solid rgba(255, 200, 87, 0.2)', padding: '12px 16px', borderRadius: '12px', color: '#FFC857', fontSize: '0.8rem' }}>
-                ⚠️ Normas ambientales y código de conducta para visitantes de cenotes y haciendas de Yucatán.
+                ⚠️ Marco de Deslinde Legal, Normas Ambientales y Código de Conducta para Usuarios de Experience Safely.
               </div>
 
-              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>1. Protección Ambiental Obligatoria (Cenotes y Cavernas)</h3>
+              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>1. Naturaleza de Intermediación Tecnológica (Marketplace Shield)</h3>
+              <p style={{ margin: 0, textAlign: 'justify', lineHeight: '1.6' }}>
+                Experience Safely opera como una plataforma digital tecnológica de reserva, emisión de boletos de garantía y conexión entre turistas y prestadores de servicio independientes. La ejecución física del recorrido, el transporte y la operación en campo son responsabilidad directa de la empresa o hacienda operadora auditada.
+              </p>
+
+              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>2. Asunción Voluntaria de Riesgos Inherentes & Equipo de Protección</h3>
+              <p style={{ margin: 0, textAlign: 'justify', lineHeight: '1.6' }}>
+                El usuario reconoce y acepta que las actividades al aire libre (nado en cenotes, navegación marítima, recorridos en selva y estructuras históricas) conllevan riesgos naturales inherentes. El participante acepta llevar a cabo la experiencia de forma libre, voluntaria y bajo su propia responsabilidad, obligándose a acatar las instrucciones de seguridad emitidas por los guías y utilizar permanentemente el equipo de protección proporcionado (chalecos salvavidas certificados).
+              </p>
+
+              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>3. Protección Ambiental Obligatoria (Cenotes y Cavernas)</h3>
               <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                <li><strong>Bloqueadores biodegradables únicamente:</strong> Está estrictamente prohibido ingresar a los cenotes con bloqueadores solares convencionales, cremas, repelentes químicos o perfumes.</li>
-                <li><strong>Ducharse antes de ingresar:</strong> Es requisito obligatorio ducharse en las instalaciones antes de entrar al agua del cenote para preservar el ecosistema acuífero subterráneo.</li>
+                <li><strong>Bloqueadores biodegradables únicamente:</strong> Prohibido ingresar a cenotes con bloqueadores convencionales, repelentes químicos o cremas no biodegradables.</li>
+                <li><strong>Ducharse antes de ingresar:</strong> Requisito obligatorio ducharse en las instalaciones para preservar el acuífero maya.</li>
                 <li><strong>Uso obligatorio de chaleco salvavidas:</strong> En cenotes de cueva y semiabiertos se exige el uso del chaleco durante la estancia en el agua.</li>
               </ul>
 
-              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>2. Derechos del Usuario</h3>
-              <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                <li>Recibir el servicio contratado en las condiciones de seguridad descritas.</li>
-                <li>Contar con guía capacitado e instructivos en su idioma (Español / Inglés).</li>
-                <li>Acceso a canal directo de soporte 24/7 y mediación de la plataforma ante disputas.</li>
-              </ul>
+              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>4. Cero Tolerancia a Sustancias y Sobriedad</h3>
+              <p style={{ margin: 0, textAlign: 'justify', lineHeight: '1.6' }}>
+                Por la seguridad del usuario y del grupo, si una persona se presenta en estado de ebriedad, bajo el efecto de sustancias psicotrópicas o mostrando conducta hostil, el operador cancelará su participación de inmediato sin derecho a reembolso o indemnización.
+              </p>
 
-              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>3. Cancelación por Estado Inadecuado y Seguridad del Grupo</h3>
-              <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                <li><strong>Cancelación por Estado Inadecuado:</strong> Por la seguridad del propio usuario, del grupo y del personal, si una persona se presenta en estado de ebriedad, bajo la influencia de sustancias psicotrópicas o mostrando conducta hostil/inadecuada, el guía o el establecimiento cancelará su participación de inmediato sin derecho a reembolso.</li>
-                <li><strong>Prohibición de sustancias:</strong> Está estrictamente prohibido consumir bebidas alcohólicas o sustancias tóxicas durante las actividades acuáticas o de aventura en cenotes y cavernas.</li>
-                <li><strong>Cuidado del Ecosistema:</strong> Prohibido extraer estalactitas, estalagmitas o alterar flora y fauna local. Los prestadores de servicio se reservan el derecho de admisión ante el incumplimiento de estas normas.</li>
-              </ul>
+              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>5. Caso Fortuito, Fuerza Mayor & Jurisdicción Competente</h3>
+              <p style={{ margin: 0, textAlign: 'justify', lineHeight: '1.6' }}>
+                La plataforma y los operadores quedan eximidos de responsabilidad ante retrasos o cancelaciones ocasionados por caso fortuito o fuerza mayor (cierres de capitanía de puerto, contingencias meteorológicas severas o mandatos de autoridad). Para la resolución de cualquier controversia, las partes se someten expresamente a las leyes aplicables de la República Mexicana y a los tribunales competentes de la Ciudad de Mérida, Yucatán, renunciando a cualquier otro fuero que pudiera corresponderles.
+              </p>
             </div>
           )}
 
