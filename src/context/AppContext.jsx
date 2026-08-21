@@ -43,6 +43,31 @@ const INITIAL_EXPERIENCES = [
     syncedFromWix: true,
   },
   {
+    id: 'exp-homunja',
+    name: 'Homúnja’ Parque Ecoturístico — Ecoparque & Cenote Sagrado en Homún',
+    description: 'Sumérgete en la magia ancestral de Homúnja’ Parque Ecoturístico en el corazón del anillo de cenotes de Yucatán. Disfruta de un cenote subterráneo de aguas turquesas rodeado de estalactitas milenarias, senderos ecológicos en la selva maya, regaderas, restaurante de gastronomía yucateca y chalecos salvavidas certificados con guías de rescate.',
+    category: 'cenotes',
+    location: 'Homún, Yucatán',
+    price: 450,
+    capacity: 25,
+    image: '/images/discover yucatan.jpeg',
+    rating: 5.0,
+    reviewsCount: 4,
+    pricingType: 'individual',
+    bookingType: 'tour',
+    facebookUrl: 'https://www.facebook.com/Ecoparquehomunja/?locale=es_LA',
+    schedules: ['09:00 AM', '11:30 AM', '02:00 PM', '04:00 PM'],
+    reviews: [
+      { id: 'rev-h1', author: 'Donovan C.', rating: 5, comment: 'Homúnja’ es un verdadero paraíso en Homún. El agua del cenote es increíblemente limpia y la seguridad con chalecos y guías es perfecta.', date: '2026-08-10', source: 'Facebook' },
+      { id: 'rev-h2', author: 'Claudia B.', rating: 5, comment: 'Súper bien organizado, la comida deliciosa y todo muy seguro para ir en familia.', date: '2026-08-05', source: 'Facebook' }
+    ],
+    safetyBadges: ['Auditoría Ecoturística Verified', 'Guías Certificados NOM-09', 'Chalecos Salvavidas Reglamentarios'],
+    safetyDescription: 'Ecoparque certificado con salvavidas de rescate acuático permanentes en cenote, vestidores e higienización continua de equipo. Cumplimiento estricto con bloqueadores biodegradables únicamente.',
+    providerId: 'provider-6',
+    providerName: 'Homúnja’ Parque Ecoturístico',
+    syncedFromWix: false,
+  },
+  {
     id: 'exp-2',
     name: 'Cena de Gala en Hacienda Mucuyché',
     description: 'Disfruta de una velada gastronómica exclusiva de 5 tiempos inspirada en recetas ancestrales del henequén, servida en los majestuenses jardines iluminados de la Hacienda Mucuyché. Incluye recorrido nocturno por el cenote de la hacienda.',
@@ -802,7 +827,8 @@ export const AppProvider = ({ children }) => {
     { id: 'provider-2', name: 'Haciendas de Yucatán Club', rfc: 'HYC110825LL2', status: 'Aprobado', safetyRating: 'Gold', contact: 'admin@haciendasyucatan.com' },
     { id: 'provider-3', name: 'Yucatán Wellness Center', rfc: 'YWC180415AA7', status: 'Aprobado', safetyRating: 'Verified', contact: 'info@yucatanwellness.mx' },
     { id: 'provider-4', name: 'Rosas & Xocolate Boutique', rfc: 'RXB091210PP1', status: 'Aprobado', safetyRating: 'Gold', contact: 'reservaciones@rosasandxocolate.com' },
-    { id: 'provider-5', name: 'Marinas del Norte Yucatán', rfc: 'MNY201103BC3', status: 'Pendiente', safetyRating: 'None', contact: 'ventas@marinasnorte.com' }
+    { id: 'provider-5', name: 'Marinas del Norte Yucatán', rfc: 'MNY201103BC3', status: 'Pendiente', safetyRating: 'None', contact: 'ventas@marinasnorte.com' },
+    { id: 'provider-6', name: 'Homúnja’ Parque Ecoturístico', rfc: 'HPE190412HK8', status: 'Aprobado', safetyRating: 'Gold', contact: 'contacto@homunja.com.mx' }
   ]);
 
   // Provider Profiles state (CLABE and Bank credentials)
@@ -830,6 +856,12 @@ export const AppProvider = ({ children }) => {
       commercialPhone: '9999876543',
       paymentEmail: 'cuentas@rosasandxocolate.com',
       bankClabe: '012914002015387777'
+    },
+    'provider-6': {
+      representativeName: 'Administración Homúnja’',
+      commercialPhone: '9992305070',
+      paymentEmail: 'contacto@homunja.com.mx',
+      bankClabe: '012914002015386666'
     }
   });
 
