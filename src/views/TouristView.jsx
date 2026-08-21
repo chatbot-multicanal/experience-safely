@@ -283,7 +283,7 @@ export default function TouristView() {
                 <Award size={14} /> {language === 'es' ? 'La forma más segura de vivir Yucatán' : 'The safest way to experience Yucatan'}
               </div>
               <h1 style={{ fontSize: '2.5rem', lineHeight: '1.2', marginBottom: '16px' }}>
-                {language === 'es' ? 'Sentir vivo con' : 'Feel alive with'}
+                {language === 'es' ? 'Sentirse vivo con' : 'Feel alive with'}
                 <br />
                 <span style={{ color: '#00C2B3' }}>{language === 'es' ? 'Experiencias seguras' : 'Safe Experiences'}</span>
               </h1>
