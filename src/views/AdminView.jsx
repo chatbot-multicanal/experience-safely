@@ -53,6 +53,15 @@ export default function AdminView() {
   const [tempHeroVideo, setTempHeroVideo] = useState(siteDesign.heroVideo || 'https://assets.mixkit.co/videos/preview/mixkit-diving-in-a-clear-water-cenote-41559-large.mp4');
   const [tempGoogleClientId, setTempGoogleClientId] = useState(siteDesign.googleClientId || '');
 
+  // Contact Details & Creator Footer States
+  const [tempContactEmail, setTempContactEmail] = useState(siteDesign.contactEmail || 'contacto@experiencesafely.com');
+  const [tempSalesEmail, setTempSalesEmail] = useState(siteDesign.salesEmail || 'ventas@experiencesafely.com');
+  const [tempContactPhone, setTempContactPhone] = useState(siteDesign.contactPhone || '+52 1 990 230 5070');
+  const [tempContactLocation, setTempContactLocation] = useState(siteDesign.contactLocation || 'Mérida, Yucatán, México');
+  const [tempCompanyRightsName, setTempCompanyRightsName] = useState(siteDesign.companyRightsName || 'experiencesafely.com');
+  const [tempCreatorName, setTempCreatorName] = useState(siteDesign.creatorName || 'Innocentia.tech');
+  const [tempCreatorUrl, setTempCreatorUrl] = useState(siteDesign.creatorUrl || 'https://innocentia.tech');
+
   // New Group/Category Form State
   const [newGroupName, setNewGroupName] = useState('');
 
@@ -132,9 +141,16 @@ export default function AdminView() {
       heroImage: tempHeroImage,
       heroMediaType: tempHeroMediaType,
       heroVideo: tempHeroVideo,
-      googleClientId: tempGoogleClientId
+      googleClientId: tempGoogleClientId,
+      contactEmail: tempContactEmail,
+      salesEmail: tempSalesEmail,
+      contactPhone: tempContactPhone,
+      contactLocation: tempContactLocation,
+      companyRightsName: tempCompanyRightsName,
+      creatorName: tempCreatorName,
+      creatorUrl: tempCreatorUrl
     });
-    alert(language === 'es' ? 'Identidad visual y credenciales de marca aplicadas correctamente.' : 'Visual brand identity & credentials applied successfully.');
+    alert(language === 'es' ? 'Identidad visual, canales de contacto y credenciales aplicados correctamente.' : 'Visual brand identity, contact channels & credentials applied successfully.');
   };
 
   const handleResetDesign = () => {
@@ -1080,6 +1096,96 @@ export default function AdminView() {
                       />
                     </div>
                   )}
+                </div>
+
+                {/* OFFICIAL CONTACT CHANNELS & FOOTER CUSTOMIZER */}
+                <div style={{ background: 'rgba(0, 194, 179, 0.06)', border: '1px solid rgba(0, 194, 179, 0.25)', padding: '20px', borderRadius: '14px', marginTop: '20px', marginBottom: '20px' }}>
+                  <h4 style={{ color: '#00C2B3', margin: '0 0 14px', fontSize: '0.98rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    📞 {language === 'es' ? 'Canales de Contacto Oficiales & Pie de Página (Footer)' : 'Official Contact Channels & Footer'}
+                  </h4>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label className="form-label">{language === 'es' ? '✉️ Correo Oficial Principal' : 'Primary Official Email'}</label>
+                      <input 
+                        type="email" 
+                        className="form-input" 
+                        value={tempContactEmail} 
+                        onChange={e => setTempContactEmail(e.target.value)} 
+                        placeholder="contacto@experiencesafely.com" 
+                      />
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label className="form-label">{language === 'es' ? '✉️ Correo de Ventas / Comercial' : 'Sales Email'}</label>
+                      <input 
+                        type="email" 
+                        className="form-input" 
+                        value={tempSalesEmail} 
+                        onChange={e => setTempSalesEmail(e.target.value)} 
+                        placeholder="ventas@experiencesafely.com" 
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginTop: '14px' }}>
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label className="form-label">{language === 'es' ? '💬 WhatsApp & Teléfono Oficial' : 'Official WhatsApp & Phone'}</label>
+                      <input 
+                        type="text" 
+                        className="form-input" 
+                        value={tempContactPhone} 
+                        onChange={e => setTempContactPhone(e.target.value)} 
+                        placeholder="+52 1 990 230 5070" 
+                      />
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label className="form-label">{language === 'es' ? '📍 Ubicación Central / Ciudad' : 'Location'}</label>
+                      <input 
+                        type="text" 
+                        className="form-input" 
+                        value={tempContactLocation} 
+                        onChange={e => setTempContactLocation(e.target.value)} 
+                        placeholder="Mérida, Yucatán, México" 
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px', marginTop: '14px' }}>
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label className="form-label">{language === 'es' ? '🛡️ Nombre Marca Registrada' : 'Registered Trademark'}</label>
+                      <input 
+                        type="text" 
+                        className="form-input" 
+                        value={tempCompanyRightsName} 
+                        onChange={e => setTempCompanyRightsName(e.target.value)} 
+                        placeholder="experiencesafely.com" 
+                      />
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label className="form-label">{language === 'es' ? '⚡ Agencia Creadora (Texto)' : 'Creator Name'}</label>
+                      <input 
+                        type="text" 
+                        className="form-input" 
+                        value={tempCreatorName} 
+                        onChange={e => setTempCreatorName(e.target.value)} 
+                        placeholder="Innocentia.tech" 
+                      />
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <label className="form-label">{language === 'es' ? '🔗 Enlace de Agencia (URL)' : 'Creator URL'}</label>
+                      <input 
+                        type="text" 
+                        className="form-input" 
+                        value={tempCreatorUrl} 
+                        onChange={e => setTempCreatorUrl(e.target.value)} 
+                        placeholder="https://innocentia.tech" 
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="form-group">

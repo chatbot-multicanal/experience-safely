@@ -563,19 +563,19 @@ function AppContent() {
             
             {/* Rights Reserved & Registered Trademark */}
             <div style={{ color: 'rgba(255,255,255,0.7)' }}>
-              © 2026 <strong>experiencesafely.com</strong> — {language === 'es' ? 'Todos los derechos reservados. Marca registrada.' : 'All rights reserved. Registered trademark.'}
+              © 2026 <strong>{siteDesign?.companyRightsName || 'experiencesafely.com'}</strong> — {language === 'es' ? 'Todos los derechos reservados. Marca registrada.' : 'All rights reserved. Registered trademark.'}
             </div>
 
             {/* Created by Innocentia.tech */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem' }}>
               <span style={{ color: 'rgba(255,255,255,0.6)' }}>{language === 'es' ? 'Creado por' : 'Created by'}</span>
               <a 
-                href="https://innocentia.tech" 
+                href={siteDesign?.creatorUrl || 'https://innocentia.tech'} 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 style={{ color: '#00C2B3', fontWeight: '700', textDecoration: 'none', background: 'rgba(0, 194, 179, 0.12)', padding: '4px 12px', borderRadius: '12px', border: '1px solid rgba(0, 194, 179, 0.35)', transition: 'all 0.2s' }}
               >
-                Innocentia.tech
+                {siteDesign?.creatorName || 'Innocentia.tech'}
               </a>
             </div>
 

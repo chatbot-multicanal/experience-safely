@@ -684,7 +684,14 @@ export const AppProvider = ({ children }) => {
       heroVideo: '/images/video cenote.mov',
       logo: '/Logo - Experience Safely.png',
       backgroundImage: '/images/discover yucatan.jpeg',
-      googleClientId: '349285752255-bqt54uh1ks66q8i0i851r2dbiupia2tn.apps.googleusercontent.com'
+      googleClientId: '349285752255-bqt54uh1ks66q8i0i851r2dbiupia2tn.apps.googleusercontent.com',
+      contactEmail: 'contacto@experiencesafely.com',
+      salesEmail: 'ventas@experiencesafely.com',
+      contactPhone: '+52 1 990 230 5070',
+      contactLocation: 'Mérida, Yucatán, México',
+      companyRightsName: 'experiencesafely.com',
+      creatorName: 'Innocentia.tech',
+      creatorUrl: 'https://innocentia.tech'
     };
     try {
       const saved = localStorage.getItem('es_site_design_v2');

@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 import { X, ShieldCheck, FileText, Lock, AlertTriangle, Scale, CheckCircle2, Phone, HelpCircle, Mail, MapPin, MessageSquare } from 'lucide-react';
 
 export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', language = 'es' }) {
-  const [activeTab, setActiveTab] = useState(initialTab); // 'privacy' | 'terms' | 'restrictions'
+  const { siteDesign = {} } = useContext(AppContext) || {};
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+  const contactEmail = siteDesign?.contactEmail?.trim() || 'contacto@experiencesafely.com';
+  const salesEmail = siteDesign?.salesEmail?.trim() || 'ventas@experiencesafely.com';
+  const contactPhone = siteDesign?.contactPhone?.trim() || '+52 1 990 230 5070';
+  const contactLocation = siteDesign?.contactLocation?.trim() || 'Mérida, Yucatán, México';
+  const cleanPhone = contactPhone.replace(/[^0-9+]/g, '');
 
   if (!isOpen) return null;
 
@@ -102,8 +110,8 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
                     <strong style={{ fontSize: '0.95rem' }}>Correos Oficiales</strong>
                   </div>
                   <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>
-                    ✉️ <a href="mailto:contacto@experiencesafely.com" style={{ color: '#00C2B3', textDecoration: 'underline' }}>contacto@experiencesafely.com</a><br />
-                    ✉️ <a href="mailto:ventas@experiencesafely.com" style={{ color: '#00C2B3', textDecoration: 'underline' }}>ventas@experiencesafely.com</a>
+                    ✉️ <a href={`mailto:${contactEmail}`} style={{ color: '#00C2B3', textDecoration: 'underline' }}>{contactEmail}</a><br />
+                    ✉️ <a href={`mailto:${salesEmail}`} style={{ color: '#00C2B3', textDecoration: 'underline' }}>{salesEmail}</a>
                   </p>
                 </div>
 
@@ -113,8 +121,8 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
                     <strong style={{ fontSize: '0.95rem' }}>WhatsApp & Llamadas</strong>
                   </div>
                   <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>
-                    💬 <strong>WhatsApp:</strong> <a href="https://wa.me/5219902305070" target="_blank" rel="noopener noreferrer" style={{ color: '#FF6B4D', fontWeight: '700' }}>+52 1 990 230 5070</a><br />
-                    📞 <strong>Llamadas:</strong> <a href="tel:+5219902305070" style={{ color: '#FF6B4D', fontWeight: '700' }}>+52 1 990 230 5070</a>
+                    💬 <strong>WhatsApp:</strong> <a href={`https://wa.me/${cleanPhone.replace('+', '')}`} target="_blank" rel="noopener noreferrer" style={{ color: '#FF6B4D', fontWeight: '700' }}>{contactPhone}</a><br />
+                    📞 <strong>Llamadas:</strong> <a href={`tel:${cleanPhone}`} style={{ color: '#FF6B4D', fontWeight: '700' }}>{contactPhone}</a>
                   </p>
                 </div>
               </div>
@@ -125,7 +133,7 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
                   <strong style={{ fontSize: '0.95rem' }}>Oficina Central</strong>
                 </div>
                 <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>
-                  📍 <strong>Mérida, Yucatán, México.</strong><br />
+                  📍 <strong>{contactLocation}</strong><br />
                   🕒 Horarios de atención: Lunes a Domingo de 7:00 AM a 10:00 PM (Hora Centro México).
                 </p>
               </div>
