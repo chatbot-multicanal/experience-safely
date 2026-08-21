@@ -972,8 +972,8 @@ export default function TouristView() {
                     />
                     <span>
                       {language === 'es' 
-                        ? 'Acepto los Términos de Garantía, el Aviso de Privacidad y confirmo que ningún integrante asistirá en estado de ebriedad o bajo efectos de sustancias (motivo de cancelación sin reembolso).' 
-                        : 'I accept Warranty Terms, Privacy Policy, and confirm no participant will attend intoxicated (cancellation without refund applies).'}
+                        ? 'Acepto observaciones, los Términos de Garantía, el Aviso de Privacidad Integral y confirmo que ningún integrante asistirá en estado de ebriedad o bajo efectos de sustancias (motivo de cancelación sin reembolso).' 
+                        : 'I accept safety observations, Warranty Terms, Integral Privacy Policy, and confirm no participant will attend intoxicated.'}
                     </span>
                   </label>
                 </div>

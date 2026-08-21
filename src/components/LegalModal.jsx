@@ -187,48 +187,76 @@ export default function LegalModal({ isOpen, onClose, initialTab = 'privacy', la
             </div>
           )}
 
-          {/* TAB 1: AVISO DE PRIVACIDAD */}
+          {/* TAB 1: AVISO DE PRIVACIDAD INTEGRAL */}
           {activeTab === 'privacy' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ background: 'rgba(0, 194, 179, 0.08)', border: '1px solid rgba(0, 194, 179, 0.2)', padding: '12px 16px', borderRadius: '12px', color: '#00C2B3', fontSize: '0.8rem' }}>
-                📄 Cumplimiento con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP - México).
+              <div style={{ background: 'rgba(0, 194, 179, 0.08)', border: '1px solid rgba(0, 194, 179, 0.25)', padding: '14px 18px', borderRadius: '14px', color: '#00C2B3', fontSize: '0.85rem' }}>
+                📄 <strong>AVISO DE PRIVACIDAD INTEGRAL</strong> — Cumplimiento normativo y protección de datos personales.
               </div>
 
-              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>1. Identidad y Domicilio del Responsable</h3>
-              <p style={{ margin: 0 }}>
-                <strong>Experience Safely Yucatán</strong> (en adelante "La Plataforma"), con domicilio operativo en Mérida, Yucatán, México, es responsable de recabar, usar, proteger y tratar sus datos personales.
+              <p style={{ margin: 0, lineHeight: '1.7', textAlign: 'justify' }}>
+                <strong>{siteDesign?.companyRightsName ? siteDesign.companyRightsName.toUpperCase() : 'EXPERIENCE SAFELY S.A.P.I. DE C.V.'}</strong>, conocida comercialmente como <strong>Experience Safely</strong>, con domicilio en <strong>{contactLocation}</strong>, es responsable del tratamiento de los datos personales que recabe a través de su sitio web, aplicación, formularios, representantes, canales de mensajería, puntos de venta, eventos y medios electrónicos relacionados con la plataforma.
               </p>
 
-              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>2. Datos Personales Recabados</h3>
-              <p style={{ margin: 0 }}>
-                Para brindar nuestros servicios de reservación y emisión de boletos de garantía de seguridad, podemos solicitar:
-              </p>
-              <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                <li>Nombre completo del titular de la reserva.</li>
-                <li>Correo electrónico y número telefónico de contacto.</li>
-                <li>Datos de facturación o identificación en caso de requerir comprobante fiscal.</li>
-                <li>Información sobre alergias o condiciones médicas relevantes (únicamente en tours de aventura).</li>
-              </ul>
-
-              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>3. Finalidades del Tratamiento</h3>
-              <p style={{ margin: 0 }}>
-                <strong>Finalidades Primarias:</strong>
-              </p>
-              <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                <li>Gestión, emisión y validación de boletos digitales de garantía con código QR.</li>
-                <li>Coordinación directa con los operadores turísticos o haciendas reservadas.</li>
-                <li>Atención de emergencias y validación de seguros de viajero incluidos en el tour.</li>
-              </ul>
-
-              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>4. Derechos ARCO</h3>
-              <p style={{ margin: 0 }}>
-                Usted tiene derecho a conocer qué datos tenemos (<strong>Acceso</strong>), solicitar su corrección (<strong>Rectificación</strong>), eliminar su registro (<strong>Cancelación</strong>) o oponerse a su uso (<strong>Oposición</strong>). Puede ejercer estos derechos escribiendo a <code>privacidad@experiencesafely.com</code>.
+              <h4 style={{ color: '#fff', fontSize: '0.95rem', margin: '8px 0 2px', fontWeight: '700' }}>
+                1. Datos Personales Recabados
+              </h4>
+              <p style={{ margin: 0, lineHeight: '1.7', textAlign: 'justify' }}>
+                Los datos personales que podremos recabar incluyen: nombre, correo electrónico, teléfono, país, ciudad, idioma, datos de cuenta, datos de reservación, historial de reservas, mensajes, preferencias, datos de pago, facturación, información técnica del dispositivo, cookies, ubicación cuando sea autorizada, comentarios, calificaciones y datos necesarios para atención al cliente.
               </p>
 
-              <h3 style={{ color: '#fff', fontSize: '1rem', margin: '8px 0 4px' }}>5. Transferencia de Datos</h3>
-              <p style={{ margin: 0 }}>
-                Sus datos personales únicamente se comparten con la empresa prestadora de servicio reservada (operador de tour, hotel o hacienda) para posibilitar la prestación del servicio contratado.
+              <h4 style={{ color: '#fff', fontSize: '0.95rem', margin: '8px 0 2px', fontWeight: '700' }}>
+                2. Datos de Salud & Necesidades de Accesibilidad
+              </h4>
+              <p style={{ margin: 0, lineHeight: '1.7', textAlign: 'justify' }}>
+                En caso de que una experiencia lo requiera, podremos solicitar datos relacionados con salud, movilidad, alergias, restricciones físicas o necesidades de accesibilidad, únicamente para proteger la seguridad del usuario, adaptar el servicio o atender emergencias.
               </p>
+
+              <h4 style={{ color: '#fff', fontSize: '0.95rem', margin: '8px 0 2px', fontWeight: '700' }}>
+                3. Finalidades Primarias del Tratamiento
+              </h4>
+              <p style={{ margin: 0, lineHeight: '1.7', textAlign: 'justify' }}>
+                Sus datos serán utilizados para crear y administrar cuentas, gestionar reservas, pagos, confirmaciones, cancelaciones, reembolsos, facturación, soporte, comunicación con proveedores, seguridad, prevención de fraude, atención de quejas, cumplimiento legal y mejora de la plataforma.
+              </p>
+
+              <h4 style={{ color: '#fff', fontSize: '0.95rem', margin: '8px 0 2px', fontWeight: '700' }}>
+                4. Finalidades Secundarias & Oposición
+              </h4>
+              <p style={{ margin: 0, lineHeight: '1.7', textAlign: 'justify' }}>
+                También podremos usar sus datos para enviar promociones, recomendaciones, encuestas, beneficios, comunicaciones comerciales, análisis estadístico y mejora de servicios. Usted puede oponerse a estas finalidades escribiendo a <a href={`mailto:${contactEmail}`} style={{ color: '#00C2B3', textDecoration: 'underline' }}>{contactEmail}</a>.
+              </p>
+
+              <h4 style={{ color: '#fff', fontSize: '0.95rem', margin: '8px 0 2px', fontWeight: '700' }}>
+                5. Transferencia de Datos
+              </h4>
+              <p style={{ margin: 0, lineHeight: '1.7', textAlign: 'justify' }}>
+                Podremos compartir sus datos con proveedores de experiencias, transportistas, hoteles, operadores turísticos, procesadores de pago, servicios tecnológicos, facturación, soporte, analítica y autoridades competentes cuando sea necesario para prestar el servicio o cumplir obligaciones legales.
+              </p>
+
+              <h4 style={{ color: '#fff', fontSize: '0.95rem', margin: '8px 0 2px', fontWeight: '700' }}>
+                6. Derechos ARCO y Revocación del Consentimiento
+              </h4>
+              <p style={{ margin: 0, lineHeight: '1.7', textAlign: 'justify' }}>
+                Usted puede ejercer sus derechos de acceso, rectificación, cancelación y oposición, así como revocar su consentimiento o limitar el uso de sus datos, enviando solicitud a <a href={`mailto:${contactEmail}`} style={{ color: '#00C2B3', textDecoration: 'underline' }}>{contactEmail}</a>.
+              </p>
+
+              <h4 style={{ color: '#fff', fontSize: '0.95rem', margin: '8px 0 2px', fontWeight: '700' }}>
+                7. Medidas de Seguridad
+              </h4>
+              <p style={{ margin: 0, lineHeight: '1.7', textAlign: 'justify' }}>
+                Experience Safely implementará medidas razonables de seguridad para proteger los datos personales contra pérdida, alteración, uso indebido, acceso no autorizado o divulgación indebida.
+              </p>
+
+              <h4 style={{ color: '#fff', fontSize: '0.95rem', margin: '8px 0 2px', fontWeight: '700' }}>
+                8. Actualizaciones del Aviso de Privacidad
+              </h4>
+              <p style={{ margin: 0, lineHeight: '1.7', textAlign: 'justify' }}>
+                Este Aviso de Privacidad podrá actualizarse por cambios legales, operativos, tecnológicos o comerciales. La versión vigente estará disponible en <a href="https://experiencesafely.com" target="_blank" rel="noopener noreferrer" style={{ color: '#00C2B3', textDecoration: 'underline' }}>https://experiencesafely.com</a>.
+              </p>
+
+              <div style={{ background: 'rgba(13, 24, 42, 0.6)', border: '1px solid rgba(0,194,179,0.3)', padding: '12px 16px', borderRadius: '12px', marginTop: '8px', fontSize: '0.82rem', color: '#00C2B3', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span>☑️</span> <span>Acepto observaciones, Términos y Aviso de Privacidad Integral.</span>
+              </div>
             </div>
           )}
 
