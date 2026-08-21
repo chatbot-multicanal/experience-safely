@@ -68,6 +68,31 @@ const INITIAL_EXPERIENCES = [
     syncedFromWix: false,
   },
   {
+    id: 'exp-rio-lagartos',
+    name: 'Tour Ría Lagartos — Flamingos, Baño Maya & Las Coloradas',
+    description: 'Embarca en un recorrido ecoturístico inolvidable por la Reserva de la Biosfera Ría Lagartos. Avista cientos de flamingos rosados en su hábitat natural, cocodrilos, águilas y garzas. Experimenta el tradicional baño purificante de barro maya rico en minerales y admira las increíbles charcas salineras de color rosa intenso en Las Coloradas.',
+    category: 'barcos',
+    location: 'Ría Lagartos, Yucatán',
+    price: 1650,
+    capacity: 6,
+    image: '/images/discover yucatan.jpeg',
+    rating: 5.0,
+    reviewsCount: 6,
+    pricingType: 'package',
+    bookingType: 'tour',
+    externalWebsiteUrl: 'https://tourriolagartos.com/',
+    schedules: ['08:00 AM', '10:30 AM', '01:00 PM', '03:30 PM'],
+    reviews: [
+      { id: 'rev-rl1', author: 'Alejandro G.', rating: 5, comment: 'Ver los flamingos y el color rosa de Las Coloradas fue espectacular. El capitán súper preparado con chalecos salvavidas para todos.', date: '2026-08-12', source: 'TripAdvisor' },
+      { id: 'rev-rl2', author: 'Sarah W.', rating: 5, comment: 'Amazing tour! The boat captain was very knowledgeable and safety was top priority.', date: '2026-08-08', source: 'Google' }
+    ],
+    safetyBadges: ['Auditoría Marítima Verified', 'Capitanes con Libreta de Mar', 'Póliza de Navegación AXXA'],
+    safetyDescription: 'Embarcaciones de motor ecológico auditadas por Capitanía de Puerto. Chalecos salvavidas reglamentarios e higienizados. Seguro marítimo de cobertura amplia incluido.',
+    providerId: 'provider-7',
+    providerName: 'Tour Ría Lagartos Official',
+    syncedFromWix: false,
+  },
+  {
     id: 'exp-2',
     name: 'Cena de Gala en Hacienda Mucuyché',
     description: 'Disfruta de una velada gastronómica exclusiva de 5 tiempos inspirada en recetas ancestrales del henequén, servida en los majestuenses jardines iluminados de la Hacienda Mucuyché. Incluye recorrido nocturno por el cenote de la hacienda.',
@@ -828,7 +853,8 @@ export const AppProvider = ({ children }) => {
     { id: 'provider-3', name: 'Yucatán Wellness Center', rfc: 'YWC180415AA7', status: 'Aprobado', safetyRating: 'Verified', contact: 'info@yucatanwellness.mx' },
     { id: 'provider-4', name: 'Rosas & Xocolate Boutique', rfc: 'RXB091210PP1', status: 'Aprobado', safetyRating: 'Gold', contact: 'reservaciones@rosasandxocolate.com' },
     { id: 'provider-5', name: 'Marinas del Norte Yucatán', rfc: 'MNY201103BC3', status: 'Pendiente', safetyRating: 'None', contact: 'ventas@marinasnorte.com' },
-    { id: 'provider-6', name: 'Homúnja’ Parque Ecoturístico', rfc: 'HPE190412HK8', status: 'Aprobado', safetyRating: 'Gold', contact: 'contacto@homunja.com.mx' }
+    { id: 'provider-6', name: 'Homúnja’ Parque Ecoturístico', rfc: 'HPE190412HK8', status: 'Aprobado', safetyRating: 'Gold', contact: 'contacto@homunja.com.mx' },
+    { id: 'provider-7', name: 'Tour Ría Lagartos Official', rfc: 'TRL170914KL5', status: 'Aprobado', safetyRating: 'Gold', contact: 'info@tourriolagartos.com' }
   ]);
 
   // Provider Profiles state (CLABE and Bank credentials)
@@ -862,6 +888,12 @@ export const AppProvider = ({ children }) => {
       commercialPhone: '9992305070',
       paymentEmail: 'contacto@homunja.com.mx',
       bankClabe: '012914002015386666'
+    },
+    'provider-7': {
+      representativeName: 'Capitán Ría Lagartos',
+      commercialPhone: '9868620000',
+      paymentEmail: 'info@tourriolagartos.com',
+      bankClabe: '012914002015385555'
     }
   });
 

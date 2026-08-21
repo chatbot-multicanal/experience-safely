@@ -503,6 +503,23 @@ export default function TouristView() {
                       <Star size={16} fill="var(--color-gold)" style={{ color: 'var(--color-gold)' }} /> {selectedExp.rating} ({selectedExp.reviewsCount} {t('reviewsCountLabel')})
                     </span>
 
+                    {selectedExp.externalWebsiteUrl && (
+                      <a
+                        href={selectedExp.externalWebsiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: 'inline-flex', alignItems: 'center', gap: '6px',
+                          background: 'rgba(0, 194, 179, 0.15)', color: '#00C2B3',
+                          border: '1px solid rgba(0, 194, 179, 0.35)',
+                          padding: '4px 10px', borderRadius: '12px', fontSize: '0.78rem',
+                          fontWeight: '700', textDecoration: 'none', transition: 'all 0.2s'
+                        }}
+                      >
+                        🌐 {language === 'es' ? 'Sitio Web Oficial' : 'Official Website'}
+                      </a>
+                    )}
+
                     {selectedExp.facebookUrl && (
                       <a
                         href={selectedExp.facebookUrl}
