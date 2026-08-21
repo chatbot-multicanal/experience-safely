@@ -153,6 +153,12 @@ export default function ProviderView() {
       safetyDescription: newSafetyDesc,
       providerId,
       providerName: 'Aventuras Mayas S.A.',
+      gallery: [
+        imagePreview || '/images/discover yucatan.jpeg',
+        '/images/rio_lagartos_coloradas.jpg',
+        '/images/sayachaltun_kayak.webp',
+        '/images/homunja_cenote.webp'
+      ],
       image: imagePreview || '/branding_2.jpg'
     });
 
@@ -165,7 +171,7 @@ export default function ProviderView() {
     setNewCapacity(10);
     setUploadedImage(null);
     setImagePreview('');
-    alert(language === 'es' ? 'Experiencia registrada correctamente.' : 'Experience registered successfully.');
+    alert(language === 'es' ? 'Experiencia registrada correctamente con Galería HD.' : 'Experience registered successfully with HD Gallery.');
   };
 
   const handleSaveProfile = (e) => {
@@ -333,8 +339,8 @@ export default function ProviderView() {
 
           {/* ADD EXPERIENCE FORM MODAL */}
           {showAddForm && (
-            <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(13,24,42,0.85)', backdropFilter: 'blur(8px)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px' }}>
-              <div className="glass-card" style={{ width: '100%', maxWidth: '600px', padding: '32px', maxHeight: '90vh', overflowY: 'auto' }}>
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(8, 15, 27, 0.65)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '16px' }}>
+              <div className="glass-modal" style={{ width: '100%', maxWidth: '600px', padding: '32px', maxHeight: '90vh', overflowY: 'auto' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                   <h3>{t('modalTitleAdd')}</h3>
                   <button onClick={() => setShowAddForm(false)} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer' }}>
