@@ -322,6 +322,18 @@ export default function AdminView() {
           💰 {t('tabCurate') === 'Curar Catálogo' ? 'Finanzas' : 'Finances'}
         </button>
         <button 
+          onClick={() => setActiveTab('alerts')}
+          className={`btn ${activeTab === 'alerts' ? 'btn-outline-teal' : 'btn-outline'}`}
+          style={{ border: 'none', borderBottom: activeTab === 'alerts' ? '2px solid var(--color-teal-light)' : 'none', borderRadius: 0, padding: '16px 20px', position: 'relative' }}
+        >
+          🔔 {language === 'es' ? 'Avisos & Registros' : 'Alerts & Requests'}
+          {providers.filter(p => p.status === 'Pendiente').length > 0 && (
+            <span style={{ background: '#FF6B4D', color: '#fff', fontSize: '0.7rem', padding: '2px 7px', borderRadius: '10px', marginLeft: '6px', fontWeight: '800', boxShadow: '0 0 10px rgba(255,107,77,0.5)' }}>
+              {providers.filter(p => p.status === 'Pendiente').length}
+            </span>
+          )}
+        </button>
+        <button 
           onClick={() => setActiveTab('design')}
           className={`btn ${activeTab === 'design' ? 'btn-outline-teal' : 'btn-outline'}`}
           style={{ border: 'none', borderBottom: activeTab === 'design' ? '2px solid var(--color-teal-light)' : 'none', borderRadius: 0, padding: '16px 20px' }}
@@ -1315,6 +1327,134 @@ export default function AdminView() {
                 <p style={{ color: 'var(--color-text-muted)' }}>{language === 'es' ? 'Panel restringido. Protegido bajo estándares SSL y credenciales cifradas.' : 'Restricted dashboard. Protected under SSL and encrypted keys.'}</p>
               </div>
             </div>
+          </div>
+
+        </div>
+      )}
+
+      {/* TAB: AVISOS, MENSAJES Y REGISTROS PENDIENTES */}
+      {activeTab === 'alerts' && (
+        <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          
+          {/* Header Banner */}
+          <div style={{ background: 'linear-gradient(135deg, rgba(255, 107, 77, 0.15), rgba(13, 24, 42, 0.95))', border: '1px solid rgba(255, 107, 77, 0.3)', padding: '24px', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <div style={{ background: '#FF6B4D', color: '#fff', padding: '14px', borderRadius: '16px', display: 'flex', boxShadow: '0 0 20px rgba(255, 107, 77, 0.4)' }}>
+                <ShieldAlert size={28} />
+              </div>
+              <div>
+                <h2 style={{ fontSize: '1.25rem', color: '#fff', margin: '0 0 4px', fontWeight: '800' }}>
+                  🔔 {language === 'es' ? 'Centro de Avisos, Mensajes & Solicitudes de Registro' : 'Alerts, Messages & Partner Requests Center'}
+                </h2>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)' }}>
+                  {language === 'es' ? 'Auditoría en tiempo real de nuevas empresas solicitantes y reservaciones entrantes.' : 'Real-time audit of new partner company applications and incoming bookings.'}
+                </p>
+              </div>
+            </div>
+
+            <div style={{ background: 'rgba(13, 24, 42, 0.8)', padding: '10px 18px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '0.85rem', color: '#00C2B3', fontWeight: '700' }}>
+              ⏳ {providers.filter(p => p.status === 'Pendiente').length} {language === 'es' ? 'Solicitudes Pendientes' : 'Pending Requests'}
+            </div>
+          </div>
+
+          {/* Grid Layout: Pending Requests & Recent Audit Logs */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '24px' }}>
+            
+            {/* Left Column: Pending Partner Company Applications */}
+            <div className="glass-card" style={{ padding: '24px' }}>
+              <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                🏢 {language === 'es' ? 'Solicitudes de Empresas por Auditar' : 'Partner Companies Awaiting Audit'}
+              </h3>
+
+              {providers.filter(p => p.status === 'Pendiente').length === 0 ? (
+                <div style={{ padding: '32px', textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: '0.88rem' }}>
+                  🎉 {language === 'es' ? '¡Excelente! No hay solicitudes de empresas pendientes de auditoría en este momento.' : 'All clear! No pending partner company applications.'}
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {providers.filter(p => p.status === 'Pendiente').map(prov => (
+                    <div key={prov.id} style={{ background: 'rgba(13, 24, 42, 0.7)', border: '1px solid rgba(255, 200, 87, 0.3)', padding: '18px', borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <div>
+                          <strong style={{ color: '#fff', fontSize: '1rem', display: 'block' }}>{prov.name}</strong>
+                          <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.6)' }}>RFC / Tax ID: {prov.rfc}</span>
+                        </div>
+                        <span style={{ background: 'rgba(255, 200, 87, 0.15)', color: '#FFC857', padding: '3px 10px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: '800' }}>
+                          ⏳ {language === 'es' ? 'PENDIENTE' : 'PENDING'}
+                        </span>
+                      </div>
+
+                      <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.8)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                        <div>👤 <strong>Representante:</strong> {prov.contactPerson || 'Representante'}</div>
+                        <div>📞 <strong>Teléfono:</strong> {prov.commercialPhone || 'No proporcionado'}</div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div style={{ display: 'flex', gap: '10px', marginTop: '6px' }}>
+                        <button
+                          onClick={() => approveProvider(prov.id)}
+                          className="btn btn-primary btn-sm"
+                          style={{ flex: 1, padding: '8px', fontWeight: '700', background: 'linear-gradient(135deg, #00C2B3, #00a89b)' }}
+                        >
+                          ✓ {language === 'es' ? 'Aprobar Empresa (Verified)' : 'Approve Company (Verified)'}
+                        </button>
+                        <button
+                          onClick={() => rejectProvider(prov.id)}
+                          className="btn btn-outline btn-sm"
+                          style={{ borderColor: 'var(--color-coral)', color: 'var(--color-coral)', padding: '8px 14px' }}
+                        >
+                          ✕ {language === 'es' ? 'Rechazar' : 'Reject'}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Right Column: Recent Activity & Customer Messages */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              
+              {/* Recent Bookings Feed */}
+              <div className="glass-card" style={{ padding: '24px' }}>
+                <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  🎟️ {language === 'es' ? 'Últimas Reservaciones Emitidas' : 'Recent Bookings Issued'}
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '280px', overflowY: 'auto' }}>
+                  {(bookings || []).slice(0, 5).map(b => (
+                    <div key={b.id} style={{ background: 'rgba(255,255,255,0.03)', padding: '10px 12px', borderRadius: '10px', borderLeft: '3px solid #00C2B3', fontSize: '0.78rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', color: '#fff', fontWeight: '700' }}>
+                        <span>{b.touristName}</span>
+                        <span style={{ color: '#00C2B3' }}>${b.totalPrice?.toLocaleString('es-MX')} MXN</span>
+                      </div>
+                      <div style={{ color: 'rgba(255,255,255,0.6)', marginTop: '2px' }}>
+                        {b.experienceName} • {b.guests} {language === 'es' ? 'pasajeros' : 'guests'}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* System Audit Activity */}
+              <div className="glass-card" style={{ padding: '24px' }}>
+                <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  🛡️ {language === 'es' ? 'Logs de Auditoría Recientes' : 'Recent System Audit Logs'}
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '250px', overflowY: 'auto' }}>
+                  {(auditLogs || []).slice(0, 6).map((log, idx) => (
+                    <div key={idx} style={{ padding: '8px 10px', borderRadius: '8px', background: 'rgba(255,255,255,0.02)', fontSize: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.4)', fontSize: '0.65rem' }}>
+                        <span>{log.timestamp}</span>
+                        <span style={{ color: '#00C2B3', fontWeight: '700' }}>{log.type?.toUpperCase()}</span>
+                      </div>
+                      <p style={{ margin: '2px 0 0', color: 'rgba(255,255,255,0.85)' }}>{log.message}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
           </div>
 
         </div>

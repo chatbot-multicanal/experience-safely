@@ -90,7 +90,8 @@ function AppContent() {
     t = (k) => k,
     toggleLanguage = () => {},
     touristUser = null,
-    logoutTourist = () => {}
+    logoutTourist = () => {},
+    providers = []
   } = context;
 
   // Local login state
@@ -344,8 +345,17 @@ function AppContent() {
               <button 
                 className={`profile-btn ${currentProfile === 'admin' ? 'active' : ''}`}
                 onClick={() => changeProfile('admin')}
+                style={{ position: 'relative' }}
               >
                 <Settings2 size={14} /> {t('navAdmin')}
+                {((providers || []).filter(p => p.status === 'Pendiente').length > 0) && (
+                  <>
+                    <span className="admin-badge-pulse" />
+                    <span className="admin-badge-bubble">
+                      {(providers || []).filter(p => p.status === 'Pendiente').length}
+                    </span>
+                  </>
+                )}
               </button>
             </div>
 

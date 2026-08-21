@@ -639,6 +639,45 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Admin Notification Badge Bubble */
+.admin-badge-bubble {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: linear-gradient(135deg, #FF6B4D, #ff4757);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px rgba(255, 107, 77, 0.8);
+  border: 2px solid #0d182a;
+  z-index: 10;
+  animation: admin-badge-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.admin-badge-pulse {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FF6B4D;
+  animation: chatbot-pulse 2s ease-out infinite;
+  z-index: 9;
+}
+
+@keyframes admin-badge-pop {
+  0% { transform: scale(0); }
+  80% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
 .typing-dot {
   display: inline-block;
   width: 7px;
