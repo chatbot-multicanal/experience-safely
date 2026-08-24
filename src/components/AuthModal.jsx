@@ -19,6 +19,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
   const [password, setPassword] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
 
+  // Consent Checkbox States for Registration
+  const [acceptPrivacyNotice, setAcceptPrivacyNotice] = useState(false);
+  const [acceptPromotions, setAcceptPromotions] = useState(false);
+  const [acceptSensitiveData, setAcceptSensitiveData] = useState(true);
+  const [acceptLocationData, setAcceptLocationData] = useState(true);
+
   // Helper to decode Google OAuth JWT Credential
   const parseGoogleJwt = (token) => {
     try {
@@ -143,6 +149,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
   const resetForm = () => {
     setName(''); setEmail(''); setPhone('');
     setPassword(''); setConfirmPass('');
+    setAcceptPrivacyNotice(false);
+    setAcceptPromotions(false);
+    setAcceptSensitiveData(true);
+    setAcceptLocationData(true);
     setError(''); setShowPassword(false);
   };
 
@@ -170,10 +180,22 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
     if (!name || !email || !password || !confirmPass) { setError(t('authFieldsRequired')); return; }
     if (password !== confirmPass) { setError(t('authPassMismatch')); return; }
     if (password.length < 6) { setError(t('authPassLength')); return; }
+    if (!acceptPrivacyNotice) {
+      setError(language === 'es' ? 'Debes aceptar el Aviso de Privacidad para registrarte.' : 'You must accept the Privacy Notice to register.');
+      return;
+    }
 
     setLoading(true);
     setTimeout(() => {
-      const result = registerTourist({ name, email, phone, password });
+      const result = registerTourist({ 
+        name, email, phone, password,
+        consents: {
+          privacyNotice: acceptPrivacyNotice,
+          promotions: acceptPromotions,
+          sensitiveData: acceptSensitiveData,
+          locationData: acceptLocationData
+        }
+      });
       setLoading(false);
       if (result.success) { resetForm(); onSuccess?.(); onClose(); }
       else { setError(t(result.error)); }
