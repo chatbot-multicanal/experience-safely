@@ -81,12 +81,40 @@ export default function TouristView() {
     return exp.price;
   };
 
+  // Mobile Back Button / Gesture Support (HTML5 History API)
+  React.useEffect(() => {
+    const handlePopState = (event) => {
+      if (lightboxUrl) {
+        setLightboxUrl(null);
+        return;
+      }
+      if (showCheckout) {
+        if (checkoutStep > 1 && checkoutStep < 3) {
+          setCheckoutStep(prev => prev - 1);
+        } else {
+          setShowCheckout(false);
+        }
+        return;
+      }
+      if (selectedExpId) {
+        setSelectedExpId(null);
+        return;
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [selectedExpId, showCheckout, checkoutStep, lightboxUrl]);
+
   const handleOpenDetail = (id) => {
     setSelectedExpId(id);
     setBookingDate(filterDate || (dates && dates[0]) || '');
     setBookingGuests(filterGuests || 1);
     setCheckoutStep(1);
     setShowCheckout(false);
+    try {
+      window.history.pushState({ expDetailId: id }, '');
+    } catch (e) {}
   };
 
   const handleStartBooking = () => {
@@ -100,6 +128,9 @@ export default function TouristView() {
     }
     setShowCheckout(true);
     setCheckoutStep(1);
+    try {
+      window.history.pushState({ modal: 'checkout' }, '');
+    } catch (e) {}
   };
 
   const handleConfirmBooking = () => {
@@ -527,7 +558,7 @@ export default function TouristView() {
                           </div>
                           <button 
                             className="btn btn-secondary btn-sm" 
-                            onClick={() => setSelectedExpId(exp.id)}
+                            onClick={() => handleOpenDetail(exp.id)}
                             style={{ borderRadius: '10px', fontWeight: '700' }}
                           >
                             {language === 'es' ? 'VER DETALLES' : 'VIEW DETAILS'}

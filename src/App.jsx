@@ -119,6 +119,31 @@ function AppContent() {
     document.documentElement.style.setProperty('--color-coral-glow', glow);
   }, [siteDesign?.accentColor]);
 
+  // Global Mobile Back Button / Gesture handling for Modals and Profiles
+  useEffect(() => {
+    const handleGlobalPopState = () => {
+      if (showLegalModal) {
+        setShowLegalModal(false);
+        return;
+      }
+      if (showTouristAuthModal) {
+        setShowTouristAuthModal(false);
+        return;
+      }
+      if (showProviderRegModal) {
+        setShowProviderRegModal(false);
+        return;
+      }
+      if (currentProfile !== 'tourist') {
+        changeProfile('tourist');
+        return;
+      }
+    };
+
+    window.addEventListener('popstate', handleGlobalPopState);
+    return () => window.removeEventListener('popstate', handleGlobalPopState);
+  }, [showLegalModal, showTouristAuthModal, showProviderRegModal, currentProfile, changeProfile]);
+
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     setLoginError('');
@@ -281,11 +306,13 @@ function AppContent() {
               🌐 {language === 'es' ? 'ES | EN' : 'EN | ES'}
             </button>
 
-            {/* Direct Tourist Login / Register Button */}
-            {currentProfile === 'tourist' && (
+            {/* Direct Tourist Login / Register B            {currentProfile === 'tourist' && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <button
-                  onClick={() => setShowTouristAuthModal(true)}
+                  onClick={() => {
+                    setShowTouristAuthModal(true);
+                    try { window.history.pushState({ modal: 'auth' }, ''); } catch(e) {}
+                  }}
                   style={{
                     background: 'linear-gradient(135deg, #00C2B3, #00a89b)',
                     border: 'none',
@@ -338,13 +365,19 @@ function AppContent() {
               </button>
               <button 
                 className={`profile-btn ${currentProfile === 'provider' ? 'active' : ''}`}
-                onClick={() => changeProfile('provider')}
+                onClick={() => {
+                  changeProfile('provider');
+                  try { window.history.pushState({ profile: 'provider' }, ''); } catch(e) {}
+                }}
               >
                 <Briefcase size={14} /> {t('navProvider')}
               </button>
               <button 
                 className={`profile-btn ${currentProfile === 'admin' ? 'active' : ''}`}
-                onClick={() => changeProfile('admin')}
+                onClick={() => {
+                  changeProfile('admin');
+                  try { window.history.pushState({ profile: 'admin' }, ''); } catch(e) {}
+                }}
                 style={{ position: 'relative' }}
               >
                 <Settings2 size={14} /> {t('navAdmin')}
