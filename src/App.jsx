@@ -306,7 +306,8 @@ function AppContent() {
               🌐 {language === 'es' ? 'ES | EN' : 'EN | ES'}
             </button>
 
-            {/* Direct Tourist Login / Register B            {currentProfile === 'tourist' && (
+            {/* Direct Tourist Login / Register Button */}
+            {currentProfile === 'tourist' && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <button
                   onClick={() => {
