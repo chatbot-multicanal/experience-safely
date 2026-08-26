@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, X, Calendar as CalendarIcon } from 'lucide-react';
 
 export default function DatePickerPopover({ value, onChange, onClose, language = 'es' }) {
   const today = new Date();
@@ -8,6 +8,15 @@ export default function DatePickerPopover({ value, onChange, onClose, language =
   const initialDate = value ? new Date(value + 'T00:00:00') : today;
   const [currentMonth, setCurrentMonth] = useState(initialDate.getMonth());
   const [currentYear, setCurrentYear] = useState(initialDate.getFullYear());
+
+  // ESC Key Listener
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose?.();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   const monthNamesEs = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   const monthNamesEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -54,122 +63,163 @@ export default function DatePickerPopover({ value, onChange, onClose, language =
 
   return (
     <div 
-      className="glass-card animate-fade-in-up" 
-      onClick={e => e.stopPropagation()}
       style={{
-        position: 'absolute',
-        top: 'calc(100% + 8px)',
-        left: 0,
-        zIndex: 9999,
-        width: '320px',
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(8, 15, 27, 0.75)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 100000,
         padding: '16px',
-        borderRadius: '16px',
-        background: 'rgba(13, 24, 42, 0.96)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(0, 194, 179, 0.4)',
-        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 194, 179, 0.25)'
+        animation: 'chatbot-slide-up 0.25s ease-out'
       }}
+      onClick={onClose}
     >
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-        <button 
-          type="button"
-          onClick={handlePrevMonth}
-          style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff', borderRadius: '8px', padding: '6px', cursor: 'pointer' }}
-        >
-          <ChevronLeft size={16} />
-        </button>
+      <div 
+        className="glass-modal" 
+        onClick={e => e.stopPropagation()}
+        style={{
+          width: '100%',
+          maxWidth: '360px',
+          padding: '24px',
+          borderRadius: '24px',
+          background: 'rgba(13, 24, 42, 0.95)',
+          border: '1px solid rgba(0, 194, 179, 0.4)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 194, 179, 0.25)',
+          position: 'relative'
+        }}
+      >
+        {/* Modal Top Bar */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#00C2B3', fontWeight: '800', fontSize: '1rem' }}>
+            <CalendarIcon size={20} />
+            <span>{language === 'es' ? 'Seleccionar Fecha de Salida' : 'Select Departure Date'}</span>
+          </div>
 
-        <div style={{ fontWeight: '700', fontSize: '0.95rem', color: '#00C2B3' }}>
-          {monthNames[currentMonth]} {currentYear}
+          <button 
+            type="button" 
+            onClick={onClose}
+            style={{
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              color: 'rgba(255,255,255,0.7)',
+              borderRadius: '50%',
+              width: '32px',
+              height: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer'
+            }}
+          >
+            <X size={16} />
+          </button>
         </div>
 
-        <button 
-          type="button"
-          onClick={handleNextMonth}
-          style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff', borderRadius: '8px', padding: '6px', cursor: 'pointer' }}
-        >
-          <ChevronRight size={16} />
-        </button>
-      </div>
+        {/* Month Navigation */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', background: 'rgba(255,255,255,0.03)', padding: '8px 12px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <button 
+            type="button"
+            onClick={handlePrevMonth}
+            style={{ background: 'rgba(0,194,179,0.12)', border: '1px solid rgba(0,194,179,0.3)', color: '#00C2B3', borderRadius: '8px', padding: '6px 10px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '700', fontSize: '0.75rem' }}
+          >
+            <ChevronLeft size={16} /> {language === 'es' ? 'Ant' : 'Prev'}
+          </button>
 
-      {/* Weekdays Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', textAlign: 'center', marginBottom: '8px' }}>
-        {weekDays.map(d => (
-          <span key={d} style={{ fontSize: '0.72rem', fontWeight: '700', color: 'var(--color-gold)' }}>
-            {d}
-          </span>
-        ))}
-      </div>
+          <div style={{ fontWeight: '800', fontSize: '1.02rem', color: '#fff' }}>
+            {monthNames[currentMonth]} {currentYear}
+          </div>
 
-      {/* Days Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', textAlign: 'center' }}>
-        {Array.from({ length: firstDayOfMonth }).map((_, i) => (
-          <div key={`empty-${i}`} />
-        ))}
+          <button 
+            type="button"
+            onClick={handleNextMonth}
+            style={{ background: 'rgba(0,194,179,0.12)', border: '1px solid rgba(0,194,179,0.3)', color: '#00C2B3', borderRadius: '8px', padding: '6px 10px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '700', fontSize: '0.75rem' }}
+          >
+            {language === 'es' ? 'Sig' : 'Next'} <ChevronRight size={16} />
+          </button>
+        </div>
 
-        {Array.from({ length: daysInMonth }).map((_, i) => {
-          const day = i + 1;
-          const monthStr = String(currentMonth + 1).padStart(2, '0');
-          const dayStr = String(day).padStart(2, '0');
-          const dateStr = `${currentYear}-${monthStr}-${dayStr}`;
+        {/* Weekdays Row */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', textAlign: 'center', marginBottom: '10px' }}>
+          {weekDays.map(d => (
+            <span key={d} style={{ fontSize: '0.76rem', fontWeight: '800', color: 'var(--color-gold)' }}>
+              {d}
+            </span>
+          ))}
+        </div>
 
-          const isSelected = value === dateStr;
-          const isToday = todayFormatted === dateStr;
+        {/* Days Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '6px', textAlign: 'center' }}>
+          {Array.from({ length: firstDayOfMonth }).map((_, i) => (
+            <div key={`empty-${i}`} />
+          ))}
 
-          return (
-            <button
-              key={day}
-              type="button"
-              onClick={() => handleSelectDay(day)}
-              style={{
-                height: '36px',
-                borderRadius: '10px',
-                border: isSelected ? '1px solid #00C2B3' : isToday ? '1px solid rgba(255, 107, 77, 0.5)' : 'none',
-                background: isSelected 
-                  ? 'linear-gradient(135deg, #00C2B3, #00a89b)' 
-                  : isToday 
-                    ? 'rgba(255, 107, 77, 0.15)' 
-                    : 'rgba(255,255,255,0.03)',
-                color: isSelected ? '#fff' : isToday ? '#FF6B4D' : '#fff',
-                fontWeight: isSelected || isToday ? '800' : '500',
-                fontSize: '0.85rem',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease'
-              }}
-              onMouseEnter={e => {
-                if (!isSelected) e.currentTarget.style.background = 'rgba(0, 194, 179, 0.2)';
-              }}
-              onMouseLeave={e => {
-                if (!isSelected) e.currentTarget.style.background = isToday ? 'rgba(255, 107, 77, 0.15)' : 'rgba(255,255,255,0.03)';
-              }}
-            >
-              {day}
-            </button>
-          );
-        })}
-      </div>
+          {Array.from({ length: daysInMonth }).map((_, i) => {
+            const day = i + 1;
+            const monthStr = String(currentMonth + 1).padStart(2, '0');
+            const dayStr = String(day).padStart(2, '0');
+            const dateStr = `${currentYear}-${monthStr}-${dayStr}`;
 
-      {/* Footer Controls */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '14px', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <button
-          type="button"
-          onClick={() => { onChange(todayFormatted); onClose?.(); }}
-          style={{ background: 'transparent', border: 'none', color: '#00C2B3', fontSize: '0.75rem', fontWeight: '700', cursor: 'pointer' }}
-        >
-          {language === 'es' ? '📍 Hoy' : '📍 Today'}
-        </button>
+            const isSelected = value === dateStr;
+            const isToday = todayFormatted === dateStr;
 
-        {value && (
+            return (
+              <button
+                key={day}
+                type="button"
+                onClick={() => handleSelectDay(day)}
+                style={{
+                  height: '40px',
+                  borderRadius: '12px',
+                  border: isSelected ? '2px solid #00C2B3' : isToday ? '1px solid rgba(255, 107, 77, 0.6)' : 'none',
+                  background: isSelected 
+                    ? 'linear-gradient(135deg, #00C2B3, #00a89b)' 
+                    : isToday 
+                      ? 'rgba(255, 107, 77, 0.15)' 
+                      : 'rgba(255,255,255,0.04)',
+                  color: isSelected ? '#fff' : isToday ? '#FF6B4D' : '#fff',
+                  fontWeight: isSelected || isToday ? '800' : '600',
+                  fontSize: '0.92rem',
+                  cursor: 'pointer',
+                  boxShadow: isSelected ? '0 4px 12px rgba(0, 194, 179, 0.4)' : 'none',
+                  transition: 'all 0.15s ease'
+                }}
+                onMouseEnter={e => {
+                  if (!isSelected) e.currentTarget.style.background = 'rgba(0, 194, 179, 0.25)';
+                }}
+                onMouseLeave={e => {
+                  if (!isSelected) e.currentTarget.style.background = isToday ? 'rgba(255, 107, 77, 0.15)' : 'rgba(255,255,255,0.04)';
+                }}
+              >
+                {day}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Footer Controls */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '18px', paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
           <button
             type="button"
-            onClick={() => { onChange(''); onClose?.(); }}
-            style={{ background: 'transparent', border: 'none', color: '#FF6B4D', fontSize: '0.75rem', fontWeight: '700', cursor: 'pointer' }}
+            onClick={() => { onChange(todayFormatted); onClose?.(); }}
+            style={{ background: 'rgba(0,194,179,0.12)', border: '1px solid rgba(0,194,179,0.3)', color: '#00C2B3', padding: '6px 14px', borderRadius: '10px', fontSize: '0.78rem', fontWeight: '700', cursor: 'pointer' }}
           >
-            {language === 'es' ? '🗑️ Limpiar' : '🗑️ Clear'}
+            📍 {language === 'es' ? 'Seleccionar Hoy' : 'Select Today'}
           </button>
-        )}
+
+          {value && (
+            <button
+              type="button"
+              onClick={() => { onChange(''); onClose?.(); }}
+              style={{ background: 'rgba(255,107,77,0.12)', border: '1px solid rgba(255,107,77,0.3)', color: '#FF6B4D', padding: '6px 14px', borderRadius: '10px', fontSize: '0.78rem', fontWeight: '700', cursor: 'pointer' }}
+            >
+              🗑️ {language === 'es' ? 'Limpiar Fecha' : 'Clear Date'}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

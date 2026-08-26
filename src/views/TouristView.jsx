@@ -398,13 +398,13 @@ export default function TouristView() {
           </div>
 
           {/* Search and Filters Bar with Floating PRO Calendar Modal */}
-          <div className="glass-card" style={{ padding: '20px', borderRadius: '16px', marginBottom: '20px' }}>
+          <div className="glass-card" style={{ padding: '20px', borderRadius: '16px', marginBottom: '20px', position: 'relative', zIndex: 150, overflow: 'visible' }}>
             <form 
               onSubmit={(e) => {
                 e.preventDefault();
                 handleApplyFilters();
               }}
-              style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-end' }}
+              style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-end', overflow: 'visible' }}
             >
               
               {/* Search Query Input */}
@@ -433,7 +433,7 @@ export default function TouristView() {
               </div>
 
               {/* Floating PRO Calendar Trigger Button */}
-              <div className="form-group" style={{ flex: '1 1 180px', marginBottom: 0, position: 'relative' }}>
+              <div className="form-group" style={{ flex: '1 1 180px', marginBottom: 0, position: 'relative', zIndex: 200 }}>
                 <label className="form-label">{language === 'es' ? 'Fecha de Salida' : 'Departure Date'}</label>
                 <div style={{ position: 'relative' }}>
                   <button
