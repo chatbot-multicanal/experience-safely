@@ -649,27 +649,29 @@ export default function TouristView() {
                 href="https://wa.me/529991234567?text=Hola%20Concierge%20Experience%20Safely,%20me%20gustar%C3%ADa%20cotizar%20un%20evento%20especial,%20pase%20VIP%20o%20paquete%20personalizado."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-outline btn-sm"
                 style={{
-                  padding: '10px 18px',
-                  borderRadius: '30px',
-                  fontWeight: '800',
-                  fontSize: '0.82rem',
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '50%',
                   borderColor: '#25D366',
                   color: '#fff',
                   background: 'linear-gradient(135deg, #25D366, #128C7E)',
-                  boxShadow: '0 4px 15px rgba(37, 211, 102, 0.35)',
+                  boxShadow: '0 4px 15px rgba(37, 211, 102, 0.4)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
-                  textDecoration: 'none'
+                  justifyContent: 'center',
+                  textDecoration: 'none',
+                  transition: 'transform 0.2s ease',
+                  flexShrink: 0
                 }}
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                title={language === 'es' ? 'Concierge WhatsApp Directo' : 'Concierge Direct WhatsApp'}
               >
                 {/* Official WhatsApp SVG Icon */}
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                   <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 2.152.68 4.145 1.836 5.782L2.5 21.5l3.864-1.288A9.956 9.956 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm-1.04 5.568c.24-.032.48.064.64.24.272.304.816.992 1.072 1.344.096.128.112.288.048.432-.096.224-.368.56-.544.752-.096.096-.112.224-.048.336.32.544.896 1.392 1.632 2.048.24.208.384.224.544.064.16-.16.48-.56.672-.752.128-.128.288-.128.432-.064.336.144 1.28.608 1.552.736.144.064.24.208.208.368-.112.624-.624 1.584-1.344 1.76-.64.16-1.504.096-2.912-.512-1.744-.752-3.04-2.48-3.328-2.88-.08-.112-.768-1.024-.768-1.952 0-.928.48-1.376.672-1.568.16-.16.352-.224.496-.24z" fill="#FFFFFF"/>
                 </svg>
-                <span>{language === 'es' ? 'Concierge WhatsApp' : 'Concierge WhatsApp'}</span>
               </a>
             </div>
           </div>
