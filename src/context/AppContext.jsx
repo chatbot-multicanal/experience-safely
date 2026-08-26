@@ -473,6 +473,7 @@ const INITIAL_FINANCIAL_LEDGER = [
 
 const INITIAL_CATEGORIES = [
   { id: 'todos', label: 'Todos' },
+  { id: 'paquetes', label: '✨ Paquetes & Concierge' },
   { id: 'cenotes', label: 'Cenotes' },
   { id: 'haciendas', label: 'Haciendas' },
   { id: 'barcos', label: 'Marinas & Barcos' },

@@ -556,6 +556,102 @@ export default function TouristView() {
             )}
           </div>
 
+          {/* VIP Concierge Custom Experiences & Packages Banner */}
+          <div 
+            className="glass-card animate-fade-in-up" 
+            style={{
+              marginBottom: '24px',
+              padding: '18px 24px',
+              borderRadius: '20px',
+              background: 'linear-gradient(135deg, rgba(13, 24, 42, 0.92), rgba(0, 194, 179, 0.15))',
+              border: '1px solid rgba(0, 194, 179, 0.4)',
+              boxShadow: '0 8px 32px rgba(0, 194, 179, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '16px'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: '1 1 320px' }}>
+              <div style={{
+                background: 'linear-gradient(135deg, #00C2B3, #008f84)',
+                padding: '12px',
+                borderRadius: '16px',
+                color: '#fff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 15px rgba(0, 194, 179, 0.4)',
+                flexShrink: 0
+              }}>
+                <Sparkles size={24} />
+              </div>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <span style={{ fontSize: '0.68rem', background: 'rgba(255, 107, 77, 0.18)', color: '#FF6B4D', border: '1px solid rgba(255, 107, 77, 0.35)', padding: '2px 8px', borderRadius: '10px', fontWeight: '800' }}>
+                    {language === 'es' ? 'CONCIERGE VIP 24/7' : '24/7 VIP CONCIERGE'}
+                  </span>
+                  <h4 style={{ margin: 0, fontSize: '1.02rem', color: '#fff', fontWeight: '800' }}>
+                    {language === 'es' ? '¿Buscas Paquetes o Experiencias a la Medida?' : 'Looking for Custom Packages & Tours?'}
+                  </h4>
+                </div>
+                <p style={{ margin: 0, fontSize: '0.83rem', color: 'rgba(255,255,255,0.8)', lineHeight: '1.4' }}>
+                  {language === 'es' 
+                    ? 'Nuestro Concierge diseña tu itinerario personalizado: combina yates, cenotes privados, pádel, transportación VIP y reservas exclusivas en 1 sola experiencia.' 
+                    : 'Our Concierge creates custom itineraries: combine yachts, private cenotes, padel, VIP transit & luxury dining in 1 seamless trip.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  const chatbotBtn = document.querySelector('.chatbot-trigger-btn');
+                  if (chatbotBtn) chatbotBtn.click();
+                  else alert(language === 'es' ? 'Haz clic en el botón flotante del asistente para diseñar tu paquete.' : 'Click the floating assistant button to design your package.');
+                }}
+                className="btn btn-primary btn-sm"
+                style={{
+                  padding: '9px 18px',
+                  borderRadius: '30px',
+                  fontWeight: '800',
+                  fontSize: '0.82rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 4px 15px rgba(0, 194, 179, 0.35)'
+                }}
+              >
+                <span>💬 {language === 'es' ? 'Diseñar con Concierge' : 'Design with Concierge'}</span>
+              </button>
+
+              <a
+                href="https://wa.me/529991234567?text=Hola%20Concierge%20Experience%20Safely,%20me%20gustar%C3%ADa%20cotizar%20un%20paquete%20de%20experiencias%20personalizado."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline btn-sm"
+                style={{
+                  padding: '9px 16px',
+                  borderRadius: '30px',
+                  fontWeight: '700',
+                  fontSize: '0.82rem',
+                  borderColor: '#25D366',
+                  color: '#25D366',
+                  background: 'rgba(37, 211, 102, 0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  textDecoration: 'none'
+                }}
+              >
+                <span>📲 WhatsApp Directo</span>
+              </a>
+            </div>
+          </div>
+
           {/* Category Filter Pills Bar */}
           <div style={{ 
             display: 'flex', 
