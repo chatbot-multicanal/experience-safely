@@ -3,6 +3,7 @@ import { AppContext } from '../context/AppContext';
 import AuthModal from '../components/AuthModal';
 import TouristDashboard from '../components/TouristDashboard';
 import ProviderRegisterModal from '../components/ProviderRegisterModal';
+import DatePickerPopover from '../components/DatePickerPopover';
 import { 
   Search, Calendar, Users, MapPin, Star, ShieldCheck, CheckCircle2, 
   ArrowLeft, CreditCard, Clock, Phone, Mail, Award, X, Sparkles, Ticket, Building2,
@@ -26,6 +27,7 @@ export default function TouristView() {
   } = context;
   
   const carouselContainerRef = useRef(null);
+  const catalogGridRef = useRef(null);
 
   // UI States
   const [activeTab, setActiveTab] = useState('catalog'); // 'catalog' | 'dashboard'
@@ -38,6 +40,7 @@ export default function TouristView() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterDate, setFilterDate] = useState('');
   const [filterGuests, setFilterGuests] = useState(1);
+  const [showFilterDatePicker, setShowFilterDatePicker] = useState(false);
   
   // Booking Form States
   const [bookingStep3Data, setBookingStep3Data] = useState(null);
@@ -185,18 +188,29 @@ export default function TouristView() {
     }
   };
 
+  // Helper to normalize strings (remove accents and casing)
+  const normalizeText = (str) => {
+    return (str || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  };
+
   // Filtering Logic
   const filteredExperiences = (experiences || []).filter(exp => {
     // 1. Category Filter (Supports primary and secondary category like tours & restaurants)
     if (filterCategory !== 'todos' && exp.category !== filterCategory && exp.secondaryCategory !== filterCategory) return false;
     
-    // 2. Search Query Filter
+    // 2. Search Query Filter with Accent-Insensitive Matching
     if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      const matchName = exp.name.toLowerCase().includes(q);
-      const matchDesc = exp.description.toLowerCase().includes(q);
-      const matchLoc = exp.location.toLowerCase().includes(q);
-      if (!matchName && !matchDesc && !matchLoc) return false;
+      const q = normalizeText(searchQuery.trim());
+      const matchName = normalizeText(exp.name).includes(q);
+      const matchDesc = normalizeText(exp.description).includes(q);
+      const matchLoc = normalizeText(exp.location).includes(q);
+      const matchCat = normalizeText(exp.category).includes(q);
+      const matchBadges = (exp.safetyBadges || []).some(b => normalizeText(b).includes(q));
+
+      if (!matchName && !matchDesc && !matchLoc && !matchCat && !matchBadges) return false;
     }
     
     // 3. Date & Capacity Filter
@@ -212,6 +226,12 @@ export default function TouristView() {
     
     return true;
   });
+
+  const handleApplyFilters = () => {
+    if (catalogGridRef.current) {
+      catalogGridRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <div className="tourist-view">
@@ -377,10 +397,17 @@ export default function TouristView() {
             </button>
           </div>
 
-          {/* Search and Filters Bar */}
+          {/* Search and Filters Bar with Floating PRO Calendar Modal */}
           <div className="glass-card" style={{ padding: '20px', borderRadius: '16px', marginBottom: '20px' }}>
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleApplyFilters();
+              }}
+              style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-end' }}
+            >
               
+              {/* Search Query Input */}
               <div className="form-group" style={{ flex: '2 1 240px', marginBottom: 0 }}>
                 <label className="form-label">{language === 'es' ? 'Buscar Experiencia' : 'Search Experience'}</label>
                 <div style={{ position: 'relative' }}>
@@ -393,23 +420,65 @@ export default function TouristView() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     style={{ paddingLeft: '40px', width: '100%' }}
                   />
+                  {searchQuery && (
+                    <button 
+                      type="button" 
+                      onClick={() => setSearchQuery('')}
+                      style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer' }}
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
                 </div>
               </div>
 
-              <div className="form-group" style={{ flex: '1 1 160px', marginBottom: 0 }}>
+              {/* Floating PRO Calendar Trigger Button */}
+              <div className="form-group" style={{ flex: '1 1 180px', marginBottom: 0, position: 'relative' }}>
                 <label className="form-label">{language === 'es' ? 'Fecha de Salida' : 'Departure Date'}</label>
                 <div style={{ position: 'relative' }}>
-                  <Calendar size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--color-text-muted)' }} />
-                  <input 
-                    type="date"
+                  <button
+                    type="button"
+                    onClick={() => setShowFilterDatePicker(prev => !prev)}
                     className="form-input"
-                    value={filterDate}
-                    onChange={(e) => setFilterDate(e.target.value)}
-                    style={{ paddingLeft: '40px', width: '100%' }}
-                  />
+                    style={{
+                      paddingLeft: '40px',
+                      paddingRight: '12px',
+                      width: '100%',
+                      textAlign: 'left',
+                      background: 'rgba(13, 24, 42, 0.6)',
+                      color: filterDate ? '#00C2B3' : 'rgba(255, 255, 255, 0.6)',
+                      fontWeight: filterDate ? '700' : '400',
+                      borderColor: filterDate ? '#00C2B3' : 'rgba(255,255,255,0.12)',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      height: '46px'
+                    }}
+                  >
+                    <Calendar size={18} style={{ position: 'absolute', left: '12px', color: filterDate ? '#00C2B3' : 'var(--color-text-muted)' }} />
+                    <span>
+                      {filterDate 
+                        ? new Date(filterDate + 'T00:00:00').toLocaleDateString(language === 'es' ? 'es-MX' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+                        : (language === 'es' ? '🗓️ Elegir Fecha...' : '🗓️ Select Date...')}
+                    </span>
+                  </button>
+
+                  {/* PRO Floating Calendar Popover */}
+                  {showFilterDatePicker && (
+                    <DatePickerPopover
+                      value={filterDate}
+                      onChange={(newDate) => {
+                        setFilterDate(newDate);
+                        setShowFilterDatePicker(false);
+                      }}
+                      onClose={() => setShowFilterDatePicker(false)}
+                      language={language}
+                    />
+                  )}
                 </div>
               </div>
 
+              {/* Guests Selector */}
               <div className="form-group" style={{ flex: '1 1 140px', marginBottom: 0 }}>
                 <label className="form-label">{language === 'es' ? 'Personas' : 'Guests'}</label>
                 <div style={{ position: 'relative' }}>
@@ -427,14 +496,16 @@ export default function TouristView() {
                 </div>
               </div>
 
+              {/* Filter Submit Button */}
               <button 
+                type="submit"
                 className="btn btn-primary"
-                onClick={() => {}}
-                style={{ flex: '1 1 140px', height: '46px', fontWeight: '700' }}
+                style={{ flex: '1 1 140px', height: '46px', fontWeight: '700', borderRadius: '12px' }}
               >
-                {language === 'es' ? 'FILTRAR' : 'FILTER'}
+                {language === 'es' ? '🔍 FILTRAR' : '🔍 FILTER'}
               </button>
-            </div>
+
+            </form>
           </div>
 
           {/* Category Filter Pills Bar */}
@@ -466,12 +537,12 @@ export default function TouristView() {
 
           {/* Catalog Cards Grid (Original Clean Grid Layout) */}
           {filteredExperiences.length === 0 ? (
-            <div className="glass-card animate-fade-in-up" style={{ padding: '60px 20px', textAlign: 'center' }}>
+            <div ref={catalogGridRef} className="glass-card animate-fade-in-up" style={{ padding: '60px 20px', textAlign: 'center' }}>
               <p style={{ color: 'var(--color-text-muted)', marginBottom: '16px' }}>{language === 'es' ? 'No se encontraron experiencias con estos filtros.' : 'No experiences found.'}</p>
               <button className="btn btn-outline" onClick={() => { setSearchQuery(''); setFilterCategory('todos'); setFilterDate(''); }}>{language === 'es' ? 'Limpiar Filtros' : 'Clear Filters'}</button>
             </div>
           ) : (
-            <div className="grid-cards">
+            <div ref={catalogGridRef} className="grid-cards">
               {filteredExperiences.map((exp, idx) => {
                 const displayPrice = getDisplayPrice(exp);
                 const isPackage = exp.pricingType === 'package';
