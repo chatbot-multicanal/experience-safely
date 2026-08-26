@@ -556,16 +556,16 @@ export default function TouristView() {
             )}
           </div>
 
-          {/* VIP Concierge Custom Experiences & Packages Banner */}
+          {/* VIP Concierge Custom Experiences, Events & VIP Passes Banner */}
           <div 
             className="glass-card animate-fade-in-up" 
             style={{
               marginBottom: '24px',
-              padding: '18px 24px',
+              padding: '20px 24px',
               borderRadius: '20px',
-              background: 'linear-gradient(135deg, rgba(13, 24, 42, 0.92), rgba(0, 194, 179, 0.15))',
-              border: '1px solid rgba(0, 194, 179, 0.4)',
-              boxShadow: '0 8px 32px rgba(0, 194, 179, 0.15)',
+              background: 'linear-gradient(135deg, rgba(13, 24, 42, 0.94), rgba(0, 194, 179, 0.18))',
+              border: '1px solid rgba(0, 194, 179, 0.45)',
+              boxShadow: '0 8px 32px rgba(0, 194, 179, 0.18)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -573,10 +573,10 @@ export default function TouristView() {
               gap: '16px'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: '1 1 320px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: '1 1 340px' }}>
               <div style={{
                 background: 'linear-gradient(135deg, #00C2B3, #008f84)',
-                padding: '12px',
+                padding: '14px',
                 borderRadius: '16px',
                 color: '#fff',
                 display: 'flex',
@@ -585,22 +585,36 @@ export default function TouristView() {
                 boxShadow: '0 4px 15px rgba(0, 194, 179, 0.4)',
                 flexShrink: 0
               }}>
-                <Sparkles size={24} />
+                <Sparkles size={26} />
               </div>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '0.68rem', background: 'rgba(255, 107, 77, 0.18)', color: '#FF6B4D', border: '1px solid rgba(255, 107, 77, 0.35)', padding: '2px 8px', borderRadius: '10px', fontWeight: '800' }}>
-                    {language === 'es' ? 'CONCIERGE VIP 24/7' : '24/7 VIP CONCIERGE'}
+                    👑 {language === 'es' ? 'CONCIERGE VIP 24/7' : '24/7 VIP CONCIERGE'}
                   </span>
-                  <h4 style={{ margin: 0, fontSize: '1.02rem', color: '#fff', fontWeight: '800' }}>
-                    {language === 'es' ? '¿Buscas Paquetes o Experiencias a la Medida?' : 'Looking for Custom Packages & Tours?'}
+                  <h4 style={{ margin: 0, fontSize: '1.05rem', color: '#fff', fontWeight: '800' }}>
+                    {language === 'es' ? '¿Buscas Paquetes a la Medida, Eventos Especiales o Pases VIP?' : 'Custom Packages, Special Events & VIP Passes?'}
                   </h4>
                 </div>
-                <p style={{ margin: 0, fontSize: '0.83rem', color: 'rgba(255,255,255,0.8)', lineHeight: '1.4' }}>
+
+                <p style={{ margin: '0 0 8px 0', fontSize: '0.84rem', color: 'rgba(255,255,255,0.85)', lineHeight: '1.45' }}>
                   {language === 'es' 
-                    ? 'Nuestro Concierge diseña tu itinerario personalizado: combina yates, cenotes privados, pádel, transportación VIP y reservas exclusivas en 1 sola experiencia.' 
-                    : 'Our Concierge creates custom itineraries: combine yachts, private cenotes, padel, VIP transit & luxury dining in 1 seamless trip.'}
+                    ? 'Nuestro Concierge organiza tu evento o itinerario exclusivo: combina yates, cenotes privados, pases VIP, clases de pádel, transportación ejecutiva y haciendas en 1 sola reserva.' 
+                    : 'Our Concierge designs custom itineraries & private events: combine yachts, private cenotes, VIP passes, padel, luxury transit & haciendas in 1 trip.'}
                 </p>
+
+                {/* Highlighted Feature Badges */}
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.68rem', background: 'rgba(0,194,179,0.12)', color: '#00C2B3', border: '1px solid rgba(0,194,179,0.3)', padding: '2px 8px', borderRadius: '8px', fontWeight: '700' }}>
+                    🎉 {language === 'es' ? 'Eventos Especiales & Bodas' : 'Special Events'}
+                  </span>
+                  <span style={{ fontSize: '0.68rem', background: 'rgba(255, 215, 0, 0.12)', color: 'var(--color-gold)', border: '1px solid rgba(255, 215, 0, 0.3)', padding: '2px 8px', borderRadius: '8px', fontWeight: '700' }}>
+                    🎟️ {language === 'es' ? 'Pases VIP & Exclusivos' : 'VIP Access Passes'}
+                  </span>
+                  <span style={{ fontSize: '0.68rem', background: 'rgba(255,255,255,0.06)', color: '#fff', border: '1px solid rgba(255,255,255,0.15)', padding: '2px 8px', borderRadius: '8px', fontWeight: '700' }}>
+                    🚤 {language === 'es' ? 'Yates & Cenotes Privados' : 'Yachts & Private Cenotes'}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -611,11 +625,11 @@ export default function TouristView() {
                 onClick={() => {
                   const chatbotBtn = document.querySelector('.chatbot-trigger-btn');
                   if (chatbotBtn) chatbotBtn.click();
-                  else alert(language === 'es' ? 'Haz clic en el botón flotante del asistente para diseñar tu paquete.' : 'Click the floating assistant button to design your package.');
+                  else alert(language === 'es' ? 'Haz clic en el asistente flotante para diseñar tu evento o paquete.' : 'Click floating assistant to design your event or package.');
                 }}
                 className="btn btn-primary btn-sm"
                 style={{
-                  padding: '9px 18px',
+                  padding: '10px 18px',
                   borderRadius: '30px',
                   fontWeight: '800',
                   fontSize: '0.82rem',
@@ -625,29 +639,34 @@ export default function TouristView() {
                   boxShadow: '0 4px 15px rgba(0, 194, 179, 0.35)'
                 }}
               >
-                <span>💬 {language === 'es' ? 'Diseñar con Concierge' : 'Design with Concierge'}</span>
+                <span>💬 {language === 'es' ? 'Diseñar Paquete o Evento' : 'Design Package or Event'}</span>
               </button>
 
               <a
-                href="https://wa.me/529991234567?text=Hola%20Concierge%20Experience%20Safely,%20me%20gustar%C3%ADa%20cotizar%20un%20paquete%20de%20experiencias%20personalizado."
+                href="https://wa.me/529991234567?text=Hola%20Concierge%20Experience%20Safely,%20me%20gustar%C3%ADa%20cotizar%20un%20evento%20especial,%20pase%20VIP%20o%20paquete%20personalizado."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-outline btn-sm"
                 style={{
-                  padding: '9px 16px',
+                  padding: '10px 18px',
                   borderRadius: '30px',
-                  fontWeight: '700',
+                  fontWeight: '800',
                   fontSize: '0.82rem',
                   borderColor: '#25D366',
-                  color: '#25D366',
-                  background: 'rgba(37, 211, 102, 0.1)',
+                  color: '#fff',
+                  background: 'linear-gradient(135deg, #25D366, #128C7E)',
+                  boxShadow: '0 4px 15px rgba(37, 211, 102, 0.35)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '6px',
+                  gap: '8px',
                   textDecoration: 'none'
                 }}
               >
-                <span>📲 WhatsApp Directo</span>
+                {/* Official WhatsApp SVG Icon */}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 2.152.68 4.145 1.836 5.782L2.5 21.5l3.864-1.288A9.956 9.956 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm-1.04 5.568c.24-.032.48.064.64.24.272.304.816.992 1.072 1.344.096.128.112.288.048.432-.096.224-.368.56-.544.752-.096.096-.112.224-.048.336.32.544.896 1.392 1.632 2.048.24.208.384.224.544.064.16-.16.48-.56.672-.752.128-.128.288-.128.432-.064.336.144 1.28.608 1.552.736.144.064.24.208.208.368-.112.624-.624 1.584-1.344 1.76-.64.16-1.504.096-2.912-.512-1.744-.752-3.04-2.48-3.328-2.88-.08-.112-.768-1.024-.768-1.952 0-.928.48-1.376.672-1.568.16-.16.352-.224.496-.24z" fill="#FFFFFF"/>
+                </svg>
+                <span>{language === 'es' ? 'Concierge WhatsApp' : 'Concierge WhatsApp'}</span>
               </a>
             </div>
           </div>
