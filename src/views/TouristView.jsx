@@ -46,6 +46,8 @@ export default function TouristView() {
   const [bookingStep3Data, setBookingStep3Data] = useState(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [bookingDate, setBookingDate] = useState('');
+  const [bookingEndDate, setBookingEndDate] = useState('');
+  const [showDetailDatePickerModal, setShowDetailDatePickerModal] = useState(false);
   const [bookingGuests, setBookingGuests] = useState(1);
   const [selectedZoneId, setSelectedZoneId] = useState('');
   const [selectedSchedule, setSelectedSchedule] = useState('');
@@ -1000,11 +1002,70 @@ export default function TouristView() {
               <div className="glass-card" style={{ padding: '24px', position: 'sticky', top: '100px' }}>
                 <h3 style={{ marginBottom: '16px', fontSize: '1.2rem' }}>{language === 'es' ? 'Reserva tu experiencia' : 'Book experience'}</h3>
                 
-                {/* 1. Interactive Calendar Date Picker */}
+                {/* 1. Interactive Calendar Date / Range Picker */}
                 <div className="form-group">
-                  <label className="form-label">{language === 'es' ? 'Selecciona Fecha' : 'Select Date'}</label>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '6px', marginTop: '8px' }}>
-                    {(dates || []).slice(0, 10).map((d) => {
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                    <label className="form-label" style={{ margin: 0 }}>
+                      {['hoteles', 'haciendas', 'barcos', 'ecoturismo'].includes(selectedExp.category)
+                        ? (language === 'es' ? 'Selecciona Fechas de Estadía (Máx. 15 días)' : 'Select Stay Dates (Max 15 days)')
+                        : (language === 'es' ? 'Selecciona Fecha' : 'Select Date')}
+                    </label>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowDetailDatePickerModal(true)}
+                    className="form-input"
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      background: 'rgba(0, 194, 179, 0.08)',
+                      border: '1px solid rgba(0, 194, 179, 0.35)',
+                      borderRadius: '12px',
+                      color: '#00C2B3',
+                      fontWeight: '700',
+                      fontSize: '0.85rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Calendar size={18} />
+                      <span>
+                        {bookingDate
+                          ? (bookingEndDate && bookingEndDate !== bookingDate 
+                              ? `📥 ${bookingDate}  ➔  📤 ${bookingEndDate}` 
+                              : `🗓️ ${bookingDate}`)
+                          : (language === 'es' ? '📅 Abrir Calendario de Fechas...' : '📅 Open Date Calendar...')}
+                      </span>
+                    </div>
+                    <span style={{ fontSize: '0.72rem', background: 'rgba(255,255,255,0.1)', padding: '2px 8px', borderRadius: '8px' }}>
+                      {language === 'es' ? 'Cambiar' : 'Change'}
+                    </span>
+                  </button>
+
+                  {/* PRO Centered Date Picker Modal */}
+                  {showDetailDatePickerModal && (
+                    <DatePickerPopover
+                      value={bookingDate}
+                      endDateValue={bookingEndDate}
+                      isRangeMode={['hoteles', 'haciendas', 'barcos', 'ecoturismo'].includes(selectedExp.category)}
+                      maxDays={15}
+                      onChange={(startD, endD) => {
+                        setBookingDate(startD || '');
+                        setBookingEndDate(endD || startD || '');
+                        setShowDetailDatePickerModal(false);
+                      }}
+                      onClose={() => setShowDetailDatePickerModal(false)}
+                      language={language}
+                    />
+                  )}
+
+                  {/* Quick Pill Buttons */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '6px', marginTop: '10px' }}>
+                    {(dates || []).slice(0, 5).map((d) => {
                       const slot = calendarAvailability[selectedExp.id]?.[d] || { price: selectedExp.price, capacity: selectedExp.capacity, booked: 0 };
                       const spotsLeft = slot.capacity - slot.booked;
                       const isSoldOut = spotsLeft <= 0;
@@ -1021,7 +1082,12 @@ export default function TouristView() {
                       return (
                         <button
                           key={d}
-                          onClick={() => { if (!isSoldOut) setBookingDate(d); }}
+                          onClick={() => { 
+                            if (!isSoldOut) {
+                              setBookingDate(d);
+                              setBookingEndDate(d);
+                            } 
+                          }}
                           disabled={isSoldOut}
                           style={{
                             background: isSelected ? 'rgba(0, 194, 179, 0.2)' : isSoldOut ? 'rgba(255, 107, 77, 0.05)' : 'rgba(255, 255, 255, 0.03)',
@@ -1052,11 +1118,16 @@ export default function TouristView() {
                 {bookingDate && (
                   <div style={{ margin: '16px 0', padding: '12px', background: 'rgba(0, 194, 179, 0.05)', border: '1px dashed rgba(0, 194, 179, 0.3)', borderRadius: '8px', fontSize: '0.85rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                      <span>{language === 'es' ? 'Tarifa del día:' : 'Daily rate:'}</span>
+                      <span>{bookingEndDate && bookingEndDate !== bookingDate ? (language === 'es' ? 'Resumen de Estadía:' : 'Stay Summary:') : (language === 'es' ? 'Tarifa del día:' : 'Daily rate:')}</span>
                       <strong style={{ color: 'var(--color-teal-light)' }}>
                         ${((calendarAvailability[selectedExp.id]?.[bookingDate]?.price || selectedExp.price)).toLocaleString('es-MX')} MXN
                       </strong>
                     </div>
+                    {bookingEndDate && bookingEndDate !== bookingDate && (
+                      <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.8)', marginTop: '4px' }}>
+                        🗓️ {language === 'es' ? `Check-in: ${bookingDate} ➔ Check-out: ${bookingEndDate}` : `Check-in: ${bookingDate} ➔ Check-out: ${bookingEndDate}`}
+                      </div>
+                    )}
                   </div>
                 )}
 
