@@ -606,10 +606,13 @@ export default function TouristView() {
                 {/* Highlighted Feature Badges */}
                 <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '0.68rem', background: 'rgba(0,194,179,0.12)', color: '#00C2B3', border: '1px solid rgba(0,194,179,0.3)', padding: '2px 8px', borderRadius: '8px', fontWeight: '700' }}>
+                    🏛️ {language === 'es' ? 'Haciendas Históricas' : 'Historic Haciendas'}
+                  </span>
+                  <span style={{ fontSize: '0.68rem', background: 'rgba(255, 107, 77, 0.12)', color: '#FF6B4D', border: '1px solid rgba(255, 107, 77, 0.3)', padding: '2px 8px', borderRadius: '8px', fontWeight: '700' }}>
                     🎉 {language === 'es' ? 'Eventos Especiales & Bodas' : 'Special Events'}
                   </span>
                   <span style={{ fontSize: '0.68rem', background: 'rgba(255, 215, 0, 0.12)', color: 'var(--color-gold)', border: '1px solid rgba(255, 215, 0, 0.3)', padding: '2px 8px', borderRadius: '8px', fontWeight: '700' }}>
-                    🎟️ {language === 'es' ? 'Pases VIP & Exclusivos' : 'VIP Access Passes'}
+                    🎟️ {language === 'es' ? 'Pases VIP Exclusivos' : 'VIP Access Passes'}
                   </span>
                   <span style={{ fontSize: '0.68rem', background: 'rgba(255,255,255,0.06)', color: '#fff', border: '1px solid rgba(255,255,255,0.15)', padding: '2px 8px', borderRadius: '8px', fontWeight: '700' }}>
                     🚤 {language === 'es' ? 'Yates & Cenotes Privados' : 'Yachts & Private Cenotes'}
