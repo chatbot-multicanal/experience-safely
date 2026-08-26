@@ -433,22 +433,50 @@ export default function TouristView() {
                 <span style={{ display: 'block', fontSize: '0.68rem', fontWeight: '800', textTransform: 'uppercase', color: '#00C2B3', letterSpacing: '0.05em' }}>
                   {language === 'es' ? 'Destino / Experiencia' : 'Destination'}
                 </span>
-                <input 
-                  type="text"
-                  placeholder={language === 'es' ? 'Buscar cenote, tour, lancha...' : 'Search cenote, tour, boat...'}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter') handleApplyFilters(); }}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    outline: 'none',
-                    color: '#fff',
-                    fontSize: '0.88rem',
-                    width: '100%',
-                    fontWeight: '600'
-                  }}
-                />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <input 
+                    type="text"
+                    placeholder={language === 'es' ? 'Buscar cenote, tour, lancha...' : 'Search cenote, tour, boat...'}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleApplyFilters(); }}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      outline: 'none',
+                      color: '#fff',
+                      fontSize: '0.88rem',
+                      width: '100%',
+                      fontWeight: '600'
+                    }}
+                  />
+                  {searchQuery && (
+                    <button 
+                      type="button" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSearchQuery('');
+                      }}
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.15)',
+                        border: 'none',
+                        color: '#fff',
+                        borderRadius: '50%',
+                        width: '20px',
+                        height: '20px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        flexShrink: 0,
+                        transition: 'all 0.2s'
+                      }}
+                      title={language === 'es' ? 'Borrar búsqueda' : 'Clear search'}
+                    >
+                      <X size={12} />
+                    </button>
+                  )}
+                </div>
               </div>
 
               {/* Vertical Divider */}
