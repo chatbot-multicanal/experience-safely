@@ -399,115 +399,161 @@ export default function TouristView() {
             </button>
           </div>
 
-          {/* Search and Filters Bar with Floating PRO Calendar Modal */}
-          <div className="glass-card" style={{ padding: '20px', borderRadius: '16px', marginBottom: '20px', position: 'relative', zIndex: 150, overflow: 'visible' }}>
-            <form 
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleApplyFilters();
+          {/* Airbnb-style Floating Capsule Search Bar */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px', position: 'relative', zIndex: 150 }}>
+            <div 
+              className="glass-card"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                background: 'rgba(13, 24, 42, 0.88)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(0, 194, 179, 0.35)',
+                borderRadius: '50px',
+                padding: '6px 8px 6px 20px',
+                boxShadow: '0 12px 35px rgba(0,0,0,0.5), 0 0 20px rgba(0, 194, 179, 0.15)',
+                maxWidth: '850px',
+                width: '100%',
+                flexWrap: 'wrap',
+                rowGap: '10px'
               }}
-              style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-end', overflow: 'visible' }}
             >
-              
-              {/* Search Query Input */}
-              <div className="form-group" style={{ flex: '2 1 240px', marginBottom: 0 }}>
-                <label className="form-label">{language === 'es' ? 'Buscar Experiencia' : 'Search Experience'}</label>
-                <div style={{ position: 'relative' }}>
-                  <Search size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--color-text-muted)' }} />
-                  <input 
-                    type="text"
-                    className="form-input"
-                    placeholder={language === 'es' ? 'Buscar por cenote, tour, lancha, ubicación...' : 'Search by cenote, tour, boat...'}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    style={{ paddingLeft: '40px', width: '100%' }}
-                  />
-                  {searchQuery && (
-                    <button 
-                      type="button" 
-                      onClick={() => setSearchQuery('')}
-                      style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer' }}
-                    >
-                      <X size={14} />
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Floating PRO Calendar Trigger Button */}
-              <div className="form-group" style={{ flex: '1 1 180px', marginBottom: 0, position: 'relative', zIndex: 200 }}>
-                <label className="form-label">{language === 'es' ? 'Fecha de Salida' : 'Departure Date'}</label>
-                <div style={{ position: 'relative' }}>
-                  <button
-                    type="button"
-                    onClick={() => setShowFilterDatePicker(prev => !prev)}
-                    className="form-input"
-                    style={{
-                      paddingLeft: '40px',
-                      paddingRight: '12px',
-                      width: '100%',
-                      textAlign: 'left',
-                      background: 'rgba(13, 24, 42, 0.6)',
-                      color: filterDate ? '#00C2B3' : 'rgba(255, 255, 255, 0.6)',
-                      fontWeight: filterDate ? '700' : '400',
-                      borderColor: filterDate ? '#00C2B3' : 'rgba(255,255,255,0.12)',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      height: '46px'
-                    }}
-                  >
-                    <Calendar size={18} style={{ position: 'absolute', left: '12px', color: filterDate ? '#00C2B3' : 'var(--color-text-muted)' }} />
-                    <span>
-                      {filterDate 
-                        ? new Date(filterDate + 'T00:00:00').toLocaleDateString(language === 'es' ? 'es-MX' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' })
-                        : (language === 'es' ? '🗓️ Elegir Fecha...' : '🗓️ Select Date...')}
-                    </span>
-                  </button>
-
-                  {/* PRO Floating Calendar Popover */}
-                  {showFilterDatePicker && (
-                    <DatePickerPopover
-                      value={filterDate}
-                      onChange={(newDate) => {
-                        setFilterDate(newDate);
-                        setShowFilterDatePicker(false);
-                      }}
-                      onClose={() => setShowFilterDatePicker(false)}
-                      language={language}
-                    />
-                  )}
-                </div>
-              </div>
-
-              {/* Guests Selector */}
-              <div className="form-group" style={{ flex: '1 1 140px', marginBottom: 0 }}>
-                <label className="form-label">{language === 'es' ? 'Personas' : 'Guests'}</label>
-                <div style={{ position: 'relative' }}>
-                  <Users size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--color-text-muted)' }} />
-                  <select 
-                    className="form-select"
-                    value={filterGuests}
-                    onChange={(e) => setFilterGuests(parseInt(e.target.value))}
-                    style={{ paddingLeft: '40px', width: '100%' }}
-                  >
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20].map(n => (
-                      <option key={n} value={n}>{n} {n === 1 ? (language === 'es' ? 'persona' : 'guest') : (language === 'es' ? 'personas' : 'guests')}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Filter Submit Button */}
-              <button 
-                type="submit"
-                className="btn btn-primary"
-                style={{ flex: '1 1 140px', height: '46px', fontWeight: '700', borderRadius: '12px' }}
+              {/* 1. Destino / Experiencia */}
+              <div 
+                style={{
+                  flex: '1.5 1 200px',
+                  padding: '6px 14px',
+                  borderRadius: '30px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  position: 'relative'
+                }}
               >
-                {language === 'es' ? '🔍 FILTRAR' : '🔍 FILTER'}
+                <span style={{ display: 'block', fontSize: '0.68rem', fontWeight: '800', textTransform: 'uppercase', color: '#00C2B3', letterSpacing: '0.05em' }}>
+                  {language === 'es' ? 'Destino / Experiencia' : 'Destination'}
+                </span>
+                <input 
+                  type="text"
+                  placeholder={language === 'es' ? 'Buscar cenote, tour, lancha...' : 'Search cenote, tour, boat...'}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handleApplyFilters(); }}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    outline: 'none',
+                    color: '#fff',
+                    fontSize: '0.88rem',
+                    width: '100%',
+                    fontWeight: '600'
+                  }}
+                />
+              </div>
+
+              {/* Vertical Divider */}
+              <div style={{ width: '1px', height: '32px', background: 'rgba(255,255,255,0.12)' }} />
+
+              {/* 2. Fechas (Check-in / Check-out) */}
+              <div 
+                onClick={() => setShowFilterDatePicker(true)}
+                style={{
+                  flex: '1 1 180px',
+                  padding: '6px 14px',
+                  borderRadius: '30px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                <span style={{ display: 'block', fontSize: '0.68rem', fontWeight: '800', textTransform: 'uppercase', color: '#00C2B3', letterSpacing: '0.05em' }}>
+                  {language === 'es' ? 'Fechas' : 'Dates'}
+                </span>
+                <span style={{ fontSize: '0.88rem', color: filterDate ? '#fff' : 'rgba(255,255,255,0.5)', fontWeight: '600', whiteSpace: 'nowrap' }}>
+                  {filterDate 
+                    ? new Date(filterDate + 'T00:00:00').toLocaleDateString(language === 'es' ? 'es-MX' : 'en-US', { day: 'numeric', month: 'short' })
+                    : (language === 'es' ? 'Agregar fechas' : 'Add dates')}
+                </span>
+              </div>
+
+              {/* Vertical Divider */}
+              <div style={{ width: '1px', height: '32px', background: 'rgba(255,255,255,0.12)' }} />
+
+              {/* 3. Huéspedes / Personas */}
+              <div 
+                style={{
+                  flex: '1 1 140px',
+                  padding: '6px 14px',
+                  borderRadius: '30px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                <span style={{ display: 'block', fontSize: '0.68rem', fontWeight: '800', textTransform: 'uppercase', color: '#00C2B3', letterSpacing: '0.05em' }}>
+                  {language === 'es' ? 'Huéspedes' : 'Guests'}
+                </span>
+                <select 
+                  value={filterGuests}
+                  onChange={(e) => setFilterGuests(parseInt(e.target.value))}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    outline: 'none',
+                    color: '#fff',
+                    fontSize: '0.88rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    width: '100%'
+                  }}
+                >
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20].map(n => (
+                    <option key={n} value={n} style={{ background: '#0d182a', color: '#fff' }}>
+                      {n} {n === 1 ? (language === 'es' ? 'persona' : 'guest') : (language === 'es' ? 'personas' : 'guests')}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Search Button (Airbnb-style Round Pink/Coral Button) */}
+              <button 
+                type="button"
+                onClick={handleApplyFilters}
+                style={{
+                  background: 'linear-gradient(135deg, #FF6B4D, #ff4526)',
+                  border: 'none',
+                  color: '#fff',
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  marginLeft: 'auto',
+                  boxShadow: '0 4px 15px rgba(255, 107, 77, 0.4)',
+                  transition: 'all 0.2s ease',
+                  flexShrink: 0
+                }}
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                title={language === 'es' ? 'Buscar' : 'Search'}
+              >
+                <Search size={20} />
               </button>
 
-            </form>
+            </div>
+
+            {/* PRO Floating Calendar Modal Triggered by Fechas Segment */}
+            {showFilterDatePicker && (
+              <DatePickerPopover
+                value={filterDate}
+                onChange={(newDate) => {
+                  setFilterDate(newDate);
+                  setShowFilterDatePicker(false);
+                }}
+                onClose={() => setShowFilterDatePicker(false)}
+                language={language}
+              />
+            )}
           </div>
 
           {/* Category Filter Pills Bar */}
